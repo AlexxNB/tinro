@@ -9,6 +9,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -w -c rollup.dev.config.js",
+    "compare": "rollup -c rollup.dev.config.js --environment NODE_ENV:compare",
     "serve": "sirv tests/www"
   },
   "repository": {
