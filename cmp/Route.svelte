@@ -24,13 +24,13 @@
    
     path = formatPath(path);  
 
-    if(ctx) path = ctx.base+path;
+    if(ctx) path = ctx.path+path;
     if(ctx && fallback) ctx.regFB( _ => show_content=true );
 
     const show_fallback = _ => fallback_cb ? fallback_cb() : ctx ? ctx.showFB() : null;
 
     setContext('ROUTER:context',{
-            base: path,
+            path,
            exact,
         fallback,
            child: (show,path) => show ? childs.push(path) : childs=childs.filter( e => e!==path ),
