@@ -1,7 +1,7 @@
 <script>
     import {current_component} from 'svelte/internal';
     import {getContext,setContext,afterUpdate} from 'svelte';
-    import {url,getPathData,formatPath} from './../dist/tinro_lib';
+    import {router,getPathData,formatPath,err} from './../dist/tinro_lib';
 
     export let path = '/*';
     export let fallback = false;
@@ -12,9 +12,17 @@
     let childs = [];
     let exact = fallback || !path.endsWith('/*');  
 
-    path = formatPath(path);    
-
     const ctx = getContext('ROUTER:context');
+    if(ctx && ( ctx.exact || ctx.fallback) ) err(
+        `${fallback ? '<Route fallback>' : `<Route path="${path}">`}  can't be placed inside ${ctx.fallback ? 
+            '<Route fallback>' :
+            `<Route path="${ctx.base || '/'}"> with exact path property` }`
+    );
+
+    if(!ctx && fallback) err('<Route fallback> must be placed only inside <Route> with not exact path property')
+   
+    path = formatPath(path);  
+
     if(ctx) path = ctx.base+path;
     if(ctx && fallback) ctx.regFB( _ => show_content=true );
 
@@ -22,13 +30,15 @@
 
     setContext('ROUTER:context',{
             base: path,
-        nochilds: exact,
+           exact,
+        fallback,
            child: (show,path) => show ? childs.push(path) : childs=childs.filter( e => e!==path ),
            regFB: func => fallback_cb = func,
           showFB: show_fallback
     });
     
-    $: route = getPathData(path,$url.path);
+    $: route = getPathData(path,$router.path);
+    $: setContext('ROUTER:params',route ? route.params : {});
     $: show_content = fallback ? false : !!route && ( (exact && route.exact) || !exact );
     $: if(ctx && !fallback) ctx.child(show_content,path);
 
@@ -36,5 +46,5 @@
 </script>
 
 {#if show_content}
-<slot></slot>
+<slot params={ route ? route.params : {} }></slot>
 {/if}

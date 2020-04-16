@@ -14,7 +14,7 @@ export default [
         ...Object.keys(pkg.dependencies || {}),
         ...Object.keys(pkg.peerDependencies || {}),
         ],
-        plugins: [terser()]
+        plugins: [resolve({dedupe: ['svelte']}),terser()]
     },
     {
         input: 'src/index.js',

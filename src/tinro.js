@@ -1,4 +1,4 @@
-export {url,routes,current} from './router';
+export {router} from './router.js';
 
 export function formatPath(path,slash=false){
     path = path.endsWith('/*') ? path.slice(0,-2) : path;
@@ -6,7 +6,6 @@ export function formatPath(path,slash=false){
     if(slash && !path.endsWith('/')) path += '/';
     return path;
 }
-
 
 export function getPathData(pattern,path){
     pattern = formatPath(pattern,true);
@@ -29,4 +28,8 @@ export function getPathData(pattern,path){
     keys.forEach((key,i) => params[key] = match[i+1]);
 
     return {exact,params};
+}
+
+export function err(text){
+    throw new Error(text);
 }

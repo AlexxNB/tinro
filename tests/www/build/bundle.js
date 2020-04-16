@@ -368,6 +368,13 @@
         else
             dispatch_dev("SvelteDOMSetAttribute", { node, attribute, value });
     }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.data === data)
+            return;
+        dispatch_dev("SvelteDOMSetData", { node: text, data });
+        text.data = data;
+    }
     function validate_slots(name, slot, keys) {
         for (const slot_key of Object.keys(slot)) {
             if (!~keys.indexOf(slot_key)) {
@@ -393,16 +400,6 @@
     }
 
     const subscriber_queue = [];
-    /**
-     * Creates a `Readable` store that allows reading by subscription.
-     * @param value initial value
-     * @param {StartStopNotifier}start start and stop notifications for subscriptions
-     */
-    function readable(value, start) {
-        return {
-            subscribe: writable(value, start).subscribe,
-        };
-    }
     /**
      * Create a `Writable` store that allows both updating and reading by subscription.
      * @param {*=}value initial value
@@ -453,49 +450,10 @@
         }
         return { set, update, subscribe };
     }
-    function derived(stores, fn, initial_value) {
-        const single = !Array.isArray(stores);
-        const stores_array = single
-            ? [stores]
-            : stores;
-        const auto = fn.length < 2;
-        return readable(initial_value, (set) => {
-            let inited = false;
-            const values = [];
-            let pending = 0;
-            let cleanup = noop;
-            const sync = () => {
-                if (pending) {
-                    return;
-                }
-                cleanup();
-                const result = fn(single ? values[0] : values, set);
-                if (auto) {
-                    set(result);
-                }
-                else {
-                    cleanup = is_function(result) ? result : noop;
-                }
-            };
-            const unsubscribers = stores_array.map((store, i) => subscribe(store, (value) => {
-                values[i] = value;
-                pending &= ~(1 << i);
-                if (inited) {
-                    sync();
-                }
-            }, () => {
-                pending |= (1 << i);
-            }));
-            inited = true;
-            sync();
-            return function stop() {
-                run_all(unsubscribers);
-                cleanup();
-            };
-        });
-    }
 
-    function urlStore(){
+    const router = routerStore();
+
+    function routerStore(){
         const go = (href,set) => {history.pushState({}, '', href);set(getLocation());};
 
         const {subscribe,set} = writable(getLocation(), _ => {
@@ -509,14 +467,15 @@
 
         return {
             subscribe,
-            go: href => go(href,set)
+            goto: href => go(href,set),
+            params: getParams
         }
     }
 
     function getLocation(){
         return {
             path: window.location.pathname,
-            query: window.location.search.slice(1),
+            query: query_parse(window.location.search.slice(1)),
             hash: window.location.hash.slice(1)
         }
     }
@@ -534,62 +493,24 @@
         return () => removeEventListener('click', h);
     }
 
-    function routesStore(){
-        const {subscribe,update} = writable({});
-        
-        return {
-            subscribe,
-            register: (pattern,id,exact,fallback)=>update(routes => {
-                routes[id] = getRegExp(pattern,exact,fallback);
-                return routes;
-            })
-        }
+    function getParams(){
+        return getContext('ROUTER:params');
     }
 
-    function getRegExp(pattern,exact,fallback){
-        pattern = pattern.endsWith('/') ? pattern : pattern+'/';
-        const params = [];
-        let rx = pattern
-           .split('/')
-           .map(s => s.startsWith(':') ? (params.push(s.slice(1)),'([^\\/]+)') : s)
-           .join('\\/');
-        
-        return [exact && !fallback ? `^${rx}$` : `^${rx}`,params,fallback];
+    function query_parse(str){
+        const o= str.split('&')
+          .map(p => p.split('='))
+          .reduce((r,p) => {
+              const name = p[0];
+              if(!name) return r;
+              let value = p.length > 1 ? p[p.length-1] : true;
+              if(typeof value === 'string' && value.includes(',')) value = value.split(',');
+              (r[name] === undefined) ? r[name]=[value] : r[name].push(value);
+              return r;
+          },{});
+      
+        return Object.entries(o).reduce((r,p)=>(r[p[0]]=p[1].length>1 ? p[1] : p[1][0],r),{});
       }
-
-    function currentStore(url,routes){
-        return derived([url,routes],([$url,$routes]) => {
-            console.log($routes);
-            let routes =  Object.entries($routes)
-                .reduce((o,[id,rx,fb])=>{
-                    if(fb) return o;
-                    const parsed = parsePath($url.path,rx);
-                    return parsed ? (o[id]=parsed,o) : o;
-                },{});
-            if(Object.keys(routes).length === 0) routes =  Object.entries($routes)
-            .reduce((o,[id,rx,fb])=>{
-                if(!fb) return o;
-                const parsed = parsePath($url.path,rx);
-                return parsed ? (o[id]=parsed,o) : o;
-            },{});
-            return routes;
-        });
-    }
-
-    function parsePath(path,pattern){
-        path = path.endsWith('/') ? path : path+'/';
-        const match = path.match(new RegExp(pattern[0]));
-        let params = {};
-        if(match){ 
-          pattern[1].forEach((key,i) => params[key] = match[i+1]);
-          return params;
-        }
-        return false;
-      }
-
-    const url = urlStore();
-    const routes = routesStore();
-    const current = currentStore(url,routes);
 
     function formatPath(path,slash=false){
         path = path.endsWith('/*') ? path.slice(0,-2) : path;
@@ -597,7 +518,6 @@
         if(slash && !path.endsWith('/')) path += '/';
         return path;
     }
-
 
     function getPathData(pattern,path){
         pattern = formatPath(pattern,true);
@@ -622,13 +542,22 @@
         return {exact,params};
     }
 
-    /* cmp/Route.svelte generated by Svelte v3.20.1 */
+    function err(text){
+        throw new Error(text);
+    }
 
-    // (38:0) {#if show_content}
+    /* cmp/Route.svelte generated by Svelte v3.20.1 */
+    const get_default_slot_changes = dirty => ({ params: dirty & /*route*/ 1 });
+
+    const get_default_slot_context = ctx => ({
+    	params: /*route*/ ctx[0] ? /*route*/ ctx[0].params : {}
+    });
+
+    // (48:0) {#if show_content}
     function create_if_block(ctx) {
     	let current;
     	const default_slot_template = /*$$slots*/ ctx[11].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[10], null);
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[10], get_default_slot_context);
 
     	const block = {
     		c: function create() {
@@ -643,8 +572,8 @@
     		},
     		p: function update(ctx, dirty) {
     			if (default_slot) {
-    				if (default_slot.p && dirty & /*$$scope*/ 1024) {
-    					default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[10], null), get_slot_changes(default_slot_template, /*$$scope*/ ctx[10], dirty, null));
+    				if (default_slot.p && dirty & /*$$scope, route*/ 1025) {
+    					default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[10], get_default_slot_context), get_slot_changes(default_slot_template, /*$$scope*/ ctx[10], dirty, get_default_slot_changes));
     				}
     			}
     		},
@@ -666,7 +595,7 @@
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(38:0) {#if show_content}",
+    		source: "(48:0) {#if show_content}",
     		ctx
     	});
 
@@ -676,7 +605,7 @@
     function create_fragment(ctx) {
     	let if_block_anchor;
     	let current;
-    	let if_block = /*show_content*/ ctx[0] && create_if_block(ctx);
+    	let if_block = /*show_content*/ ctx[1] && create_if_block(ctx);
 
     	const block = {
     		c: function create() {
@@ -692,7 +621,7 @@
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (/*show_content*/ ctx[0]) {
+    			if (/*show_content*/ ctx[1]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     					transition_in(if_block, 1);
@@ -739,9 +668,9 @@
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	let $url;
-    	validate_store(url, "url");
-    	component_subscribe($$self, url, $$value => $$invalidate(6, $url = $$value));
+    	let $router;
+    	validate_store(router, "router");
+    	component_subscribe($$self, router, $$value => $$invalidate(6, $router = $$value));
     	let { path = "/*" } = $$props;
     	let { fallback = false } = $$props;
     	let route = null;
@@ -749,15 +678,22 @@
     	let fallback_cb = null;
     	let childs = [];
     	let exact = fallback || !path.endsWith("/*");
-    	path = formatPath(path);
     	const ctx = getContext("ROUTER:context");
+
+    	if (ctx && (ctx.exact || ctx.fallback)) err(`${fallback ? "<Route fallback>" : `<Route path="${path}">`}  can't be placed inside ${ctx.fallback
+	? "<Route fallback>"
+	: `<Route path="${ctx.base || "/"}"> with exact path property`}`);
+
+    	if (!ctx && fallback) err("<Route fallback> must be placed only inside <Route> with not exact path property");
+    	path = formatPath(path);
     	if (ctx) path = ctx.base + path;
-    	if (ctx && fallback) ctx.regFB(_ => $$invalidate(0, show_content = true));
+    	if (ctx && fallback) ctx.regFB(_ => $$invalidate(1, show_content = true));
     	const show_fallback = _ => fallback_cb ? fallback_cb() : ctx ? ctx.showFB() : null;
 
     	setContext("ROUTER:context", {
     		base: path,
-    		nochilds: exact,
+    		exact,
+    		fallback,
     		child: (show, path) => show
     		? childs.push(path)
     		: childs = childs.filter(e => e !== path),
@@ -779,8 +715,8 @@
     	validate_slots("Route", $$slots, ['default']);
 
     	$$self.$set = $$props => {
-    		if ("path" in $$props) $$invalidate(1, path = $$props.path);
-    		if ("fallback" in $$props) $$invalidate(2, fallback = $$props.fallback);
+    		if ("path" in $$props) $$invalidate(2, path = $$props.path);
+    		if ("fallback" in $$props) $$invalidate(3, fallback = $$props.fallback);
     		if ("$$scope" in $$props) $$invalidate(10, $$scope = $$props.$$scope);
     	};
 
@@ -789,9 +725,10 @@
     		getContext,
     		setContext,
     		afterUpdate,
-    		url,
+    		router,
     		getPathData,
     		formatPath,
+    		err,
     		path,
     		fallback,
     		route,
@@ -801,14 +738,14 @@
     		exact,
     		ctx,
     		show_fallback,
-    		$url
+    		$router
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("path" in $$props) $$invalidate(1, path = $$props.path);
-    		if ("fallback" in $$props) $$invalidate(2, fallback = $$props.fallback);
-    		if ("route" in $$props) $$invalidate(3, route = $$props.route);
-    		if ("show_content" in $$props) $$invalidate(0, show_content = $$props.show_content);
+    		if ("path" in $$props) $$invalidate(2, path = $$props.path);
+    		if ("fallback" in $$props) $$invalidate(3, fallback = $$props.fallback);
+    		if ("route" in $$props) $$invalidate(0, route = $$props.route);
+    		if ("show_content" in $$props) $$invalidate(1, show_content = $$props.show_content);
     		if ("fallback_cb" in $$props) fallback_cb = $$props.fallback_cb;
     		if ("childs" in $$props) childs = $$props.childs;
     		if ("exact" in $$props) $$invalidate(7, exact = $$props.exact);
@@ -819,29 +756,33 @@
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*path, $url*/ 66) {
-    			 $$invalidate(3, route = getPathData(path, $url.path));
+    		if ($$self.$$.dirty & /*path, $router*/ 68) {
+    			 $$invalidate(0, route = getPathData(path, $router.path));
     		}
 
-    		if ($$self.$$.dirty & /*fallback, route*/ 12) {
-    			 $$invalidate(0, show_content = fallback
+    		if ($$self.$$.dirty & /*route*/ 1) {
+    			 setContext("ROUTER:params", route ? route.params : {});
+    		}
+
+    		if ($$self.$$.dirty & /*fallback, route*/ 9) {
+    			 $$invalidate(1, show_content = fallback
     			? false
     			: !!route && (exact && route.exact || !exact));
     		}
 
-    		if ($$self.$$.dirty & /*fallback, show_content, path*/ 7) {
+    		if ($$self.$$.dirty & /*fallback, show_content, path*/ 14) {
     			 if (ctx && !fallback) ctx.child(show_content, path);
     		}
     	};
 
     	return [
+    		route,
     		show_content,
     		path,
     		fallback,
-    		route,
     		fallback_cb,
     		childs,
-    		$url,
+    		$router,
     		exact,
     		ctx,
     		show_fallback,
@@ -853,7 +794,7 @@
     class Route extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance, create_fragment, safe_not_equal, { path: 1, fallback: 2 });
+    		init(this, options, instance, create_fragment, safe_not_equal, { path: 2, fallback: 3 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -883,8 +824,8 @@
     /* tests/App.svelte generated by Svelte v3.20.1 */
     const file = "tests/App.svelte";
 
-    // (15:2) <Route path="/">
-    function create_default_slot_6(ctx) {
+    // (16:2) <Route path="/">
+    function create_default_slot_7(ctx) {
     	let t;
 
     	const block = {
@@ -901,17 +842,17 @@
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_6.name,
+    		id: create_default_slot_7.name,
     		type: "slot",
-    		source: "(15:2) <Route path=\\\"/\\\">",
+    		source: "(16:2) <Route path=\\\"/\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (16:2) <Route path="/test1">
-    function create_default_slot_5(ctx) {
+    // (17:2) <Route path="/test1">
+    function create_default_slot_6(ctx) {
     	let t;
 
     	const block = {
@@ -928,17 +869,17 @@
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_5.name,
+    		id: create_default_slot_6.name,
     		type: "slot",
-    		source: "(16:2) <Route path=\\\"/test1\\\">",
+    		source: "(17:2) <Route path=\\\"/test1\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (22:3) <Route path="/sub">
-    function create_default_slot_4(ctx) {
+    // (23:3) <Route path="/sub">
+    function create_default_slot_5(ctx) {
     	let t;
 
     	const block = {
@@ -955,17 +896,17 @@
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_4.name,
+    		id: create_default_slot_5.name,
     		type: "slot",
-    		source: "(22:3) <Route path=\\\"/sub\\\">",
+    		source: "(23:3) <Route path=\\\"/sub\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (23:3) <Route fallback>
-    function create_default_slot_3(ctx) {
+    // (24:3) <Route fallback>
+    function create_default_slot_4(ctx) {
     	let t;
 
     	const block = {
@@ -982,17 +923,17 @@
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_3.name,
+    		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(23:3) <Route fallback>",
+    		source: "(24:3) <Route fallback>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (17:2) <Route path="/test2/*">
-    function create_default_slot_2(ctx) {
+    // (18:2) <Route path="/test2/*">
+    function create_default_slot_3(ctx) {
     	let p;
     	let a0;
     	let t1;
@@ -1004,7 +945,7 @@
     	const route0 = new Route({
     			props: {
     				path: "/sub",
-    				$$slots: { default: [create_default_slot_4] },
+    				$$slots: { default: [create_default_slot_5] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -1013,7 +954,7 @@
     	const route1 = new Route({
     			props: {
     				fallback: true,
-    				$$slots: { default: [create_default_slot_3] },
+    				$$slots: { default: [create_default_slot_4] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -1032,10 +973,10 @@
     			t4 = space();
     			create_component(route1.$$.fragment);
     			attr_dev(a0, "href", "/test2/sub");
-    			add_location(a0, file, 18, 4, 319);
+    			add_location(a0, file, 19, 4, 358);
     			attr_dev(a1, "href", "/test2/sub3");
-    			add_location(a1, file, 19, 4, 362);
-    			add_location(p, file, 17, 3, 311);
+    			add_location(a1, file, 20, 4, 401);
+    			add_location(p, file, 18, 3, 350);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1051,14 +992,14 @@
     		p: function update(ctx, dirty) {
     			const route0_changes = {};
 
-    			if (dirty & /*$$scope*/ 1) {
+    			if (dirty & /*$$scope*/ 2) {
     				route0_changes.$$scope = { dirty, ctx };
     			}
 
     			route0.$set(route0_changes);
     			const route1_changes = {};
 
-    			if (dirty & /*$$scope*/ 1) {
+    			if (dirty & /*$$scope*/ 2) {
     				route1_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1086,16 +1027,51 @@
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_2.name,
+    		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(17:2) <Route path=\\\"/test2/*\\\">",
+    		source: "(18:2) <Route path=\\\"/test2/*\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (25:2) <Route fallback>
+    // (26:2) <Route path="/hello/:name" let:params>
+    function create_default_slot_2(ctx) {
+    	let t0;
+    	let t1_value = /*params*/ ctx[0].name + "";
+    	let t1;
+
+    	const block = {
+    		c: function create() {
+    			t0 = text("Hello, ");
+    			t1 = text(t1_value);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, t1, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*params*/ 1 && t1_value !== (t1_value = /*params*/ ctx[0].name + "")) set_data_dev(t1, t1_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(t1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_2.name,
+    		type: "slot",
+    		source: "(26:2) <Route path=\\\"/hello/:name\\\" let:params>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (27:2) <Route fallback>
     function create_default_slot_1(ctx) {
     	let t;
 
@@ -1115,24 +1091,25 @@
     		block,
     		id: create_default_slot_1.name,
     		type: "slot",
-    		source: "(25:2) <Route fallback>",
+    		source: "(27:2) <Route fallback>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (14:1) <Route>
+    // (15:1) <Route>
     function create_default_slot(ctx) {
     	let t0;
     	let t1;
     	let t2;
+    	let t3;
     	let current;
 
     	const route0 = new Route({
     			props: {
     				path: "/",
-    				$$slots: { default: [create_default_slot_6] },
+    				$$slots: { default: [create_default_slot_7] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -1141,7 +1118,7 @@
     	const route1 = new Route({
     			props: {
     				path: "/test1",
-    				$$slots: { default: [create_default_slot_5] },
+    				$$slots: { default: [create_default_slot_6] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -1150,13 +1127,28 @@
     	const route2 = new Route({
     			props: {
     				path: "/test2/*",
-    				$$slots: { default: [create_default_slot_2] },
+    				$$slots: { default: [create_default_slot_3] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
     	const route3 = new Route({
+    			props: {
+    				path: "/hello/:name",
+    				$$slots: {
+    					default: [
+    						create_default_slot_2,
+    						({ params }) => ({ 0: params }),
+    						({ params }) => params ? 1 : 0
+    					]
+    				},
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	const route4 = new Route({
     			props: {
     				fallback: true,
     				$$slots: { default: [create_default_slot_1] },
@@ -1174,6 +1166,8 @@
     			create_component(route2.$$.fragment);
     			t2 = space();
     			create_component(route3.$$.fragment);
+    			t3 = space();
+    			create_component(route4.$$.fragment);
     		},
     		m: function mount(target, anchor) {
     			mount_component(route0, target, anchor);
@@ -1183,37 +1177,46 @@
     			mount_component(route2, target, anchor);
     			insert_dev(target, t2, anchor);
     			mount_component(route3, target, anchor);
+    			insert_dev(target, t3, anchor);
+    			mount_component(route4, target, anchor);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
     			const route0_changes = {};
 
-    			if (dirty & /*$$scope*/ 1) {
+    			if (dirty & /*$$scope*/ 2) {
     				route0_changes.$$scope = { dirty, ctx };
     			}
 
     			route0.$set(route0_changes);
     			const route1_changes = {};
 
-    			if (dirty & /*$$scope*/ 1) {
+    			if (dirty & /*$$scope*/ 2) {
     				route1_changes.$$scope = { dirty, ctx };
     			}
 
     			route1.$set(route1_changes);
     			const route2_changes = {};
 
-    			if (dirty & /*$$scope*/ 1) {
+    			if (dirty & /*$$scope*/ 2) {
     				route2_changes.$$scope = { dirty, ctx };
     			}
 
     			route2.$set(route2_changes);
     			const route3_changes = {};
 
-    			if (dirty & /*$$scope*/ 1) {
+    			if (dirty & /*$$scope, params*/ 3) {
     				route3_changes.$$scope = { dirty, ctx };
     			}
 
     			route3.$set(route3_changes);
+    			const route4_changes = {};
+
+    			if (dirty & /*$$scope*/ 2) {
+    				route4_changes.$$scope = { dirty, ctx };
+    			}
+
+    			route4.$set(route4_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1221,6 +1224,7 @@
     			transition_in(route1.$$.fragment, local);
     			transition_in(route2.$$.fragment, local);
     			transition_in(route3.$$.fragment, local);
+    			transition_in(route4.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
@@ -1228,6 +1232,7 @@
     			transition_out(route1.$$.fragment, local);
     			transition_out(route2.$$.fragment, local);
     			transition_out(route3.$$.fragment, local);
+    			transition_out(route4.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -1238,6 +1243,8 @@
     			destroy_component(route2, detaching);
     			if (detaching) detach_dev(t2);
     			destroy_component(route3, detaching);
+    			if (detaching) detach_dev(t3);
+    			destroy_component(route4, detaching);
     		}
     	};
 
@@ -1245,7 +1252,7 @@
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(14:1) <Route>",
+    		source: "(15:1) <Route>",
     		ctx
     	});
 
@@ -1264,6 +1271,8 @@
     	let t7;
     	let a4;
     	let t9;
+    	let a5;
+    	let t11;
     	let p1;
     	let current;
 
@@ -1288,11 +1297,14 @@
     			a2.textContent = "Test3";
     			t5 = space();
     			a3 = element("a");
-    			a3.textContent = "Ya";
+    			a3.textContent = "Test hello";
     			t7 = space();
     			a4 = element("a");
-    			a4.textContent = "Hash";
+    			a4.textContent = "Ya";
     			t9 = space();
+    			a5 = element("a");
+    			a5.textContent = "Hash";
+    			t11 = space();
     			p1 = element("p");
     			create_component(route.$$.fragment);
     			attr_dev(a0, "href", "/test1");
@@ -1301,12 +1313,14 @@
     			add_location(a1, file, 6, 1, 84);
     			attr_dev(a2, "href", "/test3");
     			add_location(a2, file, 7, 1, 112);
-    			attr_dev(a3, "href", "//ya.ru");
+    			attr_dev(a3, "href", "/hello/world");
     			add_location(a3, file, 8, 1, 140);
-    			attr_dev(a4, "href", "#huj");
-    			add_location(a4, file, 9, 1, 166);
+    			attr_dev(a4, "href", "//ya.ru");
+    			add_location(a4, file, 9, 1, 179);
+    			attr_dev(a5, "href", "#huj");
+    			add_location(a5, file, 10, 1, 205);
     			add_location(p0, file, 4, 0, 51);
-    			add_location(p1, file, 12, 0, 196);
+    			add_location(p1, file, 13, 0, 235);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1322,7 +1336,9 @@
     			append_dev(p0, a3);
     			append_dev(p0, t7);
     			append_dev(p0, a4);
-    			insert_dev(target, t9, anchor);
+    			append_dev(p0, t9);
+    			append_dev(p0, a5);
+    			insert_dev(target, t11, anchor);
     			insert_dev(target, p1, anchor);
     			mount_component(route, p1, null);
     			current = true;
@@ -1330,7 +1346,7 @@
     		p: function update(ctx, [dirty]) {
     			const route_changes = {};
 
-    			if (dirty & /*$$scope*/ 1) {
+    			if (dirty & /*$$scope*/ 2) {
     				route_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1347,7 +1363,7 @@
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(p0);
-    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(t11);
     			if (detaching) detach_dev(p1);
     			destroy_component(route);
     		}

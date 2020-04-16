@@ -1,6 +1,9 @@
+import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
 
-export function urlStore(){
+export const router = routerStore();
+
+function routerStore(){
     const go = (href,set) => {history.pushState({}, '', href);set(getLocation())}
 
     const {subscribe,set} = writable(getLocation(), _ => {
@@ -14,14 +17,15 @@ export function urlStore(){
 
     return {
         subscribe,
-        go: href => go(href,set)
+        goto: href => go(href,set),
+        params: getParams
     }
 }
 
 function getLocation(){
     return {
         path: window.location.pathname,
-        query: window.location.search.slice(1),
+        query: query_parse(window.location.search.slice(1)),
         hash: window.location.hash.slice(1)
     }
 }
@@ -39,3 +43,21 @@ function aClickListener(go){
     return () => removeEventListener('click', h);
 }
 
+function getParams(){
+    return getContext('ROUTER:params');
+}
+
+function query_parse(str){
+    const o= str.split('&')
+      .map(p => p.split('='))
+      .reduce((r,p) => {
+          const name = p[0];
+          if(!name) return r;
+          let value = p.length > 1 ? p[p.length-1] : true;
+          if(typeof value === 'string' && value.includes(',')) value = value.split(',');
+          (r[name] === undefined) ? r[name]=[value] : r[name].push(value);
+          return r;
+      },{});
+  
+    return Object.entries(o).reduce((r,p)=>(r[p[0]]=p[1].length>1 ? p[1] : p[1][0],r),{});
+  }
