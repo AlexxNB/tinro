@@ -1,2 +1,2 @@
 export {default as Route} from './Route.svelte';
-export * from './../dist/tinro_lib';
+export {router} from './../dist/tinro_lib';

@@ -1,6 +1,6 @@
 import svelte from 'rollup-plugin-svelte';
+import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
-//import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 
 const pkg = require('./package.json');
@@ -8,7 +8,7 @@ const pkg = require('./package.json');
 export default [{
 	input: 'src/tinro.js',
 	output: [
-	{ file: 'dist/tinro_lib_test.js', format: 'es', sourcemap: true }
+	{ file: 'tests/dist/tinro_lib_test.js', format: 'es', sourcemap: true }
 	],
 	external: [
 	...Object.keys(pkg.dependencies || {}),
@@ -16,7 +16,7 @@ export default [{
 	'svelte',
 	'svelte/store'
 	],
-	plugins: [resolve({dedupe: ['svelte']}),]
+	plugins: [resolve({dedupe: ['svelte']})]
 },{
 	input: 'tests/app.js',
 	output: {
@@ -34,7 +34,6 @@ export default [{
 			}
 		}),
 		resolve({dedupe: ['svelte']}),
-		//commonjs(),
 		serve(),
 		livereload('tests/www')
 	],
@@ -66,7 +65,7 @@ function rollup_plugin_alias(){
         name: 'rollup_plugin_alias',
 		resolveId(id,importer){
 			return id==='tinro' ? this.resolve(`${cwd}/cmp/index.js`,importer) : 
-			       id.endsWith('/dist/tinro_lib') ? this.resolve(`${cwd}/dist/tinro_lib_test.js`,importer) : null
+			       id.endsWith('/dist/tinro_lib') ? this.resolve(`${cwd}/tests/dist/tinro_lib_test.js`,importer) : null
 		}
 	}
 }
