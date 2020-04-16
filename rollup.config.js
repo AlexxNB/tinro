@@ -6,9 +6,9 @@ const pkg = require('./package.json');
 
 export default [
     {
-        input: 'src/aors.js',
+        input: 'src/tinro.js',
         output: [
-        { file: 'dist/aors_lib.js', format: 'es' }
+        { file: 'dist/tinro_lib.js', format: 'es' }
         ],
         external: [
         ...Object.keys(pkg.dependencies || {}),

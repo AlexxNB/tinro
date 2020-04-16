@@ -1,10 +1,10 @@
 {
-  "name": "aovi",
+  "name": "tinro",
   "version": "1.3.0",
-  "description": "AORS is a tiny declarative router for Svelte",
-  "main": "dist/aors.js",
-  "module": "dist/aors.es.js",
-  "browser": "dist/aors.browser.js",
+  "description": "tinro is a tiny declarative router for Svelte",
+  "main": "dist/tinro.js",
+  "module": "dist/tinro.es.js",
+  "browser": "dist/tinro.browser.js",
   "svelte": "cmp/index.js",
   "scripts": {
     "build": "rollup -c",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexxNB/aors.git"
+    "url": "git+https://github.com/AlexxNB/tinro.git"
   },
   "keywords": [
     "svelte-router",
@@ -23,9 +23,9 @@
   "author": "Alexey Schebelev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlexxNB/aors/issues"
+    "url": "https://github.com/AlexxNB/tinro/issues"
   },
-  "homepage": "https://github.com/AlexxNB/aors#readme",
+  "homepage": "https://github.com/AlexxNB/tinro#readme",
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^7.1.1",

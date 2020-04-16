@@ -6,9 +6,9 @@ import livereload from 'rollup-plugin-livereload';
 const pkg = require('./package.json');
 
 export default [{
-	input: 'src/aors.js',
+	input: 'src/tinro.js',
 	output: [
-	{ file: 'dist/aors_lib_test.js', format: 'es', sourcemap: true }
+	{ file: 'dist/tinro_lib_test.js', format: 'es', sourcemap: true }
 	],
 	external: [
 	...Object.keys(pkg.dependencies || {}),
@@ -65,8 +65,8 @@ function rollup_plugin_alias(){
 	return {
         name: 'rollup_plugin_alias',
 		resolveId(id,importer){
-			return id==='aors' ? this.resolve(`${cwd}/cmp/index.js`,importer) : 
-			       id.endsWith('/dist/aors_lib') ? this.resolve(`${cwd}/dist/aors_lib_test.js`,importer) : null
+			return id==='tinro' ? this.resolve(`${cwd}/cmp/index.js`,importer) : 
+			       id.endsWith('/dist/tinro_lib') ? this.resolve(`${cwd}/dist/tinro_lib_test.js`,importer) : null
 		}
 	}
 }

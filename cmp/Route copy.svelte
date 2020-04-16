@@ -3,7 +3,7 @@
 </script>
 <script>
     import {getContext,setContext,onMount} from 'svelte';
-    import {routes,current} from './../dist/aors_lib';
+    import {routes,current} from './../dist/tinro_lib';
 
     const routeId = count++;
     let exact = true;

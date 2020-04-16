@@ -1,5 +1,5 @@
 <script>
-	import {Route} from 'aors';
+	import {Route} from 'tinro';
 </script> 
 
 <p>

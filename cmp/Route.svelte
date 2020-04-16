@@ -1,7 +1,7 @@
 <script>
     import {current_component} from 'svelte/internal';
     import {getContext,setContext,afterUpdate} from 'svelte';
-    import {url,getPathData,formatPath} from './../dist/aors_lib';
+    import {url,getPathData,formatPath} from './../dist/tinro_lib';
 
     export let path = '/*';
     export let fallback = false;

@@ -1032,10 +1032,10 @@
     			t4 = space();
     			create_component(route1.$$.fragment);
     			attr_dev(a0, "href", "/test2/sub");
-    			add_location(a0, file, 18, 4, 318);
+    			add_location(a0, file, 18, 4, 319);
     			attr_dev(a1, "href", "/test2/sub3");
-    			add_location(a1, file, 19, 4, 361);
-    			add_location(p, file, 17, 3, 310);
+    			add_location(a1, file, 19, 4, 362);
+    			add_location(p, file, 17, 3, 311);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1296,17 +1296,17 @@
     			p1 = element("p");
     			create_component(route.$$.fragment);
     			attr_dev(a0, "href", "/test1");
-    			add_location(a0, file, 5, 1, 55);
+    			add_location(a0, file, 5, 1, 56);
     			attr_dev(a1, "href", "/test2");
-    			add_location(a1, file, 6, 1, 83);
+    			add_location(a1, file, 6, 1, 84);
     			attr_dev(a2, "href", "/test3");
-    			add_location(a2, file, 7, 1, 111);
+    			add_location(a2, file, 7, 1, 112);
     			attr_dev(a3, "href", "//ya.ru");
-    			add_location(a3, file, 8, 1, 139);
+    			add_location(a3, file, 8, 1, 140);
     			attr_dev(a4, "href", "#huj");
-    			add_location(a4, file, 9, 1, 165);
-    			add_location(p0, file, 4, 0, 50);
-    			add_location(p1, file, 12, 0, 195);
+    			add_location(a4, file, 9, 1, 166);
+    			add_location(p0, file, 4, 0, 51);
+    			add_location(p1, file, 12, 0, 196);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

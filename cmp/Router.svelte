@@ -1,6 +1,6 @@
 <script>
     import {getContext,setContext,onMount} from 'svelte';
-    import {url,formatPath} from './../dist/aors_lib';
+    import {url,formatPath} from './../dist/tinro_lib';
 
     export let base='/';
 
