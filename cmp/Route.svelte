@@ -39,7 +39,7 @@
     });
     
     $: route = getPathData(path,$router.path);
-    $: if(route && exact && route.exact && redirect) router.goto(redirect);
+    $: if(route && ((route.exact && exact) || !exact) && redirect) router.goto(redirect);
     $: setContext('ROUTER:params',route ? route.params : {});
     $: show_content = fallback ? false : !!route && ( (exact && route.exact) || !exact );
     $: if(ctx && !fallback) ctx.child(show_content,path);
