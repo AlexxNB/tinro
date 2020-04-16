@@ -5,6 +5,7 @@
 
     export let path = '/*';
     export let fallback = false;
+    export let redirect = false;
 
     let route = null;
     let show_content = false;
@@ -38,6 +39,7 @@
     });
     
     $: route = getPathData(path,$router.path);
+    $: if(route && redirect) router.goto(redirect);
     $: setContext('ROUTER:params',route ? route.params : {});
     $: show_content = fallback ? false : !!route && ( (exact && route.exact) || !exact );
     $: if(ctx && !fallback) ctx.child(show_content,path);
