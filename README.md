@@ -11,7 +11,19 @@ The tinro is highly declarative, very tiny ([~3.5 Kb](https://github.com/AlexxNB
 * Routes with parameters (`/hello/:name`)
 * Redirects
 * Fallbacks on any nested level
-* Parsing query parameters (`?x=42&hello=world`)
+* Parsing query parameters (`?x=42&hello=world&fruits=apple,banana,orange`)
+
+## Documentation
+
+* [Install](#install)
+* [Getting started](#getting-started)
+* [Nesting](#nesting)
+* [Links](#links)
+* [Redirects](#redirects)
+* [Fallbacks](#fallbacks)
+* [Parameters](#parameters)
+* [API](#api)
+
 
 ## Install
 
@@ -96,7 +108,47 @@ Books list:
 
 ## Links
 
-There no special component for make links which router can serve. Use native `<a>` elements. When the `href` attribute starts with single `/` sign (like `/mypage` or just `/`), it will be treated as internal link. Other cases does not affect on links behavior. 
+There no special component for links. Just use native `<a>` elements. When the `href` attribute starts with single `/` sign (like `/mypage` or just `/`), it will be treated as internal link. Other cases does not affect on links behavior. 
+
+## Redirects
+
+You can redrect browser on any path using `redirect` property:
+
+```html
+<!-- Exact redirect-->
+<Route path="/noenter" redirect="/newurl"/>
+
+<!-- Non-exact redirect will work for any nested path also-->
+<Route path="/noenter/*" redirect="/newurl"/>
+```
+
+## Fallbacks
+
+The routes with `fallback` property shows their content when no matched address where found. Fallbacks may be placed inside non-exact `<Route>` only. Fallbacks are bubbling, so if there no fallback on current level, router will try to find fallback on any parent levels. See the example:
+
+```html
+<Route>  <!-- same as <Route path="/*"> -->
+    <Route path="/">Root page</Route>
+    <Route path="/page">Page</Route>
+    <Route path="/sub1/*">
+        <Route path="/subpage">Subpage1</Route>
+    </Route>
+    <Route path="/sub2/*">
+        <Route path="/subpage">Subpage2</Route>
+        <Route fallback>No subpage found</Route>
+    </Route>
+    <Route fallback>No page found</Route>
+</Route>
+
+<a href="/">...</a>               <!-- shows Root page -->
+<a href="/page">...</a>           <!-- shows Page -->
+<a href="/sub1/subpage">...</a>   <!-- shows Subpage1 -->
+<a href="/sub1/blah">...</a>      <!-- shows No page found -->
+<a href="/sub1/blah/blah">...</a> <!-- shows No page found -->
+<a href="/sub2/subpage">...</a>   <!-- shows Subpage2 -->
+<a href="/sub2/blah">...</a>      <!-- shows No subpage found -->
+<a href="/sub2/blah/blah">...</a> <!-- shows No subpage found -->
+```
 
 ## Parameters
 
@@ -153,46 +205,6 @@ There are two ways to get parameters in nested component:
 <Route path="/hello/:name" let:params>
     <Hello />
 </Route>
-```
-
-## Redirects
-
-You can redrect browser on any path using `redirect` property:
-
-```html
-<!-- Exact redirect-->
-<Route path="/noenter" redirect="/newurl"/>
-
-<!-- Non-exact redirect will work for any nested path also-->
-<Route path="/noenter/*" redirect="/newurl"/>
-```
-
-## Fallbacks
-
-The routes with `fallback` property shows their content when no matched address where found. Fallbacks may be placed inside non-exact `<Route>` only. Fallbacks are bubbling, so if there no fallback on current level, router will try to find fallback on any parent levels. See the example:
-
-```html
-<Route>  <!-- same as <Route path="/*"> -->
-    <Route path="/">Root page</Route>
-    <Route path="/page">Page</Route>
-    <Route path="/sub1/*">
-        <Route path="/subpage">Subpage1</Route>
-    </Route>
-    <Route path="/sub2/*">
-        <Route path="/subpage">Subpage2</Route>
-        <Route fallback>No subpage found</Route>
-    </Route>
-    <Route fallback>No page found</Route>
-</Route>
-
-<a href="/">...</a>               <!-- shows Root page -->
-<a href="/page">...</a>           <!-- shows Page -->
-<a href="/sub1/subpage">...</a>   <!-- shows Subpage1 -->
-<a href="/sub1/blah">...</a>      <!-- shows No page found -->
-<a href="/sub1/blah/blah">...</a> <!-- shows No page found -->
-<a href="/sub2/subpage">...</a>   <!-- shows Subpage2 -->
-<a href="/sub2/blah">...</a>      <!-- shows No subpage found -->
-<a href="/sub2/blah/blah">...</a> <!-- shows No subpage found -->
 ```
 
 ## API
