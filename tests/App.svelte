@@ -16,6 +16,9 @@
 				<a href="/test3">Root</a> <a href="/test3/sub">Sub</a>
 			</li>
 			<li><a href="/test4">Links</a></li>
+			<li> Fallbacks <br/>
+				<a href="/blah">Root</a> <a href="/test5/blah">Root from sub</a> <a href="/test5/sub/blah">Sub from sub</a>
+			</li>
 		</ul>
 	</div>
 
@@ -35,6 +38,11 @@
 				<h1>Links test</h1>
 				<a href="/test1" id="internalLink">Internal route</a>
 				<a href="https://github.com/AlexxNB/tinro" id="externalLink">External route</a>
+			</Route>
+			<Route path="/test5/*">
+				<Route path="/sub/*">
+					<Route fallback><h1>Sub fallback</h1></Route>
+				</Route>
 			</Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
