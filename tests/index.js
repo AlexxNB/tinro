@@ -10,6 +10,7 @@ function test(name,cbs){
 
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
+        await page.goto(`http://localhost:5000`);
         
         for(let func of cbs){
             await func(t,page);
