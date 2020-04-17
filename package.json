@@ -11,7 +11,7 @@
     "dev": "rollup -w -c tests/rollup.dev.config.js",
     "compare": "rollup -c tests/rollup.compare.config.js",
     "test:build": "rollup -c tests/rollup.dev.config.js --environment NODE_ENV:test",
-    "test": "npm run test:build && node tests | tap-diff"
+    "test": "npm run test:build && node --unhandled-rejections=strict tests | tap-diff"
   },
   "repository": {
     "type": "git",
