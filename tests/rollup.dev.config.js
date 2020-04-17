@@ -60,7 +60,7 @@ function serve() {
 			if (!started) {
 				started = true;
 
-				require('child_process').spawn('npm', ['run', 'serve', '--', '--dev','--single'], {
+				require('child_process').spawn('sirv', ['tests/www', '-D', '-q', '-s'], {
 					stdio: ['ignore', 'inherit', 'inherit'],
 					shell: true
 				});
