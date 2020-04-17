@@ -6,7 +6,7 @@
 <div class="layout">
 	<div class="tests">
 		<ul>
-			<li><a href="/">Redirect test</a></li>
+			<li><a href="/redirect1">Redirect test</a></li>
 			<li> Redirect not exact <br/>
 				<a href="/redirect2/sub">Sub</a> <a href="/redirect2/sub/slug">Sub2</a>
 			</li>
@@ -20,7 +20,8 @@
 
 	<div class="test">
 		<Route>
-			<Route path="/" redirect="/redirect" />
+			<Route path="/"><h1>Loaded tests page - OK</h1></Route>
+			<Route path="/redirect1" redirect="/redirect" />
 			<Route path="/redirect2/*" redirect="/redirect" />
 			<Route path="/redirect"><h1>Redirect test - OK</h1></Route>
 			<Route path="/test1"><h1>Simple route - OK</h1></Route>
