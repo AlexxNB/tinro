@@ -12,14 +12,17 @@ assert.notThrow = async (func, msg = 'should not throw') => {
 	}
 };
 
-let cp;
 
 (async _ => {
 	try{
-		const isBusy = await ports.check(5050);
-		if(isBusy) throw new Error('Port 5050 already in use, can\'t launch dev server.')
+		const isFree = await ports.check(5050);
+		if(!isFree) throw new Error('Port 5050 already in use, can\'t launch dev server.')
 
-		cp = require('child_process').spawn('sirv', ['tests/www', '-D', '-q', '-s', '-p', '5050']);
+		let child = require('child_process').spawn('sirv', ['tests/www', '-D', '-q', '-s', '-p', '5050'],{
+			detached: false
+		});
+
+		process.on("exit", () => child.kill());
 		await ports.wait(5050); 
 
 		const browser = await puppeteer.launch();
@@ -38,9 +41,9 @@ let cp;
 
 		await done;
 		await browser.close();
-		cp.kill();
+		process.exit(0);
 	}catch(err){
-		if(cp) cp.kill();
-		throw Error(err);
+		console.log('ERROR:'+err);
+		process.exit(1);
 	}
 })();
