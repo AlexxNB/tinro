@@ -13,6 +13,14 @@ The tinro is highly declarative, very tiny ([~3.5 Kb](https://github.com/AlexxNB
 * Fallbacks on any nested level
 * Parsing query parameters (`?x=42&hello=world`)
 
+## Install
+
+Install tinro as dev dependency in the your Svelte project:
+
+```shell
+$ npm i -D tinro
+```
+
 ## Getting started
 
 The tinro is very simple! It provides just *one component* - `<Route>`. So common app structure looks like:
