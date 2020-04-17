@@ -15,6 +15,7 @@
 			<li> Non exact route <br/>
 				<a href="/test3">Root</a> <a href="/test3/sub">Sub</a>
 			</li>
+			<li><a href="/test4">Links</a></li>
 		</ul>
 	</div>
 
@@ -30,7 +31,11 @@
 				<Route path="/"><h1>Non exact route root- OK</h1></Route>
 				<Route path="/sub"><h1>Non exact route sub - OK</h1></Route>
 			</Route>
-
+			<Route path="/test4">
+				<h1>Links test</h1>
+				<a href="/test1" id="internalLink">Internal route</a>
+				<a href="https://github.com/AlexxNB/tinro" id="externalLink">External route</a>
+			</Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>
