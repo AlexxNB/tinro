@@ -3,6 +3,11 @@ const ports = require('port-authority');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
+process.on('unhandledRejection', (reason, p) => {
+	console.error('Unhandled Rejection at:', p, 'reason:', reason)
+	process.exit(1)
+});
+
 assert.notThrow = async (func, msg = 'should not throw') => {
 	try{
 		await func();
@@ -11,7 +16,6 @@ assert.notThrow = async (func, msg = 'should not throw') => {
 		assert.fail(msg);
 	}
 };
-
 
 (async _ => {
 	try{
