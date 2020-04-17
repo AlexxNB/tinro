@@ -2,7 +2,6 @@ const {test,done,assert} = require('tape-modern');
 const ports = require('port-authority');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const http = require('http');
 
 assert.notThrow = async (func, msg = 'should not throw') => {
 	try{
@@ -15,6 +14,9 @@ assert.notThrow = async (func, msg = 'should not throw') => {
 
 (async _ => {
 	try{
+		const isBusy = await ports.check(5050);
+		if(isBusy) throw new Error('Port 5050 already in use, can\'t launch dev server.')
+
 		const cp = require('child_process').spawn('sirv', ['tests/www', '-D', '-q', '-s', '-p', '5050']);
 		await ports.wait(5050); 
 

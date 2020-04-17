@@ -30,6 +30,8 @@
 				<Route path="/"><h1>Non exact route root- OK</h1></Route>
 				<Route path="/sub"><h1>Non exact route sub - OK</h1></Route>
 			</Route>
+
+			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>
 </div>
