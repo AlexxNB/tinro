@@ -93,17 +93,15 @@ function rollup_plugin_compare(){
 
 			fs.writeFileSync('COMPARE.md',`# How much tinro adds to your bandle?
 
-*Current tinro value is **${tinro_value_kb}** *
+Current tinro value is **${tinro_value_kb}** 
 
 ## Comparsion
 
 * bundle.js with tinro inside: **${with_tinro_kb}**
 * bundle.js with mocked tinro : **${no_tinro_kb}**
 
-*Test date: ${new Date().toISOString().split('T').map(c=>c.split('.')[0]).join(' ')}*
-
-
 ## How do we compare?
+
 Comparsion made by building [testing app](https://github.com/AlexxNB/tinro/tree/master/tests) two times. First one with tinro letest version inside. In the second case - all imports from tinro are mocked by empty exports.
 			`);
 

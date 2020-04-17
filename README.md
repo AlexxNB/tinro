@@ -1,2 +1,215 @@
 # tinro
-Tiny declarative router for Svelte applications
+
+The tinro is highly declarative, very tiny ([~3.5 Kb](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
+
+## Features
+
+* Just one component for declare routes in your app
+* Links are just common native `<a>` elements
+* History API navigation
+* Simple nested routes
+* Routes with parameters (`/hello/:name`)
+* Redirects
+* Fallbacks on any nested level
+* Parsing query parameters (`?x=42&hello=world`)
+
+## Getting started
+
+The tinro is very simple! It provides just *one component* - `<Route>`. So common app structure looks like:
+
+```html
+<script>
+    import Route from 'tinro'; 
+    import Contacts from './Contacts.svelte'; // <h1>Contacts</h1>
+</script>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/portfolio">Portfolio</a>
+    <a href="/contacts">Contacts</a>
+</nav>
+
+<Route path="/"><h1>It is main page</h1></Route>
+<Route path="/portfolio/*">
+    <Route path="/">
+        <h1>Portfolio introduction</h1>
+        <a href="/portfolio/sites">Sites</a> 
+        <a href="/portfolio/photos">Photos</a>
+    </Route>
+    <Route path="/sites"><h1>Portfolio: Sites</h1></Route>
+    <Route path="/photos"><h1>Portfolio: Photos</h1></Route>
+</Route>
+<Route path="/contacts"><Contacts /></Route>
+```
+
+## Nesting
+
+There are two types of the routes you can declare in the `<Route>` component's `path` property:
+
+### Exact path
+
+Shows its content only when `path` exact matched URL of the page. You can't place nested `<Route>` components inside such components.
+
+```html
+<Route path="/">...</Route>
+<Route path="/page">...</Route>
+<Route path="/page/subpage">...</Route>
+```
+
+### Non-exact path
+
+The `<Route>` components with `path` property which ends with `/*` are shows their content when a part of the page's URL is matched with path before the `/*`. You are able to place nested `<Routes>` inside components with non-exact path only.
+
+```html
+<Route path="/books/*">
+    Books list:
+    <Route path="/fiction">...</Route>
+    <Route path="/drama">...</Route>
+</Route>
+```
+
+The `path` property of the nested `<Routes>` is relative to its parent. So to see the _Fiction_ category in the above example - you should point your browser on `http://mysite.com/books/fiction`
+
+Nested routes inside childs components also works. So we can rewrite the example this way:
+
+```html
+<!-- Bookslist.svelte-->
+...
+Books list:
+<Route path="/fiction">...</Route>
+<Route path="/drama">...</Route>
+
+<!-- App.svelte-->
+...
+<Route path="/books/*">
+    <Bookslist/>
+</Route>
+```
+
+## Links
+
+There no special component for make links which router can serve. Use native `<a>` elements. When the `href` attribute starts with single `/` sign (like `/mypage` or just `/`), it will be treated as internal link. Other cases does not affect on links behavior. 
+
+## Parameters
+
+You can use param keys in `path` property. See the example:
+
+```html
+<Route path="/hello/:name" let:params>
+    Hello, {params.name}
+</Route>
+
+
+<Route path="/books/:author/*" let:params>
+    Books by {params.author}
+    <Route path="/:genre" let:params>
+        Books by {params.author} in category {params.genre}
+    </Route>
+</Route>
+```
+
+When you open `/books/stanislav_lem/fiction` in the browser, the `params`object will have the values retrived from the URL - `{author: "stanislav_lem"}` in the parent route and `{author: "stanislav_lem", genre: "fiction"}` in the child route. 
+
+There are two ways to get parameters in nested component:
+
+### Using `let` derictive:
+```html 
+<!-- Hello.svelte-->
+<script>
+    export let name;
+</script>
+
+<h1>Hello, {name}!</h1>
+
+
+<!-- App.svelte-->
+...
+<Route path="/hello/:name" let:params>
+    <Hello name={params.name} />
+</Route>
+```
+
+### Using `router` import:
+```html 
+<!-- Hello.svelte-->
+<script>
+    import {router} from 'tinro';
+    let params = router.getParams();
+</script>
+
+<h1>Hello, {params.name}!</h1>
+
+
+<!-- App.svelte-->
+...
+<Route path="/hello/:name" let:params>
+    <Hello />
+</Route>
+```
+
+## Redirects
+
+You can redrect browser on any path using `redirect` property:
+
+```html
+<!-- Exact redirect-->
+<Route path="/noenter" redirect="/newurl"/>
+
+<!-- Non-exact redirect will work for any nested path also-->
+<Route path="/noenter/*" redirect="/newurl"/>
+```
+
+## Fallbacks
+
+The routes with `fallback` property shows their content when no matched address where found. Fallbacks may be placed inside non-exact `<Route>` only. Fallbacks are bubbling, so if there no fallback on current level, router will try to find fallback on any parent levels. See the example:
+
+```html
+<Route>  <!-- same as <Route path="/*"> -->
+    <Route path="/">Root page</Route>
+    <Route path="/page">Page</Route>
+    <Route path="/sub1/*">
+        <Route path="/subpage">Subpage1</Route>
+    </Route>
+    <Route path="/sub2/*">
+        <Route path="/subpage">Subpage2</Route>
+        <Route fallback>No subpage found</Route>
+    </Route>
+    <Route fallback>No page found</Route>
+</Route>
+
+<a href="/">...</a>               <!-- shows Root page -->
+<a href="/page">...</a>           <!-- shows Page -->
+<a href="/sub1/subpage">...</a>   <!-- shows Subpage1 -->
+<a href="/sub1/blah">...</a>      <!-- shows No page found -->
+<a href="/sub1/blah/blah">...</a> <!-- shows No page found -->
+<a href="/sub2/subpage">...</a>   <!-- shows Subpage2 -->
+<a href="/sub2/blah">...</a>      <!-- shows No subpage found -->
+<a href="/sub2/blah/blah">...</a> <!-- shows No subpage found -->
+```
+
+## API
+
+You can import `router` object from the `tinro` package:
+
+### `router.goto(href)`
+Programaticly change the URL of current page.
+
+### `router.getParams()`
+Will return object with parameters if there are spcified in the path of current route. Will return `{}` if there no parameters in the URL.
+
+### `router.subscribe(func)`
+The `router` object is valid Svelte's store, so you can subscribe to get the navigation data changing. `func` gets an object with some page data:
+
+* `path` - current browser URL
+* `hash` - the hash part of the URL, after `#` sign
+* `query` - object, containing parsed query string
+
+Note, you can use the Svelte's autosubscription to retrieve data from the `router` store:
+
+```html
+<script>
+    import {router} from 'tinro';
+</script>
+
+Current page URL is: {$router.path}
+```
