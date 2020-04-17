@@ -39,7 +39,7 @@ The tinro is very simple! It provides just *one component* - `<Route>`. So commo
 
 ```html
 <script>
-    import Route from 'tinro'; 
+    import {Route} from 'tinro'; 
     import Contacts from './Contacts.svelte'; // <h1>Contacts</h1>
 </script>
 
