@@ -1,7 +1,7 @@
 module.exports = async function (test,page) {test('Hash navigation', async t =>{
 
     await page.go('/test6');
-    t.notThrow(async _ => await page.click('#setHash'),'Setting has navigation method');
+    await page.click('#setHash');
     await page.click('#links');
     await page.click('#internalLink');
 
