@@ -6,7 +6,7 @@ The tinro is highly declarative, very tiny ([~3.8 Kb](https://github.com/AlexxNB
 
 * Just one component for declare routes in your app
 * Links are just common native `<a>` elements
-* History API navigation
+* History API navigation or hash-navigation
 * Simple nested routes
 * Routes with parameters (`/hello/:name`)
 * Redirects
