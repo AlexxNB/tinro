@@ -15,7 +15,7 @@
 			<li> Non exact route <br/>
 				<a href="/test3">Root</a> <a href="/test3/sub">Sub</a>
 			</li>
-			<li><a href="/test4">Links</a></li>
+			<li><a id="links" href="/test4">Links</a></li>
 			<li> Fallbacks <br/>
 				<a href="/blah">Root</a> <a href="/test5/blah">Root from sub</a> <a href="/test5/sub/blah">Sub from sub</a>
 			</li>
