@@ -20,6 +20,8 @@
 				<a href="/blah">Root</a> <a href="/test5/blah">Root from sub</a> <a href="/test5/sub/blah">Sub from sub</a>
 			</li>
 			<li><a href="/test6">Change navigation type</a></li>
+			<li><a href="/test7/world">Parameters</a></li>
+			<li><a href="/test8/world?a=1&name=world&list=1,2,3">Child</a></li>
 		</ul>
 	</div>
 
@@ -49,6 +51,8 @@
 				<button id="setAPI" on:click={()=>{router.useHashNavigation(false); router.goto('/')}}>API</button>
 				<button id="setHash" on:click={()=>{router.goto('/'); router.useHashNavigation(true)}}>Hash</button>
 			</Route>
+			<Route path="/test7/:name" let:params><h1>Hello, {params.name}!</h1></Route>
+			<Route path="/test8/:name"><Child /></Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>
