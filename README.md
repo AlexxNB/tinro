@@ -12,6 +12,7 @@ The tinro is highly declarative, very tiny ([~3.8 Kb](https://github.com/AlexxNB
 * Redirects
 * Fallbacks on any nested level
 * Parsing query parameters (`?x=42&hello=world&fruits=apple,banana,orange`)
+* [Svelte's REPL](https://svelte.dev/repl/4bc37ff40ada4111b71fe292a4eb90f6) compitable
 
 ## Documentation
 
@@ -64,6 +65,7 @@ $ npm i -D tinro
 </Route>
 <Route path="/contacts"><Contacts /></Route>
 ```
+See example in action in the [Svelte's REPL](https://svelte.dev/repl/4bc37ff40ada4111b71fe292a4eb90f6)
 
 ## Nesting
 
