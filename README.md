@@ -35,7 +35,7 @@ $ npm i -D tinro
 
 ## Getting started
 
-The tinro is very simple! It provides just *one component* - `<Route>`. So common app structure looks like:
+**The tinro is very simple!** It provides just *one component* - `<Route>`. So common app structure looks like:
 
 ```html
 <script>
@@ -53,8 +53,10 @@ The tinro is very simple! It provides just *one component* - `<Route>`. So commo
 <Route path="/portfolio/*">
     <Route path="/">
         <h1>Portfolio introduction</h1>
-        <a href="/portfolio/sites">Sites</a> 
-        <a href="/portfolio/photos">Photos</a>
+        <nav>
+            <a href="/portfolio/sites">Sites</a> 
+            <a href="/portfolio/photos">Photos</a>
+        </nav>
     </Route>
     <Route path="/sites"><h1>Portfolio: Sites</h1></Route>
     <Route path="/photos"><h1>Portfolio: Photos</h1></Route>
@@ -142,6 +144,7 @@ The routes with `fallback` property shows their content when no matched address 
 
 <a href="/">...</a>               <!-- shows Root page -->
 <a href="/page">...</a>           <!-- shows Page -->
+<a href="/blah">...</a>           <!-- shows No page found -->
 <a href="/sub1/subpage">...</a>   <!-- shows Subpage1 -->
 <a href="/sub1/blah">...</a>      <!-- shows No page found -->
 <a href="/sub1/blah/blah">...</a> <!-- shows No page found -->
@@ -172,7 +175,7 @@ When you open `/books/stanislav_lem/fiction` in the browser, the `params`object 
 
 There are two ways to get parameters in nested component:
 
-### Using `let` derictive:
+### Using `let:params` derictive:
 ```html 
 <!-- Hello.svelte-->
 <script>
