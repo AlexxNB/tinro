@@ -14,10 +14,11 @@
     let exact = fallback || !path.endsWith('/*');  
 
     const ctx = getContext('ROUTER:context');
+    
     if(ctx && ( ctx.exact || ctx.fallback) ) err(
         `${fallback ? '<Route fallback>' : `<Route path="${path}">`}  can't be placed inside ${ctx.fallback ? 
             '<Route fallback>' :
-            `<Route path="${ctx.base || '/'}"> with exact path property` }`
+            `<Route path="${ctx.path || '/'}"> with exact path property` }`
     );
 
     if(!ctx && fallback) err('<Route fallback> must be placed only inside <Route> with not exact path property')
