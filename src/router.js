@@ -4,13 +4,18 @@ import {writable} from 'svelte/store';
 export const router = routerStore();
 
 function routerStore(){
-    const go = (href,set) => {history.pushState({}, '', href);set(getLocation())}
+    let hsh = window.location.pathname === 'srcdoc';
 
-    const {subscribe,set} = writable(getLocation(), _ => {
-        window.onpopstate = _ => set(getLocation());
+    const go = (href,set) => {
+        hsh ? window.location.hash=href : history.pushState({}, '', href);
+        set(getLocation(hsh));
+    }
+
+    const {subscribe,set} = writable(getLocation(hsh), _ => {
+        window.hashchange = window.onpopstate = _ => set(getLocation(hsh));
         const un = aClickListener(href=>go(href,set));
         return _ => {
-            window.onpopstate = null;
+            window.hashchange = window.onpopstate = null;
             un();
         }
     }); 
@@ -18,17 +23,27 @@ function routerStore(){
     return {
         subscribe,
         goto: href => go(href,set),
-        params: getParams
+        params: getParams,
+        useHashNavigation: s => set(getLocation(hsh = s===undefined ? true : s))
     }
 }
 
-function getLocation(){
-    return {
+function getLocation(hsh){
+    return hsh ? getLocationFromHash() : {
         path: window.location.pathname,
         query: query_parse(window.location.search.slice(1)),
         hash: window.location.hash.slice(1)
     }
 }
+
+function getLocationFromHash(){
+    const match = String(window.location.hash.slice(1)||'/').match(/^([^?#]+)(?:\?([^#]+))?(?:\#(.+))?$/);  
+    return {
+      path: match[1] || '',
+      query: query_parse(match[2] || ''),
+      hash: match[3] || '',
+    };
+ }
 
 function aClickListener(go){
     const h = e => {
@@ -44,7 +59,7 @@ function aClickListener(go){
 }
 
 function getParams(){
-    return getContext('ROUTER:params');
+    return getContext('R:p');
 }
 
 function query_parse(str){

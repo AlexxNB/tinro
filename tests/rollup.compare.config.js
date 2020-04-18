@@ -59,7 +59,7 @@ function rollup_plugin_mock_tinro(){
 		load(id){
 			if(id==='mock_tinro_lib'){
 				return `
-					export const router = {subscribe:()=>{}};
+					export const router = {subscribe:()=>{},useHashNavigation:()=>{},goto:()=>{}};
 					export const formatPath = ()=>{};
 					export const getPathData = ()=>{};
 					export const err = ()=>{};

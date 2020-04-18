@@ -1,6 +1,6 @@
 # tinro
 
-The tinro is highly declarative, very tiny ([~3.5 Kb](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
+The tinro is highly declarative, very tiny ([~3.8 Kb](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
 
 ## Features
 
@@ -22,6 +22,7 @@ The tinro is highly declarative, very tiny ([~3.5 Kb](https://github.com/AlexxNB
 * [Redirects](#redirects)
 * [Fallbacks](#fallbacks)
 * [Parameters](#parameters)
+* [Navigation method](#navigation-method)
 * [API](#api)
 
 
@@ -209,6 +210,46 @@ There are two ways to get parameters in nested component:
     <Hello />
 </Route>
 ```
+
+## Navigation method
+
+By default navigation uses `History API` which allows to use cleaner page URLs but need some setup on server side. Instead you may force to use `hash` navigation method. No need to change links or pathes in your app, everything will works.
+
+```html
+<!-- Root file of yor project, ex. App.svelte -->
+<script>
+    import {Route,router} from 'tinro';
+    router.useHashNavigation(); // enable hash navigation method
+</script>
+
+<!-- Link will point browser on '/#/page/subpage' -->
+<a href="/page/subpage">Subpage</a>
+
+<!-- Route shows content when URL is '/#/page/subpage' -->
+<Route path="/page/subpage">Subpage content</Route>
+```
+
+### Server side setup for History API method
+
+When you use History API and point browser on root path `/`(usually same as `/index.html`) all links and Routes will works properly. But when you start app on any subpage like `/page/subpage` you will see the `404 Not found` error. That is why you need setup your server to point all requests on `/index.html` file.
+
+If you use [official Svelte template](https://github.com/sveltejs/template) it is easy. Open `package.json` file and find NPM script:
+
+```json
+"start": "sirv public"
+```
+
+Replace it with this line:
+
+```json
+"start": "sirv public --single"
+```
+
+Now start your app by `npm run dev` and open URL like `http://localhost:5000/page/subpage`. You should see the app page, instead "Not found" error.
+
+*For other servers you can read following links: [Nginx](https://www.nginx.com/blog/creating-nginx-rewrite-rules/#Example&nbsp;%E2%80%93-Enabling-Pretty-Permalinks-for-WordPress-Websites),[Apache](https://httpd.apache.org/docs/2.4/rewrite/remapping.html#fallback-Resource), [Caddy](https://caddyserver.com/docs/caddyfile/directives/rewrite#examples)*
+
+
 
 ## API
 

@@ -13,15 +13,15 @@
     let childs = [];
     let exact = fallback || !path.endsWith('/*');  
 
-    const ctx = getContext('ROUTER:context');
+    const ctx = getContext('R:ctx');
     
     if(ctx && ( ctx.exact || ctx.fallback) ) err(
-        `${fallback ? '<Route fallback>' : `<Route path="${path}">`}  can't be placed inside ${ctx.fallback ? 
+        `${fallback ? '<Route fallback>' : `<Route path="${path}">`}  can't be inside ${ctx.fallback ? 
             '<Route fallback>' :
-            `<Route path="${ctx.path || '/'}"> with exact path property` }`
+            `<Route path="${ctx.path || '/'}"> with exact path` }`
     );
 
-    if(!ctx && fallback) err('<Route fallback> must be placed only inside <Route> with not exact path property')
+    if(!ctx && fallback) err('<Route fallback> must be placed inside <Route>')
    
     path = formatPath(path);  
 
@@ -30,7 +30,7 @@
 
     const show_fallback = _ => fallback_cb ? fallback_cb() : ctx ? ctx.showFB() : null;
 
-    setContext('ROUTER:context',{
+    setContext('R:ctx',{
             path,
            exact,
         fallback,
@@ -41,11 +41,11 @@
     
     $: route = getPathData(path,$router.path);
     $: if(route && ((route.exact && exact) || !exact) && redirect) router.goto(redirect);
-    $: setContext('ROUTER:params',route ? route.params : {});
+    $: setContext('R:p',route ? route.params : {});
     $: show_content = fallback ? false : !!route && ( (exact && route.exact) || !exact );
     $: if(ctx && !fallback) ctx.child(show_content,path);
 
-    afterUpdate( _ => (route && !route.exact && !exact && childs.length === 0) ? show_fallback() : null);
+    afterUpdate( _ => (!redirect && route && !route.exact && !exact && childs.length === 0) ? show_fallback() : null);
 </script>
 
 {#if show_content}

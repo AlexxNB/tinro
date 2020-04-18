@@ -1,5 +1,5 @@
 <script>
-	import {Route} from 'tinro';
+	import {Route,router} from 'tinro';
 	import Child from './Child.svelte';
 </script> 
 
@@ -19,6 +19,7 @@
 			<li> Fallbacks <br/>
 				<a href="/blah">Root</a> <a href="/test5/blah">Root from sub</a> <a href="/test5/sub/blah">Sub from sub</a>
 			</li>
+			<li><a href="/test6">Change navigation type</a></li>
 		</ul>
 	</div>
 
@@ -43,6 +44,10 @@
 				<Route path="/sub/*">
 					<Route fallback><h1>Sub fallback</h1></Route>
 				</Route>
+			</Route>
+			<Route path="/test6">
+				<button id="setAPI" on:click={()=>{router.useHashNavigation(false); router.goto('/')}}>API</button>
+				<button id="setHash" on:click={()=>{router.goto('/'); router.useHashNavigation(true)}}>Hash</button>
 			</Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
