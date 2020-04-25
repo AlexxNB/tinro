@@ -137,7 +137,7 @@ In case you need to add `active` class on the links where path is corresponding 
     class `myactive` will be added if link is active-->
 <a href="/page" use:active active-class="myactive">Link</a>
 
-<!-- Мalid HTML usage:
+<!-- Valid HTML usage:
     if you prefer to have a valid HTML use `data-` prefix -->
 <a href="/page" use:active data-exact data-active-class="myactive">Link</a>
 ```
