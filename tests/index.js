@@ -3,6 +3,7 @@ const ports = require('port-authority');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
+
 process.on('unhandledRejection', (reason, p) => {
 	console.error('Unhandled Rejection at:', p, 'reason:', reason)
 	process.exit(1)
@@ -34,10 +35,12 @@ assert.notThrow = async (func, msg = 'should not throw') => {
 		page.setDefaultTimeout('5000');
 
 		page.innerText = async selector => await page.$eval(selector, e => e.innerText);
+		page.classList = async selector => await page.$eval(selector, e => Array.from(e.classList));
 		page.go = async path => await page.goto('http://localhost:5050'+path);
 		page.path = async _ => (await page.url()).replace('http://localhost:5050','');
 
-		fs.readdirSync('tests/set').forEach(file => {
+		
+		fs.readdirSync('tests/set').sort((a,b)=>Number(a.split('_')[0])-Number(b.split('_')[0])).forEach(file => {
 			if(!file.startsWith('_') && file.endsWith('.js')){
 				require(`./set/${file}`)(test,page);
 			}

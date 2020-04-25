@@ -1,4 +1,16 @@
-export {router} from './router.js';
+import {router} from './router.js';
+export {router};
+
+export function active(node){
+    const href = getAttr(node,'href'),
+          exact = getAttr(node,'exact',true),
+          cl = getAttr(node,'active-class',true,'active');
+          
+    return {destroy:router.subscribe(r => {
+        const data = getPathData(href,r.path); 
+        data && (data.exact && exact || !exact) ? node.classList.add(cl) : node.classList.remove(cl);
+    })}
+}
 
 export function formatPath(path,slash=false){
     path = path.endsWith('/*') ? path.slice(0,-2) : path;
@@ -32,4 +44,15 @@ export function getPathData(pattern,path){
 
 export function err(text){
     throw new Error(text);
+}
+
+function getAttr(node,attr,rm,def){
+    const re = [attr,'data-'+attr].reduce( 
+        (r,c) => {
+            const a = node.getAttribute(c);
+            if(rm) node.removeAttribute(c);
+            return a === null ? r: a;
+        },
+    false );
+    return !def && re === '' ? true : re ? re : def ? def : false;
 }

@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/tinro?style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AlexxNB/tinro/Publish%20on%20NPM?label=test&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/tinro?label=Bundle%20size&style=flat-square) ![npm](https://img.shields.io/npm/dt/tinro?style=flat-square) 
 
 
-The tinro is highly declarative, very tiny ([~3.8 Kb](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
+The tinro is highly declarative, very tiny ([~3.9 Kb](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
 
 ## Features
 
@@ -117,6 +117,30 @@ Books list:
 ## Links
 
 There no special component for links. Just use native `<a>` elements. When the `href` attribute starts with single `/` sign (like `/mypage` or just `/`), it will be treated as internal link. Other cases does not affect on links behavior. 
+
+In case you need to add `active` class on the links where path is corresponding current URL, use `active` action from the `tinro` package:
+
+```html
+<script>
+    import {active} from 'tinro';
+</script>   
+
+<!-- Common usage:
+     class `active` will be added when URL is '/page' or any relative path like '/page/sub/sub' -->
+<a href="/page" use:active>Link</a>
+
+<!-- Exact match:
+     class `active` will be added only when URL is exact equal '/page' but NOT like '/page/sub' -->
+<a href="/page" use:active exact>Link</a>
+
+<!-- Custom class:
+    class `myactive` will be added if link is active-->
+<a href="/page" use:active active-class="myactive">Link</a>
+
+<!-- Мalid HTML usage:
+    if you prefer to have a valid HTML use `data-` prefix -->
+<a href="/page" use:active data-exact data-active-class="myactive">Link</a>
+```
 
 ## Redirects
 

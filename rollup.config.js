@@ -13,6 +13,8 @@ export default [
         external: [
         ...Object.keys(pkg.dependencies || {}),
         ...Object.keys(pkg.peerDependencies || {}),
+		'svelte',
+		'svelte/store'
         ],
         plugins: [resolve({dedupe: ['svelte']}),terser()]
     },

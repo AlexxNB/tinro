@@ -1,5 +1,5 @@
 <script>
-	import {Route,router} from 'tinro';
+	import {Route,router,active} from 'tinro';
 	import Child from './Child.svelte';
 </script> 
 
@@ -22,6 +22,7 @@
 			<li><a href="/test6">Change navigation type</a></li>
 			<li><a href="/test7/world">Parameters</a></li>
 			<li><a href="/test8/world?a=1&name=world&list=1,2,3">Child</a></li>
+			<li><a href="/test9">Active action</a></li>
 		</ul>
 	</div>
 
@@ -53,6 +54,15 @@
 			</Route>
 			<Route path="/test7/:name" let:params><h1>Hello, {params.name}!</h1></Route>
 			<Route path="/test8/:name"><Child /></Route>
+			<Route path="/test9/*">
+				<h1>Links test</h1>
+				<a use:active href="/test1" id="activeNoActive">Not active</a>
+				<a use:active href="/test9" id="activeNotExact">Not exact</a>
+				<a use:active href="/test9" id="activeExact" exact>Exact</a>
+				<a use:active href="/test9/sub" id="activeExactSub" exact>Exact sub</a>
+				<a use:active href="/test9" id="activeCustomclass" active-class="customactive">Not exact, custom class</a>
+				<a use:active href="/test9" id="activeWithdata" data-exact data-active-class="customactive">exact, custom class, data</a>
+			</Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>
@@ -69,5 +79,11 @@
 	}
 	.test{
 		padding:10px;
+	}
+	:global(.active){
+		color: red !important;
+	}
+	:global(.customactive){
+		color: green !important;
 	}
 </style>
