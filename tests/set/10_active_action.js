@@ -1,5 +1,5 @@
 module.exports = async function (test,page) {test('Active action', async t =>{
-    const links = ['activeNoActive','activeNotExact','activeExact','activeExactSub','activeCustomclass','activeWithdata'];
+    const links = ['activeNoActive','activeNotExact','activeExact','activeExactSub','activeCustomclass','activeWithdata','activeHash'];
     await page.go('/test9');
 
     let set = await getLinks(page,links);
@@ -10,6 +10,7 @@ module.exports = async function (test,page) {test('Active action', async t =>{
     t.ok(set['activeExactSub'].length === 0,'Not active sub, exact');
     t.ok(set['activeCustomclass'].includes('customactive'),'Active, custom class');
     t.ok(set['activeWithdata'].includes('customactive'),'Active, custom class, with data');
+    t.ok(set['activeHash'].includes('active'),'Active, hash-link');
 
     await page.go('/test9/sub');
     t.pass('Goto subpage');
@@ -21,6 +22,7 @@ module.exports = async function (test,page) {test('Active action', async t =>{
     t.ok(set['activeExactSub'].includes('active'),'Active sub, exact');
     t.ok(set['activeCustomclass'].includes('customactive'),'Active, custom class');
     t.ok(set['activeWithdata'].length === 0,'Not active, custom class, with data');
+    t.ok(set['activeHash'].length === 0,'Not active, hash-link');
 })}
 
 async function getLinks(p,l){

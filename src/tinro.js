@@ -13,8 +13,11 @@ export function active(node){
 }
 
 export function formatPath(path,slash=false){
-    path = path.endsWith('/*') ? path.slice(0,-2) : path;
-    path = path==='/' ? '' : path;
+    path = path.slice(
+        path.startsWith('/#') ? 2 : 0,
+        path.endsWith('/*') ? -2 : undefined
+    )
+    if(path==='/') path = '';
     if(slash && !path.endsWith('/')) path += '/';
     return path;
 }

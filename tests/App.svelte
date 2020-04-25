@@ -62,6 +62,7 @@
 				<a use:active href="/test9/sub" id="activeExactSub" exact>Exact sub</a>
 				<a use:active href="/test9" id="activeCustomclass" active-class="customactive">Not exact, custom class</a>
 				<a use:active href="/test9" id="activeWithdata" data-exact data-active-class="customactive">exact, custom class, data</a>
+				<a use:active href="/#/test9" id="activeHash" exact>Hash-style link, exact</a>
 			</Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
