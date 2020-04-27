@@ -28,7 +28,7 @@ The tinro is highly declarative, very tiny ([~3.9 Kb](https://github.com/AlexxNB
 * [Parameters](#parameters)
 * [Navigation method](#navigation-method)
 * [API](#api)
-* [Recipes](#Recipes)
+* [Recipes](#recipes)
     - [Lazy loading](#lazy-loading-components)
     - [Transitions](#transitions)
 
