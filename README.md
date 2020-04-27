@@ -75,7 +75,7 @@ See example in action in the [Svelte's REPL](https://svelte.dev/repl/4bc37ff40ad
 
 ## Nesting
 
-There are two types of the routes you can declare in the `<Route>` component's `path` property:
+There are two types of routes you can declare in the `<Route>` component's `path` property:
 
 ### Exact path
 
@@ -89,7 +89,7 @@ Shows its content only when `path` exact matched URL of the page. You can't plac
 
 ### Non-exact path
 
-The `<Route>` components with `path` property which ends with `/*` are shows their content when a part of the page's URL is matched with path before the `/*`. You are able to place nested `<Routes>` inside components with non-exact path only.
+The `<Route>` components with `path` property which ends with `/*` are showing their content when a part of the page's URL is matched with path before the `/*`. You are able to place nested `<Routes>` inside components with non-exact path only.
 
 ```html
 <Route path="/books/*">
@@ -99,7 +99,7 @@ The `<Route>` components with `path` property which ends with `/*` are shows the
 </Route>
 ```
 
-The `path` property of the nested `<Routes>` is relative to its parent. So to see the _Fiction_ category in the above example - you should point your browser on `http://mysite.com/books/fiction`
+The `path` property of the nested `<Routes>` is relative to its parent. So to see the _Fiction_ category in the above example - you should point your browser on `http://mysite.com/books/fiction`.
 
 Nested routes inside childs components also works. So we can rewrite the example this way:
 
@@ -147,7 +147,7 @@ In case you need to add `active` class on the links where path is corresponding 
 
 ## Redirects
 
-You can redrect browser on any path using `redirect` property:
+You can redirect browser on any path using `redirect` property:
 
 ```html
 <!-- Exact redirect-->
@@ -243,7 +243,7 @@ There are two ways to get parameters in nested component:
 
 ## Navigation method
 
-By default navigation uses `History API` which allows to use cleaner page URLs but need some setup on server side. Instead you may force to use `hash` navigation method. No need to change links or pathes in your app, everything will works.
+By default navigation uses `History API` which allows to use cleaner page URLs but need some setup on server side. Instead you may force to use `hash` navigation method. No need to change links or paths in your app, everything will works.
 
 ```html
 <!-- Root file of yor project, ex. App.svelte -->
@@ -314,7 +314,7 @@ Tinro is not most powerful router among all available routers for the Svelte app
 
 ### Lazy loading components
 
-If you want have code-splitting and load components only when page requested, make this litle component:
+If you want have code-splitting and load components only when page requested, make this little component:
 
 ```html
 <!-- Lazy.svelte-->
