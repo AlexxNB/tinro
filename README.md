@@ -238,9 +238,7 @@ There are two ways to get parameters in nested component:
 
 <!-- App.svelte-->
 ...
-<Route path="/hello/:name" let:params>
-    <Hello />
-</Route>
+<Route path="/hello/:name"><Hello /></Route>
 ```
 
 ## Navigation method
