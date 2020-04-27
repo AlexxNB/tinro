@@ -28,6 +28,9 @@ The tinro is highly declarative, very tiny ([~3.9 Kb](https://github.com/AlexxNB
 * [Parameters](#parameters)
 * [Navigation method](#navigation-method)
 * [API](#api)
+* [Recipes](#Recipes)
+    - [Lazy loading](#lazy-loading-components)
+    - [Transitions](#transitions)
 
 
 ## Install
@@ -305,4 +308,60 @@ Note, you can use the Svelte's autosubscription to retrieve data from the `route
 </script>
 
 Current page URL is: {$router.path}
+```
+
+## Recipes
+
+Tinro is not most powerful router among all available routers for the Svelte applications. We prefer smaller footprint in your bundles, than all possible features out the box. But you can easy realize some fetures yourself using recipies below:
+
+### Lazy loading components
+
+If you want have code-splitting and load components only when page requested, make this litle component:
+
+```html
+<!-- Lazy.svelte-->
+<script>
+	export let component;
+</script>
+
+{#await component()}
+	 Loading component...
+{:then Cmp}
+   <svelte:component this={Cmp.default} />
+{/await}
+```
+
+And use it when you need lazy loaded component in your routes:
+
+```html
+<Route path="/lazypage"><Lazy component={()=>import('./mypage.svelte')}/></Route>
+```
+
+### Transitions
+
+In case of any transiton when path changes, make component like this:
+
+```html
+<!-- Transition.svelte -->
+<script>
+	import {router} from 'tinro';
+	import {fade} from 'svelte/transition';
+</script>
+
+{#each '_' as _($router.path)}
+<div in:fade="{{ duration: 700}}">
+  	{$router.path,''}
+	<slot></slot>
+</div>
+{/each}
+```
+
+Then put you routes inside *Transition* component:
+
+```html
+<Transition> 
+    <Route path="/">...</Route>
+    <Route path="/page1">...</Route>
+    <Route path="/page2">...</Route>
+</Transition>
 ```
