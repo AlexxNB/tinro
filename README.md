@@ -332,7 +332,9 @@ If you want have code-splitting and load components only when page requested, ma
 And use it when you need lazy loaded component in your routes:
 
 ```html
-<Route path="/lazypage"><Lazy component={()=>import('./mypage.svelte')}/></Route>
+<Route path="/lazypage">
+    <Lazy component={()=>import('./mypage.svelte')}/>
+</Route>
 ```
 
 ### Transitions
@@ -346,9 +348,8 @@ In case of any transiton when path changes, make component like this:
 	import {fade} from 'svelte/transition';
 </script>
 
-{#each '_' as _($router.path)}
+{#each '_' as _($router.path)}{$router.path,''}
 <div in:fade="{{ duration: 700}}">
-  	{$router.path,''}
 	<slot></slot>
 </div>
 {/each}
