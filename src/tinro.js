@@ -17,6 +17,7 @@ export function formatPath(path,slash=false){
         path.startsWith('/#') ? 2 : 0,
         path.endsWith('/*') ? -2 : undefined
     )
+    if(!path.startsWith('/')) path = '/'+path;
     if(path==='/') path = '';
     if(slash && !path.endsWith('/')) path += '/';
     return path;

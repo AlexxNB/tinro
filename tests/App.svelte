@@ -23,6 +23,7 @@
 			<li><a href="/test7/world">Parameters</a></li>
 			<li><a href="/test8/world?a=1&name=world&list=1,2,3">Child</a></li>
 			<li><a href="/test9">Active action</a></li>
+			<li><a href="/test10">Without trailing slash</a></li>
 		</ul>
 	</div>
 
@@ -64,6 +65,7 @@
 				<a use:active href="/test9" id="activeWithdata" data-exact data-active-class="customactive">exact, custom class, data</a>
 				<a use:active href="/#/test9" id="activeHash" exact>Hash-style link, exact</a>
 			</Route>
+			<Route path="test10"><h1>Without trailing slash - OK</h1></Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>
