@@ -322,7 +322,7 @@ If you want have code-splitting and load components only when page requested, ma
 	export let component;
 </script>
 
-{#await component()}
+{#await component.then ? component : component()}
 	 Loading component...
 {:then Cmp}
    <svelte:component this={Cmp.default} />
@@ -334,6 +334,8 @@ And use it when you need lazy loaded component in your routes:
 ```html
 <Route path="/lazypage">
     <Lazy component={()=>import('./mypage.svelte')}/>
+        <!-- OR -->
+    <Lazy component={import('./mypage.svelte')}/>      
 </Route>
 ```
 
