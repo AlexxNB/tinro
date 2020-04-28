@@ -208,7 +208,7 @@ When you open `/books/stanislav_lem/fiction` in the browser, the `params`object 
 
 There are two ways to get parameters in nested component:
 
-### Using `let:params` derictive:
+### Using `let:params` directive:
 ```html 
 <!-- Hello.svelte-->
 <script>
