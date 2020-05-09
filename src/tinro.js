@@ -1,4 +1,4 @@
-import {router} from './router.js';
+import {router,getAttr} from './router.js';
 export {router};
 
 export function active(node){
@@ -48,15 +48,4 @@ export function getPathData(pattern,path){
 
 export function err(text){
     throw new Error(text);
-}
-
-function getAttr(node,attr,rm,def){
-    const re = [attr,'data-'+attr].reduce( 
-        (r,c) => {
-            const a = node.getAttribute(c);
-            if(rm) node.removeAttribute(c);
-            return a === null ? r: a;
-        },
-    false );
-    return !def && re === '' ? true : re ? re : def ? def : false;
 }

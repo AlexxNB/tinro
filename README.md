@@ -119,7 +119,13 @@ Books list:
 
 ## Links
 
-There no special component for links. Just use native `<a>` elements. When the `href` attribute starts with single `/` sign (like `/mypage` or just `/`), it will be treated as internal link. Other cases does not affect on links behavior. 
+There no special component for links. Just use native `<a>` elements. When the `href` attribute starts with single `/` sign (like `/mypage` or just `/`), it will be treated as internal link which will be matched with defined routes. Other cases does not affect on links behavior. 
+
+All internal links will be passed into the tinro router, but it is possible to prevent this by adding `tinro-ignore` or `data-tinro-ignore` attribute:
+
+```html
+<a href="/api/auth" tinro-ignore>Go to API page</a>
+```
 
 In case you need to add `active` class on the links where path is corresponding current URL, use `active` action from the `tinro` package:
 

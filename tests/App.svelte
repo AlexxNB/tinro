@@ -42,6 +42,7 @@
 			<Route path="/test4">
 				<h1>Links test</h1>
 				<a href="/test1" id="internalLink">Internal route</a>
+				<a href="/abc" id="ignoreLink" tinro-ignore>Internal route ignored</a>
 				<a href="https://github.com/AlexxNB/tinro" id="externalLink">External route</a>
 			</Route>
 			<Route path="/test5/*">

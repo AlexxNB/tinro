@@ -1,6 +1,5 @@
 import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
-
 export const router = routerStore();
 
 function routerStore(){
@@ -47,8 +46,9 @@ function getLocationFromHash(){
 
 function aClickListener(go){
     const h = e => {
-        const a = e.target.closest('a[href]');
-        if(a && /^\/$|^\/\w/.test(a.getAttribute('href'))) {
+        const a = e.target.closest('a[href]'),
+              i = getAttr(a,'tinro-ignore',true);
+        if(!i && a && /^\/$|^\/\w/.test(a.getAttribute('href'))) {
             e.preventDefault();
             go(a.getAttribute('href'));
         }
@@ -76,3 +76,14 @@ function query_parse(str){
   
     return Object.entries(o).reduce((r,p)=>(r[p[0]]=p[1].length>1 ? p[1] : p[1][0],r),{});
   }
+
+export function getAttr(node,attr,rm,def){
+    const re = [attr,'data-'+attr].reduce( 
+        (r,c) => {
+            const a = node.getAttribute(c);
+            if(rm) node.removeAttribute(c);
+            return a === null ? r: a;
+        },
+    false );
+    return !def && re === '' ? true : re ? re : def ? def : false;
+}
