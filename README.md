@@ -31,6 +31,7 @@ The tinro is highly declarative, very tiny ([~3.9 Kb](https://github.com/AlexxNB
 * [Recipes](#recipes)
     - [Lazy loading](#lazy-loading-components)
     - [Transitions](#transitions)
+    - [Guarded routes](#guarded-routes)
 
 
 ## Install
@@ -372,3 +373,18 @@ Then put you routes inside *Transition* component:
     <Route path="/page2">...</Route>
 </Transition>
 ```
+
+### Guarded routes
+
+You may protect routes from beeing loaded just using Svelte's logic like `{#if}` statement:
+
+```html
+{#if user.authed}
+    <Route path="/profile">This is private page...</Route>
+{:else}
+    <Route path="/profile"><a href="/login">Please sign in first</a></Route>
+    <Route path="/login">This is sign in form...</Route>
+{/if}
+```
+
+Also you can create special guard component as shown in [this example](https://svelte.dev/repl/5673ff403af14411b0cd1785be3d996f).
