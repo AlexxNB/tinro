@@ -47,7 +47,7 @@ function getLocationFromHash(){
 function aClickListener(go){
     const h = e => {
         const a = e.target.closest('a[href]'),
-              i = getAttr(a,'tinro-ignore',true);
+              i = getAttr(a,'tinro-ignore');
         if(!i && a && /^\/$|^\/\w/.test(a.getAttribute('href'))) {
             e.preventDefault();
             go(a.getAttribute('href'));
