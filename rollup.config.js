@@ -1,8 +1,8 @@
 import { terser } from "rollup-plugin-terser";
 import resolve from '@rollup/plugin-node-resolve';
 import svelte from 'rollup-plugin-svelte';
+import pkg from './package.json';
 
-const pkg = require('./package.json');
 
 export default [
     {
@@ -29,16 +29,5 @@ export default [
         ...Object.keys(pkg.peerDependencies || {}),
         ],
         plugins: [svelte(),resolve({dedupe: ['svelte']}),terser()]
-    },
-    {
-        input: 'src/index.js',
-        output:{ 
-            file: pkg.browser, 
-            name: 'cjs2es',
-            format: 'umd' 
-        },
-        external: false,
-        plugins: [svelte(),resolve({ browser: true ,dedupe: ['svelte']}),terser({ module: true})]
     }
-
 ]

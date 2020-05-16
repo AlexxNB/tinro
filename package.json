@@ -4,7 +4,6 @@
   "description": "tinro is a tiny declarative router for Svelte",
   "main": "dist/tinro.js",
   "module": "dist/tinro.es.js",
-  "browser": "dist/tinro.browser.js",
   "svelte": "cmp/index.js",
   "scripts": {
     "build": "rollup -c",
