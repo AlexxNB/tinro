@@ -376,7 +376,7 @@ Then put you routes inside *Transition* component:
 
 ### Guarded routes
 
-You may protect routes from beeing loaded just using Svelte's logic like `{#if}` statement:
+You may protect routes from being loaded just using Svelte's logic like `{#if}` statement:
 
 ```html
 {#if user.authed}
