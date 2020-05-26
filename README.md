@@ -237,7 +237,7 @@ There are two ways to get parameters in nested component:
 <!-- Hello.svelte-->
 <script>
     import {router} from 'tinro';
-    let params = router.getParams();
+    let params = router.params();
 </script>
 
 <h1>Hello, {params.name}!</h1>
@@ -295,7 +295,7 @@ You can import `router` object from the `tinro` package:
 ### `router.goto(href)`
 Programaticly change the URL of current page.
 
-### `router.getParams()`
+### `router.params()`
 Will return object with parameters if there are spcified in the path of current route. Will return `{}` if there no parameters in the URL.
 
 ### `router.subscribe(func)`
