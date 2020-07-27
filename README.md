@@ -164,6 +164,15 @@ You can redirect browser on any path using `redirect` property:
 <Route path="/noenter/*" redirect="/newurl"/>
 ```
 
+Also you can redirect to relative path, just write new url withoud `/` symbol at start:
+
+```html
+<!-- This will redirect on /subpage/newurl -->
+<Route path="/subpage/*">
+    <Route path="/" redirect="newurl"/>
+</Route>
+```
+
 ## Fallbacks
 
 The routes with `fallback` property shows their content when no matched address where found. Fallbacks may be placed inside non-exact `<Route>` only. Fallbacks are bubbling, so if there no fallback on current level, router will try to find fallback on any parent levels. See the example:
