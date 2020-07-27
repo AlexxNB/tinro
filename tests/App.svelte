@@ -10,6 +10,9 @@
 			<li> Redirect not exact <br/>
 				<a href="/redirect2/sub">Sub</a> <a href="/redirect2/sub/slug">Sub2</a>
 			</li>
+			<li> Redirect relative <br/>
+				<a href="/redirect3">Root</a> <a href="/redirect3/notroot">Not root</a>
+			</li>
 			<li><a href="/test1">Simple route</a></li>
 			<li><a href="/test2">Exact route</a></li>
 			<li> Non exact route <br/>
@@ -24,6 +27,9 @@
 			<li><a href="/test8/world?a=1&name=world&list=1,2,3">Child</a></li>
 			<li><a href="/test9">Active action</a></li>
 			<li><a href="/test10">Without trailing slash</a></li>
+			<li> Dynamic route params <br/>
+				<a href="/test11/foo/bar">FooBar</a> <a href="/test11/abc/xyz">AbcXyz</a>
+			</li>
 		</ul>
 	</div>
 
@@ -33,6 +39,11 @@
 			<Route path="/redirect1" redirect="/redirect" />
 			<Route path="/redirect2/*" redirect="/redirect" />
 			<Route path="/redirect"><h1>Redirect test - OK</h1></Route>
+			<Route path="/redirect3/*">
+				<Route path="/" redirect="subpage" />
+				<Route path="/notroot" redirect="subpage" />
+				<Route path="/subpage"><h1>Relative redirect test - OK</h1></Route>
+			</Route>
 			<Route path="/test1"><h1>Simple route - OK</h1></Route>
 			<Route path="/test2"><h1>Exact route - OK</h1></Route>
 			<Route path="/test3/*">
@@ -67,6 +78,9 @@
 				<a use:active href="/#/test9" id="activeHash" exact>Hash-style link, exact</a>
 			</Route>
 			<Route path="test10"><h1>Without trailing slash - OK</h1></Route>
+			<Route path="/test11/:first/:second">
+				<Child />
+			</Route>
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>

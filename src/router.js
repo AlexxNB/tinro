@@ -1,6 +1,19 @@
 import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
+import {getAttr,parseQuery,getPathData} from './lib';
+
 export const router = routerStore();
+
+export function active(node){
+    const href = getAttr(node,'href'),
+          exact = getAttr(node,'exact',true),
+          cl = getAttr(node,'active-class',true,'active');
+          
+    return {destroy:router.subscribe(r => {
+        const data = getPathData(href,r.path); 
+        data && (data.exact && exact || !exact) ? node.classList.add(cl) : node.classList.remove(cl);
+    })}
+}
 
 function routerStore(){
     let hsh = window.location.pathname === 'srcdoc';
@@ -30,7 +43,7 @@ function routerStore(){
 function getLocation(hsh){
     return hsh ? getLocationFromHash() : {
         path: window.location.pathname,
-        query: query_parse(window.location.search.slice(1)),
+        query: parseQuery(window.location.search.slice(1)),
         hash: window.location.hash.slice(1)
     }
 }
@@ -39,7 +52,7 @@ function getLocationFromHash(){
     const match = String(window.location.hash.slice(1)||'/').match(/^([^?#]+)(?:\?([^#]+))?(?:\#(.+))?$/);  
     return {
       path: match[1] || '',
-      query: query_parse(match[2] || ''),
+      query: parseQuery(match[2] || ''),
       hash: match[3] || '',
     };
  }
@@ -59,31 +72,5 @@ function aClickListener(go){
 }
 
 function getParams(){
-    return getContext('R:p');
-}
-
-function query_parse(str){
-    const o= str.split('&')
-      .map(p => p.split('='))
-      .reduce((r,p) => {
-          const name = p[0];
-          if(!name) return r;
-          let value = p.length > 1 ? p[p.length-1] : true;
-          if(typeof value === 'string' && value.includes(',')) value = value.split(',');
-          (r[name] === undefined) ? r[name]=[value] : r[name].push(value);
-          return r;
-      },{});
-  
-    return Object.entries(o).reduce((r,p)=>(r[p[0]]=p[1].length>1 ? p[1] : p[1][0],r),{});
-  }
-
-export function getAttr(node,attr,rm,def){
-    const re = [attr,'data-'+attr].reduce( 
-        (r,c) => {
-            const a = node.getAttribute(c);
-            if(rm) node.removeAttribute(c);
-            return a === null ? r: a;
-        },
-    false );
-    return !def && re === '' ? true : re ? re : def ? def : false;
+    return getContext('_').params;
 }
