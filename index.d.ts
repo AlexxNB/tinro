@@ -1,3 +1,5 @@
+/// <reference path="svelte.ext.d.ts" />
+
 import type { SvelteComponent } from 'svelte'
 
 interface TinroRoute {
@@ -20,11 +22,3 @@ declare interface TinroRouter {
 export const active: any
 export const router: TinroRouter
 export class Route extends SvelteComponent {}
-
-/// <reference types="svelte2tsx/svelte-jsx" />
-
-declare namespace svelte.JSX {
-    interface HTMLProps<T> {
-        exact?: boolean
-    }
-}
