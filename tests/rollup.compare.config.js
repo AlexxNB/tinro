@@ -1,6 +1,7 @@
 import svelte from 'rollup-plugin-svelte';
 import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
+import {execSync} from 'child_process';
 
 
 export default [
@@ -64,6 +65,7 @@ function rollup_plugin_mock_tinro(){
 					export const formatPath = ()=>{};
 					export const getPathData = ()=>{};
 					export const err = ()=>{};
+					
 				`
 			}
 
@@ -81,25 +83,36 @@ function rollup_plugin_compare(){
 	return {
 		name: 'rollup_plugin_compare',
 		writeBundle(){
+			execSync("tar -czvf tests/dist/compare/bundle_with_tinro.tar.gz tests/dist/compare/bundle_with_tinro.js")
+			execSync("tar -czvf tests/dist/compare/bundle_no_tinro.tar.gz tests/dist/compare/bundle_no_tinro.js")
+
 			const with_tinro = fs.statSync("tests/dist/compare/bundle_with_tinro.js").size;
+			const with_tinro_gz = fs.statSync("tests/dist/compare/bundle_with_tinro.tar.gz").size;
 			const no_tinro = fs.statSync("tests/dist/compare/bundle_no_tinro.js").size;
+			const no_tinro_gz = fs.statSync("tests/dist/compare/bundle_no_tinro.tar.gz").size;
 
 			const with_tinro_kb = `${(with_tinro/1024).toFixed(2)} Kb`;
 			const no_tinro_kb = `${(no_tinro/1024).toFixed(2)} Kb`;
 			const tinro_value_kb = `${((with_tinro - no_tinro)/1024).toFixed(2)} Kb`;
 
+			const with_tinro_gz_kb = `${(with_tinro_gz/1024).toFixed(2)} Kb`;
+			const no_tinro_gz_kb = `${(no_tinro_gz/1024).toFixed(2)} Kb`;
+			const tinro_gz_value_kb = `${((with_tinro_gz - no_tinro_gz)/1024).toFixed(2)} Kb`;
+
 			fs.unlinkSync('tests/dist/compare/bundle_with_tinro.js');
+			fs.unlinkSync('tests/dist/compare/bundle_with_tinro.tar.gz');
 			fs.unlinkSync('tests/dist/compare/bundle_no_tinro.js');
+			fs.unlinkSync('tests/dist/compare/bundle_no_tinro.tar.gz');
 			fs.rmdirSync('tests/dist/compare');
 
 			fs.writeFileSync('COMPARE.md',`# How much tinro adds to your bandle?
 
-Current tinro value is **${tinro_value_kb}** 
+Current tinro value is **${tinro_value_kb}** (${tinro_gz_value_kb} gzipped) 
 
 ## Comparsion
 
-* bundle.js with tinro inside: **${with_tinro_kb}**
-* bundle.js with mocked tinro : **${no_tinro_kb}**
+* bundle.js with tinro inside: **${with_tinro_kb}** (${with_tinro_gz_kb} gzipped)
+* bundle.js with mocked tinro : **${no_tinro_kb}** (${no_tinro_gz_kb} gzipped)
 
 ## How do we compare?
 
@@ -107,10 +120,10 @@ Comparsion made by building [testing app](https://github.com/AlexxNB/tinro/tree/
 			`);
 
 			console.log('COMPARE:')
-			console.log(` - With tinro: ${with_tinro_kb}`)
-			console.log(` - No tinro: ${no_tinro_kb}`)
+			console.log(` - With tinro: ${with_tinro_kb} (${with_tinro_gz_kb} gzipped)`)
+			console.log(` - No tinro: ${no_tinro_kb} (${no_tinro_gz_kb} gzipped)`)
 			console.log('---------------');
-			console.log(` The tinro value is: ${tinro_value_kb}`);
+			console.log(` The tinro value is: ${tinro_value_kb} (${tinro_gz_value_kb} gzipped)`);
 
 			
 		}
