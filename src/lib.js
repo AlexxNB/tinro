@@ -68,3 +68,7 @@ export function parseQuery(str){
   
     return Object.entries(o).reduce((r,p)=>(r[p[0]]=p[1].length>1 ? p[1] : p[1][0],r),{});
 }
+
+export function err(text){
+    throw new Error(text);
+}

@@ -1,10 +1,10 @@
 # How much tinro adds to your bandle?
 
-Current tinro value is **4.54 Kb** 
+Current tinro value is **4.77 Kb** 
 
 ## Comparsion
 
-* bundle.js with tinro inside: **20.14 Kb**
+* bundle.js with tinro inside: **20.37 Kb**
 * bundle.js with mocked tinro : **15.59 Kb**
 
 ## How do we compare?

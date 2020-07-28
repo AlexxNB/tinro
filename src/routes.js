@@ -1,6 +1,6 @@
 import {onMount, onDestroy, getContext,setContext} from 'svelte';
 import {writable} from 'svelte/store';
-import {getPathData,formatPath,makeRedirectURL} from './lib';
+import {getPathData,formatPath,makeRedirectURL,err} from './lib';
 import {router} from './router';
 
 let ids = 0;
@@ -13,6 +13,12 @@ export function registerRouteObject({path,fallback,redirect,onShow,onHide,onPara
     path = formatPath(path);
     const parent = (getContext('_') || {pattern:''});
     const pattern = parent.pattern + path;
+
+    if(parent.exact || parent.fallback ) err(
+        `${fallback ? '<Route fallback>' : `<Route path="${path}">`}  can't be inside ${parent.fallback ? 
+            '<Route fallback>' :
+            `<Route path="${parent.path || '/'}"> with exact path` }`
+    );
 
     const routeObject = {
         id: ids++,
