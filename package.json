@@ -5,6 +5,7 @@
   "main": "dist/tinro.js",
   "module": "dist/tinro.es.js",
   "svelte": "cmp/index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -w -c tests/rollup.dev.config.js",

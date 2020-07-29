@@ -1,29 +1,24 @@
-import type {SvelteComponent} from 'svelte'
+/// <reference path="svelte.ext.d.ts" />
 
-declare interface tinroRoute {
-    path: string;
-    query: Object;
-    hash: string;
+import type { SvelteComponent } from 'svelte'
+
+interface TinroRoute {
+    path: string
+    query: Record<string, string>
+    hash: string
 }
 
-declare function tinroRouterHandler(current_route:tinroRoute): void;
-declare function tinroActiveAction(node:any):any;
-
-declare interface tinroRouter {
-    /** Point browser to the URL*/
-    goto(url:string): void;
-    /** Return current params from url*/
-    params(): Object;
-    /** Use hash navigation instead history API*/
-    useHashNavigation(use?: boolean): void;
-    /** Get current route object on URL change*/
-    subscribe(handler: typeof tinroRouterHandler)
+declare interface TinroRouter {
+    /** Point browser to the URL */
+    goto(url: string): void
+    /** Return current params from url */
+    params(): Record<string, string>
+    /** Use hash navigation instead history API */
+    useHashNavigation(use?: boolean): void
+    /** Get current route object on URL change */
+    subscribe(handler: (currentRoute: TinroRoute) => void)
 }
 
-declare module 'tinro' {
-    export const router: tinroRouter
-    export const active: typeof tinroActiveAction
-    export class Route extends SvelteComponent {
-        $$prop_def: any
-    }
-}
+export const active: any
+export const router: TinroRouter
+export class Route extends SvelteComponent {}
