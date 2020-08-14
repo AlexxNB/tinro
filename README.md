@@ -32,6 +32,7 @@ The tinro is highly declarative, very tiny ([~4.5 Kb (1.9 Kb gzipped)](https://g
     - [Lazy loading](#lazy-loading-components)
     - [Transitions](#transitions)
     - [Guarded routes](#guarded-routes)
+    - [Scroll on top](#scroll-on-top)
 
 
 ## Install
@@ -246,7 +247,8 @@ There are two ways to get parameters in nested component:
 <!-- Hello.svelte-->
 <script>
     import {router} from 'tinro';
-    let params = router.params();
+    let params = router.params();  
+    // OR to force reactivity - $: params = router.params($router);
 </script>
 
 <h1>Hello, {params.name}!</h1>
@@ -397,3 +399,13 @@ You may protect routes from being loaded just using Svelte's logic like `{#if}` 
 ```
 
 Also you can create special guard component as shown in [this example](https://svelte.dev/repl/5673ff403af14411b0cd1785be3d996f).
+
+
+### Scroll on top
+
+Tinro doesn't control scroll of the your app. Sometimes you need to scroll on top of the page when navigating between pages. Just add the `router` store subscription in your root component(ex. `App.svelte`). Using this way you can run any actions(not only a scroll), every time when `URL` changes.
+
+```javascript
+import {router} from `tinro`;
+router.subscribe( _ => window.scrollTo(0, 0));
+```
