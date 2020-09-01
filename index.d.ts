@@ -21,4 +21,25 @@ declare interface TinroRouter {
 
 export const active: any
 export const router: TinroRouter
-export class Route extends SvelteComponent {}
+export class Route {
+    $$prop_def: {
+      /**
+       * Exact o relative path of the route
+       * @default "/*"
+       */
+      path?: string;
+  
+      /**
+       * Is route fallback
+       * @default false
+       */
+      fallback?: boolean;
+
+      /**
+       * Redirect route to the specified path
+       */
+      redirect?: string;
+    };
+  
+    $$slot_def: { default: {} };
+  }
