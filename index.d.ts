@@ -1,7 +1,3 @@
-/// <reference path="svelte.ext.d.ts" />
-
-import type { SvelteComponent } from 'svelte'
-
 interface TinroRoute {
     path: string
     query: Record<string, string>
