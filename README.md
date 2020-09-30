@@ -368,11 +368,11 @@ In case of any transiton when path changes, make component like this:
 	import {fade} from 'svelte/transition';
 </script>
 
-{#each '_' as _($router.path)}{$router.path,''}
+{#key $router.path}
 <div in:fade="{{ duration: 700}}">
 	<slot></slot>
 </div>
-{/each}
+{/key}
 ```
 
 Then put you routes inside *Transition* component:
