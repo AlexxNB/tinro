@@ -1,6 +1,6 @@
 import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
-import {getAttr,parseQuery,getPathData} from './lib';
+import {getAttr,parseQuery,getRouteData} from './lib';
 
 export const router = routerStore();
 
@@ -10,7 +10,7 @@ export function active(node){
           cl = getAttr(node,'active-class',true,'active');
           
     return {destroy:router.subscribe(r => {
-        const data = getPathData(href,r.path); 
+        const data = getRouteData(href,r.path); 
         data && (data.exact && exact || !exact) ? node.classList.add(cl) : node.classList.remove(cl);
     })}
 }
@@ -72,5 +72,5 @@ function aClickListener(go){
 }
 
 function getParams(){
-    return getContext('_').params;
+    return getContext('tinro').params;
 }

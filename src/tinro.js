@@ -1,8 +1,5 @@
 import {router,active} from './router.js';
-import {routes,registerRouteObject} from './routes.js';
+import {createRouteObject} from './lib.js';
+//import {routes,registerRouteObject} from './routes.js';
 
-export {router,routes,registerRouteObject,active};
-
-router.subscribe(r => {
-    routes.setPath(r.path);
-})
+export {router,active,createRouteObject};

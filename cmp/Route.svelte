@@ -1,5 +1,5 @@
 <script>
-    import {routes,registerRouteObject} from './../dist/tinro_lib';
+    import {createRouteObject} from './../dist/tinro_lib';
 
     export let path = '/*';
     export let fallback = false;
@@ -8,7 +8,7 @@
     let showContent = false;
     let params = {};
 
-    registerRouteObject({
+    createRouteObject({
         path,
         fallback,
         redirect,

@@ -1,5 +1,5 @@
 <script>
-    import {router,Route} from 'tinro';
+    import {router} from 'tinro';
 
     let params = router.params();
 </script>

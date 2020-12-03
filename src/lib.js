@@ -1,3 +1,87 @@
+import {getContext,setContext,onMount,tick} from 'svelte';
+import {router} from './router';
+
+export function createRouteObject(options){
+
+    const type = options.fallback ? 'fallbacks' : 'childs';
+
+    const route = {
+        un:null,
+        exact: false,
+        pattern: '',
+        params: {},
+        parent: getContext('tinro'),
+        fallback: options.fallback,
+        redirect: options.redirect,
+        childs: new Set(),
+        activeChilds: new Set(),
+        fallbacks: new Set(),
+        makePattern(path){
+            route.exact = !path.endsWith('/*');
+            route.pattern = formatPath(`${route.parent && route.parent.pattern || ''}${path}`)
+        },
+        register: () => {
+            if(!route.parent) return;
+            route.parent[type].add(route);
+            return ()=>{
+                route.parent[type].delete(route);
+                route.un && route.un();
+            }
+        },
+        show: ()=>{
+            options.onShow();
+            !route.fallback && route.parent && route.parent.activeChilds.add(route);
+        },
+        hide: ()=>{
+            options.onHide();
+            !route.fallback && route.parent && route.parent.activeChilds.delete(route);
+        },
+        match: async (url)=>{
+            const params = getRouteData(route.pattern,url);
+
+            if(params && route.redirect && (!route.exact || (route.exact && params.exact))){
+                return router.goto(makeRedirectURL(url,route.parent.pattern,route.redirect));
+            }
+
+            if(!route.fallback && params && (!route.exact || (route.exact && params.exact))){
+                options.onParams(route.params = params.params);
+                route.show();
+            }else{
+                route.hide();
+            }
+
+            await tick();
+          
+            if(
+                !route.fallback && params && 
+                (
+                    (route.childs.size > 0 && route.activeChilds.size == 0) ||
+                    (route.childs.size == 0 && route.fallbacks.size > 0)
+                )
+            ){
+                let obj = route;
+                while(obj.fallbacks.size == 0){
+                    obj = obj.parent;
+                    if(!obj) return;
+                }
+                obj && obj.fallbacks.forEach(fb => fb.show());
+            }
+        }
+    }
+
+    route.makePattern(options.path);
+
+    setContext('tinro',route);
+    onMount(()=>route.register());
+
+    route.un = router.subscribe(r => {
+        route.match(r.path);
+    });
+    
+    return route;
+}
+
+
 export function formatPath(path,slash=false){
     path = path.slice(
         path.startsWith('/#') ? 2 : 0,
@@ -9,7 +93,7 @@ export function formatPath(path,slash=false){
     return path;
 }
 
-export function getPathData(pattern,path){
+export function getRouteData(pattern,path){
     pattern = formatPath(pattern,true);
     path = formatPath(path,true);
 
