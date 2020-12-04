@@ -3,6 +3,14 @@ import {router} from './router';
 
 export function createRouteObject(options){
 
+    const parent = getContext('tinro');
+
+    if(parent && (parent.exact || parent.fallback) ) err(
+        `${options.fallback ? '<Route fallback>' : `<Route path="${options.path}">`}  can't be inside ${parent.fallback ? 
+            '<Route fallback>' :
+            `<Route path="${parent.path || '/'}"> with exact path` }`
+    );
+
     const type = options.fallback ? 'fallbacks' : 'childs';
 
     const route = {
@@ -10,7 +18,7 @@ export function createRouteObject(options){
         exact: false,
         pattern: '',
         params: {},
-        parent: getContext('tinro'),
+        parent,
         fallback: options.fallback,
         redirect: options.redirect,
         childs: new Set(),
@@ -153,6 +161,6 @@ export function parseQuery(str){
     return Object.entries(o).reduce((r,p)=>(r[p[0]]=p[1].length>1 ? p[1] : p[1][0],r),{});
 }
 
-export function err(text){
+function err(text){
     throw new Error(text);
 }
