@@ -61,9 +61,12 @@ function aClickListener(go){
     const h = e => {
         const a = e.target.closest('a[href]');
         const i = a && getAttr(a,'tinro-ignore');
-        if(!i && a && /^\/$|^\/\w/.test(a.getAttribute('href'))) {
+
+        let href = a.getAttribute('href');
+        
+        if(!i && a && !/^\/\/|^https?:\/\//.test(href)) {
             e.preventDefault();
-            go(a.getAttribute('href'));
+            go(href.startsWith('/') ? href : a.href.replace(window.location.origin,''));
         }
     }
 
