@@ -56,6 +56,7 @@
 				<a href="foo" id="internalLinkRelative">Internal relative route</a>
 				<a href="/abc" id="ignoreLink" tinro-ignore>Internal route ignored</a>
 				<a href="https://github.com/AlexxNB/tinro" id="externalLink">External route</a>
+				<a href="/#/test1" id="internalHashLink">With hash</a>
 			</Route>
 			<Route path="/test4/foo"><h1>Relative link - OK</h1></Route>
 			<Route path="/test5/*">

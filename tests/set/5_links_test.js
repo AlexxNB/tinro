@@ -16,4 +16,8 @@ module.exports = async function (test,page) {test('Links', async t =>{
     await page.go('/test4');
     await page.click('#externalLink');
     t.equal(await page.url(),'https://github.com/AlexxNB/tinro','External link');
+
+    await page.go('/test4');
+    await page.click('#internalHashLink');
+    t.equal(await page.innerText('h1'),'Simple route - OK','Hashed link');
 })}
