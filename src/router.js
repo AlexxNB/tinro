@@ -62,11 +62,13 @@ function aClickListener(go){
         const a = e.target.closest('a[href]');
         const i = a && getAttr(a,'tinro-ignore');
 
-        let href = a && a.getAttribute('href');
-        
-        if(!i && a && !/^\/\/|^https?:\/\//.test(href)) {
-            e.preventDefault();
-            go(href.startsWith('/') ? href : a.href.replace(window.location.origin,''));
+        if(!i && a){
+            const href = a && a.getAttribute('href');
+            
+            if(!/^\/\/|^https?:\/\//.test(href)) {
+                e.preventDefault();
+                go(href.startsWith('/') ? href : a.href.replace(window.location.origin,''));
+            }
         }
     }
 
