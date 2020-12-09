@@ -62,7 +62,7 @@ function aClickListener(go){
         const a = e.target.closest('a[href]');
         const i = a && getAttr(a,'tinro-ignore');
 
-        let href = a.getAttribute('href');
+        let href = a && a.getAttribute('href');
         
         if(!i && a && !/^\/\/|^https?:\/\//.test(href)) {
             e.preventDefault();
