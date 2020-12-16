@@ -65,7 +65,7 @@ function aClickListener(go){
         if(!i && a){
             const href = a.getAttribute('href').replace(/^\/#/,'');
 
-            if(!/^\/\/|^https?:\/\//.test(href)) {
+            if(!/^\/\/|^[a-zA-Z]+:/.test(href)) {
                 e.preventDefault();
                 go(href.startsWith('/') ? href : a.href.replace(window.location.origin,''));
             }

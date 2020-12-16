@@ -52,11 +52,12 @@
 			</Route>
 			<Route path="/test4">
 				<h1>Links test</h1>
-				<a href="/test1" id="internalLink">Internal route</a>
-				<a href="foo" id="internalLinkRelative">Internal relative route</a>
-				<a href="/abc" id="ignoreLink" tinro-ignore>Internal route ignored</a>
-				<a href="https://github.com/AlexxNB/tinro" id="externalLink">External route</a>
-				<a href="/#/test1" id="internalHashLink">With hash</a>
+				<p><a href="/test1" id="internalLink">Internal route</a></p>
+				<p><a href="foo" id="internalLinkRelative">Internal relative route</a></p>
+				<p><a href="/abc" id="ignoreLink" tinro-ignore>Internal route ignored</a></p>
+				<p><a href="https://github.com/AlexxNB/tinro" id="externalLink">External route</a></p>
+				<p><a href="/#/test1" id="internalHashLink">With hash</a></p>
+				<p><a href="mailto:foo@domain.tld" id="mailtoLink">Mailto</a></p>
 			</Route>
 			<Route path="/test4/foo"><h1>Relative link - OK</h1></Route>
 			<Route path="/test5/*">
@@ -72,13 +73,13 @@
 			<Route path="/test8/:name"><Child /></Route>
 			<Route path="/test9/*">
 				<h1>Links test</h1>
-				<a use:active href="/test1" id="activeNoActive">Not active</a>
-				<a use:active href="/test9" id="activeNotExact">Not exact</a>
-				<a use:active href="/test9" id="activeExact" exact>Exact</a>
-				<a use:active href="/test9/sub" id="activeExactSub" exact>Exact sub</a>
-				<a use:active href="/test9" id="activeCustomclass" active-class="customactive">Not exact, custom class</a>
-				<a use:active href="/test9" id="activeWithdata" data-exact data-active-class="customactive">exact, custom class, data</a>
-				<a use:active href="/#/test9" id="activeHash" exact>Hash-style link, exact</a>
+				<p><a use:active href="/test1" id="activeNoActive">Not active</a></p>
+				<p><a use:active href="/test9" id="activeNotExact">Not exact</a></p>
+				<p><a use:active href="/test9" id="activeExact" exact>Exact</a></p>
+				<p><a use:active href="/test9/sub" id="activeExactSub" exact>Exact sub</a></p>
+				<p><a use:active href="/test9" id="activeCustomclass" active-class="customactive">Not exact, custom class</a></p>
+				<p><a use:active href="/test9" id="activeWithdata" data-exact data-active-class="customactive">exact, custom class, data</a></p>
+				<p><a use:active href="/#/test9" id="activeHash" exact>Hash-style link, exact</a></p>
 			</Route>
 			<Route path="test10"><h1>Without trailing slash - OK</h1></Route>
 			<Route path="/test11/:first/:second">
