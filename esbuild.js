@@ -8,6 +8,7 @@ const pkg = require('./package.json');
         bundle: true,
         outfile: 'dist/tinro_lib.js',
         format: 'esm',
+        minify: true,
         external: [
             'svelte',
             'svelte/*'
@@ -15,10 +16,11 @@ const pkg = require('./package.json');
     });
 
     await esbuild.build({
-        entryPoints: ['src/tinro.js'],
+        entryPoints: ['src/index.js'],
         bundle: true,
         outfile: pkg.module,
         format: 'esm',
+        minify: true,
         external: [
             'svelte',
             'svelte/*'
@@ -27,14 +29,15 @@ const pkg = require('./package.json');
     });
 
     await esbuild.build({
-        entryPoints: ['src/tinro.js'],
+        entryPoints: ['src/index.js'],
         bundle: true,
         outfile: pkg.main,
         format: 'cjs',
+        minify: true,
         external: [
             'svelte',
             'svelte/*'
         ],
         plugins: [sveltePlugin()]
     });
-})
+})()
