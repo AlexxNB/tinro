@@ -23,7 +23,7 @@ assert.notThrow = async (func, msg = 'should not throw') => {
 		const isFree = await ports.check(5050);
 		if(!isFree) throw new Error('Port 5050 already in use, can\'t launch dev server.')
 
-		let child = require('child_process').spawn('sirv', ['tests/www', '-D', '-q', '-s', '-p', '5050'],{
+		let child = require('child_process').spawn('derver', ['--no-watch','--spa','--port=5050','tests/www'],{
 			detached: false
 		});
 

@@ -7,10 +7,10 @@
   "svelte": "cmp/index.js",
   "types": "index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -w -c tests/rollup.dev.config.js",
-    "compare": "rollup -c tests/rollup.compare.config.js",
-    "test:build": "rollup -c tests/rollup.dev.config.js --environment NODE_ENV:test",
+    "build": "node esbuild",
+    "dev": "node tests/esbuild.dev --dev",
+    "compare": "npm run test:build && node tests/esbuild.compare",
+    "test:build": "node tests/esbuild.dev",
     "test": "npm run test:build && node tests | tap-diff"
   },
   "repository": {
@@ -31,14 +31,11 @@
   "dependencies": {},
   "devDependencies": {
     "@detools/tap-diff": "^0.2.2",
-    "@rollup/plugin-node-resolve": "^7.1.1",
+    "derver": "^0.3.0",
+    "esbuild": "^0.8.27",
+    "esbuild-svelte": "^0.4.0",
     "port-authority": "^1.0.5",
     "puppeteer": "^3.0.0",
-    "rollup": "^2.24.0",
-    "rollup-plugin-livereload": "^1.0.0",
-    "rollup-plugin-svelte": "^5.0.3",
-    "rollup-plugin-terser": "^7.0.0",
-    "sirv-cli": "^0.4.4",
     "svelte": "^3.29.0",
     "tape-modern": "^1.1.2"
   }
