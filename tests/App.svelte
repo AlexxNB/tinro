@@ -30,6 +30,10 @@
 			<li> Dynamic route params <br/>
 				<a href="/test11/foo/bar">FooBar</a> <a href="/test11/abc/xyz">AbcXyz</a>
 			</li>
+			<li>Only attribute<br/>
+				<a href="/test12/foo">Matched</a> <a href="/test12/bar">Not matched</a>
+				<a href="/test12/foo/bar">Submatched</a> <a href="/test12/foo/foo">Not submatched</a>
+			</li>
 		</ul>
 	</div>
 
@@ -85,6 +89,13 @@
 			<Route path="/test11/:first/:second">
 				<Child />
 			</Route>
+			<Route path="/test12/*" firstmatch>
+				<Route path="/foo"><h1>Only matched - OK</h1></Route>
+				<Route path="/:var"><h1>Only didn't matched - OK</h1></Route>
+				<Route path="/foo/bar"><h1>Only matched subpage- OK</h1></Route>
+				<Route path="/foo/:var"><h1 id="notmatch">Only didn't matched subpage - OK</h1></Route>
+			</Route>
+			
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>

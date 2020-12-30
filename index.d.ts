@@ -35,6 +35,12 @@ export class Route {
        * Redirect route to the specified path
        */
       redirect?: string;
+
+      /**
+       * Will be show only first matched with URL nested route
+       * @default false
+       */
+      firstmatch?: boolean;
     };
   
     $$slot_def: { default: {} };

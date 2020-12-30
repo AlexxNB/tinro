@@ -4,6 +4,7 @@
     export let path = '/*';
     export let fallback = false;
     export let redirect = false;
+    export let firstmatch = false;
 
     let showContent = false;
     let params = {};
@@ -12,6 +13,7 @@
         path,
         fallback,
         redirect,
+        firstmatch,
         onShow(){showContent=true},
         onHide(){showContent=false},
         onParams(newparams){params=newparams}

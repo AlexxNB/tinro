@@ -21,6 +21,8 @@ export function createRouteObject(options){
         parent,
         fallback: options.fallback,
         redirect: options.redirect,
+        firstmatch: options.firstmatch,
+        matched: false,
         childs: new Set(),
         activeChilds: new Set(),
         fallbacks: new Set(),
@@ -45,14 +47,21 @@ export function createRouteObject(options){
             !route.fallback && route.parent && route.parent.activeChilds.delete(route);
         },
         match: async (url)=>{
+            route.matched = false;
             const params = getRouteData(route.pattern,url);
 
             if(params && route.redirect && (!route.exact || (route.exact && params.exact))){
                 return router.goto(makeRedirectURL(url,route.parent.pattern,route.redirect));
             }
 
-            if(!route.fallback && params && (!route.exact || (route.exact && params.exact))){
+            if(
+                    params
+                &&  !route.fallback  
+                &&  (!route.exact || (route.exact && params.exact)) 
+                &&  (!route.parent || !route.parent.firstmatch || !route.parent.matched)
+            ){
                 options.onParams(route.params = params.params);
+                route.parent && (route.parent.matched = true);
                 route.show();
             }else{
                 route.hide();
@@ -61,11 +70,12 @@ export function createRouteObject(options){
             await tick();
           
             if(
-                !route.fallback && params && 
-                (
-                    (route.childs.size > 0 && route.activeChilds.size == 0) ||
-                    (route.childs.size == 0 && route.fallbacks.size > 0)
-                )
+                    params
+                &&  !route.fallback 
+                &&  (
+                        (route.childs.size > 0 && route.activeChilds.size == 0) ||
+                        (route.childs.size == 0 && route.fallbacks.size > 0)
+                    )
             ){
                 let obj = route;
                 while(obj.fallbacks.size == 0){

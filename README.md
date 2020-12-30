@@ -119,6 +119,22 @@ Books list:
 </Route>
 ```
 
+### Show first matched nested route only
+
+Sometimes you need to show only first nested route from all matched with given URL. Use `firstmatch` property on parent `Route`:
+
+```html
+<Route path="/user/*" firstmatch>
+
+    <!-- Will be open when URL is /user/add -->
+    <Route path="/add">Add new user</Route> 
+
+    <!-- Will be open when URL is /user/alex or /user/bob, but not /user/add -->
+    <Route path="/:username" let:username>Show user {username}'s profile</Route> 
+
+</Route>
+```
+
 ## Links
 
 There is no special component for links. Just use native `<a>` elements. When the `href` attribute starts with a single `/` sign (like `/mypage` or just `/`), it will be treated as internal link which will be matched with defined routes. Other cases do not affect the links' behavior. 
