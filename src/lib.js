@@ -112,6 +112,7 @@ export function formatPath(path,slash=false){
 }
 
 export function getRouteData(pattern,path){
+    const trailingSlash = path.endsWith('/');
     pattern = formatPath(pattern,true);
     path = formatPath(path,true);
 
@@ -123,13 +124,18 @@ export function getRouteData(pattern,path){
        .map(s => s.startsWith(':') ? (keys.push(s.slice(1)),'([^\\/]+)') : s)
        .join('\\/');
 
-    let match = path.match(new RegExp(`^${rx}$`));
-    if(!match) {
-        exact = false;
-        match = path.match(new RegExp(`^${rx}`));
-    }
+    let match = path.match(new RegExp(`^${rx}(.*)`));
     if(!match) return null;
     keys.forEach((key,i) => params[key] = match[i+1]);
+
+    let wildcard = match[match.length - 1];
+    if(wildcard) {
+        exact = false;
+        if(!trailingSlash) {
+            wildcard = wildcard.slice(0, -1);
+        }
+        params['*'] = wildcard;
+    }
 
     return {exact,params};
 }

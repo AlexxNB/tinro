@@ -96,6 +96,11 @@
 				<Route path="/foo/:var"><h1 id="notmatch">Only didn't matched subpage - OK</h1></Route>
 			</Route>
 			
+			<Route path="/test13/:foo/*" let:params>
+				<h1>{params.foo}</h1>
+				<h2>{params['*']}</h2>
+			</Route>
+
 			<Route fallback><h1>Root fallback</h1></Route>
 		</Route>
 	</div>

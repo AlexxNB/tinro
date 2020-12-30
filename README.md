@@ -239,6 +239,8 @@ You can use param keys in `path` property. See the example:
 
 When you open `/books/stanislav_lem/fiction` in the browser, the `params` object will have the values retrieved from the URL - `{author: "stanislav_lem"}` in the parent route and `{author: "stanislav_lem", genre: "fiction"}` in the child route. 
 
+Non-exact routes capture the wildcard contents under `params['*']`.
+
 There are two ways to get parameters in nested component:
 
 ### Using `let:params` directive:
