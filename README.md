@@ -376,12 +376,26 @@ You can import `router` object from the `tinro` package:
 ### `router.goto(href)`
 Programaticly change the URL of current page.
 
+### `router.meta()`
+Run it inside any `Route` component to get its  meta data which includes:
+
+* `url` - current browser URL(with query string)
+* `from` - previous URL before navigation on current page, if present
+* `pattern` - route's path pattern combined from all `path` properties of all parent `Route` components.
+* `match` - part of browser URL, which is matched with pattern.
+* `params` - if pattern has placeholders, their values will be in this object
+* `query` - if browser URL has query string, there will be parsed object
+* `breadcrumbs` - all parent routes with `breadcrumb` property will add the object like `{name,path}` in this array
+* `subscribe(func)` -  you can use it to subscribe for meta data changes. The `func` will get updated `meta` object each time, URL changes.
+
 ### `router.params()`
-Will return object with parameters if there are spcified in the path of current route. Will return `{}` if there no parameters in the URL.
+Deprecated. See `router.meta` instead.
 
 ### `router.subscribe(func)`
 The `router` object is valid Svelte's store, so you can subscribe to get the navigation data changing. `func` gets an object with some page data:
 
+* `url` - current browser URL(with query string)
+* `from` - previous URL before navigation on current page, if present
 * `path` - current browser URL
 * `hash` - the hash part of the URL, after `#` sign
 * `query` - object, containing parsed query string
