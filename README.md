@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/tinro?style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AlexxNB/tinro/Publish%20on%20NPM?label=test&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/tinro?label=Bundle%20size&style=flat-square) ![npm](https://img.shields.io/npm/dt/tinro?style=flat-square) 
 
 
-The tinro is highly declarative, very tiny ([~1.7 Kb (0.6 Kb gzipped)](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
+The tinro is highly declarative, very tiny ([~3 Kb (1.8 Kb gzipped)](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
 
 ## Features
 
@@ -26,12 +26,12 @@ The tinro is highly declarative, very tiny ([~1.7 Kb (0.6 Kb gzipped)](https://g
 * [Redirects](#redirects)
 * [Fallbacks](#fallbacks)
 * [Route meta](#route-meta)
-    - [url](#meta.url)
-    - [pattern](#meta.pattern)
-    - [match](#meta.match)
-    - [from](#meta.from)
-    - [params](#meta.params)
-    - [breadcrumbs](#meta.breadcrumbs)
+    - [url](#metaurl)
+    - [pattern](#metapattern)
+    - [match](#metamatch)
+    - [from](#metafrom)
+    - [params](#metaparams)
+    - [breadcrumbs](#metabreadcrumbs)
 * [~~Parameters~~ (Deprecated since 0.5.0)](#parameters)
 * [Navigation method](#navigation-method)
 * [API](#api)
@@ -327,7 +327,7 @@ All parent routes which have `breadcrumb` property will add breadcrumb in the `m
 
 > **!** *`route.params` and `let:params` are DEPRECATED since v.0.5.0. Will be deleted in future versions!*
 
-See [meta.params](#meta.params.) section
+See [meta.params](#metaparams) section
 
 ## Navigation method
 
