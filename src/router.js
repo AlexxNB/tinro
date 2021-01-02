@@ -1,6 +1,6 @@
 import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
-import {getAttr,parseQuery,getRouteData} from './lib';
+import {getAttr,parseQuery,getRouteMatch} from './lib';
 
 export const router = routerStore();
 
@@ -10,8 +10,8 @@ export function active(node){
           cl = getAttr(node,'active-class',true,'active');
           
     return {destroy:router.subscribe(r => {
-        const data = getRouteData(href,r.path); 
-        data && (data.exact && exact || !exact) ? node.classList.add(cl) : node.classList.remove(cl);
+        const match = getRouteMatch(href,r.path); 
+        match && (match.exact && exact || !exact) ? node.classList.add(cl) : node.classList.remove(cl);
     })}
 }
 
@@ -36,26 +36,39 @@ function routerStore(){
         subscribe,
         goto: href => go(href,set),
         params: getParams,
+        meta: getMeta,
         useHashNavigation: s => set(getLocation(hsh = s===undefined ? true : s))
     }
 }
 
+let last;
 function getLocation(hsh){
-    return hsh ? getLocationFromHash() : {
+    return hsh ? getLocationHash() : getLocationHistory()
+}
+
+function getLocationHistory(){
+    const from = last;
+    const url = last = window.location.pathname+window.location.search;
+    return {
+        url,
+        from,
         path: window.location.pathname,
         query: parseQuery(window.location.search.slice(1)),
         hash: window.location.hash.slice(1)
     }
 }
 
-function getLocationFromHash(){
-    const match = String(window.location.hash.slice(1)||'/').match(/^([^?#]+)(?:\?([^#]+))?(?:\#(.+))?$/);  
+function getLocationHash(){
+    const from = last;
+    const url = last = String(window.location.hash.slice(1)||'/');
+    const match = url.match(/^([^?#]+)(?:\?([^#]+))?(?:\#(.+))?$/);  
     return {
+      url,
       path: match[1] || '',
       query: parseQuery(match[2] || ''),
       hash: match[3] || '',
     };
- }
+}
 
 function aClickListener(go){
     const h = e => {
@@ -76,6 +89,10 @@ function aClickListener(go){
     return () => removeEventListener('click', h);
 }
 
+function getMeta(){
+    return getContext('tinro').meta;
+}
+
 function getParams(){
-    return getContext('tinro').params;
+    return getContext('tinro').meta.params;
 }

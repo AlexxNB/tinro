@@ -28,11 +28,15 @@
 			<li><a href="/test9">Active action</a></li>
 			<li><a href="/test10">Without trailing slash</a></li>
 			<li> Dynamic route params <br/>
-				<a href="/test11/foo/bar">FooBar</a> <a href="/test11/abc/xyz">AbcXyz</a>
+				<a href="/test11/foo/bar">FooBar</a> <a href="/test11/abc/xyz?hello=world">AbcXyz</a>
 			</li>
 			<li>Only attribute<br/>
 				<a href="/test12/foo">Matched</a> <a href="/test12/bar">Not matched</a>
 				<a href="/test12/foo/bar">Submatched</a> <a href="/test12/foo/foo">Not submatched</a>
+			</li>
+			<li>Breadcrumbs<br/>
+				<a href="/test13">Parent</a> 
+				<a href="/test13/foo">Child</a> 
 			</li>
 		</ul>
 	</div>
@@ -94,6 +98,11 @@
 				<Route path="/:var"><h1>Only didn't matched - OK</h1></Route>
 				<Route path="/foo/bar"><h1>Only matched subpage- OK</h1></Route>
 				<Route path="/foo/:var"><h1 id="notmatch">Only didn't matched subpage - OK</h1></Route>
+			</Route>
+
+			<Route path="/test13/*" breadcrumb="Parent">
+				<Route path="/" let:meta><h1>{JSON.stringify(meta.breadcrumbs)}</h1></Route>
+				<Route path="/foo" breadcrumb="Child" let:meta><h1>{JSON.stringify(meta.breadcrumbs)}</h1></Route>
 			</Route>
 			
 			<Route fallback><h1>Root fallback</h1></Route>

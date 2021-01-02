@@ -1,13 +1,33 @@
 interface TinroRoute {
+    url: string
+    from: string
     path: string
     query: Record<string, string>
     hash: string
 }
 
+interface TinroBreadcrumb {
+  url: string
+  name: string
+}
+
+interface TinroRouteMeta {
+  url: string
+  from?: string
+  match: string
+  pattern: string
+  breadcrumbs?: Array<TinroBreadcrumb>
+  query: Record<string, string>
+  params: Record<string, string>
+  subscribe(handler: (meta: TinroRouteMeta) => void)
+}
+
 declare interface TinroRouter {
     /** Point browser to the URL */
     goto(url: string): void
-    /** Return current params from url */
+    /** Return current meta for the route */
+    meta(): TinroRouteMeta
+    /** DEPRECATED: Return current params from url */
     params(): Record<string, string>
     /** Use hash navigation instead history API */
     useHashNavigation(use?: boolean): void
@@ -41,10 +61,18 @@ export class Route {
        * @default false
        */
       firstmatch?: boolean;
+
+      /**
+       * Name of the route to use in breadcrumbs
+       * @default null
+       */
+      breadcrumb?: string;
     };
   
     $$slot_def: { default: {
-      /** Current params from url */
+      /** Current meta for the route */
+      meta: TinroRouteMeta
+      /** DEPRECATED: Current params from url */
       params: Record<string, string>
     } };
   }

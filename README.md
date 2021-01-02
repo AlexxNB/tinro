@@ -25,7 +25,14 @@ The tinro is highly declarative, very tiny ([~1.7 Kb (0.6 Kb gzipped)](https://g
 * [Links](#links)
 * [Redirects](#redirects)
 * [Fallbacks](#fallbacks)
-* [Parameters](#parameters)
+* [Route meta](#route-meta)
+    - [url](#meta.url)
+    - [pattern](#meta.pattern)
+    - [match](#meta.match)
+    - [from](#meta.from)
+    - [params](#meta.params)
+    - [breadcrumbs](#meta.breadcrumbs)
+* [~~Parameters~~ (Deprecated since 0.5.0)](#parameters)
 * [Navigation method](#navigation-method)
 * [API](#api)
 * [Recipes](#recipes)
@@ -219,61 +226,108 @@ The routes with the `fallback` property show their content when no matched addre
 <a href="/sub2/blah/blah">...</a> <!-- shows No subpage found -->
 ```
 
-## Parameters
+## Route meta
 
-You can use param keys in `path` property. See the example:
+There are some useful meta data you can get for each route.
+
+You can get meta from `router` import:
+
+```html 
+<script>
+    import {router} from 'tinro';
+    const meta = router.meta();  
+</script>
+
+<h1>My URL is {meta.url}!</h1>
+
+<!-- In case you need reactive updates, use it as a store -->
+<h1>My URL is {$meta.url}!</h1>
+```
+
+Also you can get meta with `let:meta` directive:
+
+```html 
+<Route path="/hello" let:meta>
+    <h1>My URL is {meta.url}!</h1>
+</Route>
+```
+
+### `meta.url`
+
+Current browser URL line (includes query). 
+
+*Example: `/books/stanislaw_lem/page2?order=descend`*
+
+
+### `meta.pattern`
+
+The pattern of the route path which may includes parameters placeholders. It is combined from `path` property of all parent routes. 
+
+*Example: `/books/:author`*
+
+### `meta.match`
+
+Part of browser URL which is matched with route pattern. 
+
+*Example: `/books/stanislaw_lem`*
+
+### `meta.from`
+
+If present, value of browser URL before navigation on current page. Useful to make back button, for example.
+
+*Example: `/books/stanislaw_lem/page1?order=descend`*
+
+### `meta.query`
+
+Object of values from browser URL query part (if present)
+
+*Example: `{order: "descent"}`*
+
+### `meta.params`
+
+If route pattern has parameters, their values will be in `meta.params` object.
 
 ```html
-<Route path="/hello/:name" let:params>
-    Hello, {params.name}
-</Route>
+<!-- Example for URL "/books/stanislaw_lem/solaris"> -->
+<Route path="/books/:author/*" let:meta>
 
+    <!-- meta.params here {author:stanislaw_lem} -->
+    Author: {meta.params.author}
 
-<Route path="/books/:author/*" let:params>
-    Books by {params.author}
-    <Route path="/:genre" let:params>
-        Books by {params.author} in category {params.genre}
+    <Route path="/:title" let:meta>
+
+        <!-- meta.params here {author:stanislaw_lem, title:solaris} -->
+        Book: {meta.params.title}
+
     </Route>
 </Route>
 ```
 
-When you open `/books/stanislav_lem/fiction` in the browser, the `params` object will have the values retrieved from the URL - `{author: "stanislav_lem"}` in the parent route and `{author: "stanislav_lem", genre: "fiction"}` in the child route. 
+### `meta.breadcrumbs`
 
-There are two ways to get parameters in nested component:
-
-### Using `let:params` directive:
-```html 
-<!-- Hello.svelte -->
-<script>
-    export let name;
-</script>
-
-<h1>Hello, {name}!</h1>
+All parent routes which have `breadcrumb` property will add breadcrumb in the `meta.breadcrumbs` array. Each breadcrumb is an object with `name` and `path` fields.
 
 
-<!-- App.svelte -->
-...
-<Route path="/hello/:name" let:params>
-    <Hello name={params.name} />
+```html
+<Route path="/*" breadcrumb="Home">
+    <Route path="/portfolio" breadcrumb="My Portfolio" let:meta>
+        <ul class="breadcrumbs">
+        {#each meta.breadcrumbs as bc}
+            <li><a href={bc.path}>{bc.name}</a></li>
+        {/each}
+        </ul>
+
+        It is my portfolio
+    </Route>
 </Route>
 ```
 
-### Using `router` import:
-```html 
-<!-- Hello.svelte -->
-<script>
-    import {router} from 'tinro';
-    let params = router.params();  
-    // OR to force reactivity - $: params = router.params($router);
-</script>
 
-<h1>Hello, {params.name}!</h1>
+## Parameters
 
+> **!** *`route.params` and `let:params` are DEPRECATED since v.0.5.0. Will be deleted in future versions!*
 
-<!-- App.svelte -->
-...
-<Route path="/hello/:name"><Hello /></Route>
-```
+See [meta.params](#meta.params.) section
 
 ## Navigation method
 

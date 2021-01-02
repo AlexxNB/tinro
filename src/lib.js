@@ -1,4 +1,5 @@
 import {getContext,setContext,onMount,tick} from 'svelte';
+import {writable} from 'svelte/store';
 import {router} from './router';
 
 export function createRouteObject(options){
@@ -13,11 +14,13 @@ export function createRouteObject(options){
 
     const type = options.fallback ? 'fallbacks' : 'childs';
 
+    const metaStore = writable({});
+
     const route = {
         un:null,
         exact: false,
         pattern: '',
-        params: {},
+        meta: {},
         parent,
         fallback: options.fallback,
         redirect: options.redirect,
@@ -46,21 +49,39 @@ export function createRouteObject(options){
             options.onHide();
             !route.fallback && route.parent && route.parent.activeChilds.delete(route);
         },
-        match: async (url)=>{
+        match: async ({path,url,from,query})=>{
             route.matched = false;
-            const params = getRouteData(route.pattern,url);
+            const match = getRouteMatch(route.pattern,path);
 
-            if(params && route.redirect && (!route.exact || (route.exact && params.exact))){
-                return router.goto(makeRedirectURL(url,route.parent.pattern,route.redirect));
+            if(match && route.redirect && (!route.exact || (route.exact && match.exact))){
+                return router.goto(makeRedirectURL(path,route.parent.pattern,route.redirect));
             }
 
+            route.meta = match && {
+                from,
+                url,
+                query,
+                match: match.part,
+                pattern: route.pattern,
+                breadcrumbs: route.parent && route.parent.meta && route.parent.meta.breadcrumbs.slice() || [],
+                params: match.params,
+                subscribe: metaStore.subscribe
+            }
+
+            options.breadcrumb && route.meta && route.meta.breadcrumbs.push({
+                name: options.breadcrumb,
+                path: match.part
+            });
+
+            metaStore.set(route.meta);
+
             if(
-                    params
+                match
                 &&  !route.fallback  
-                &&  (!route.exact || (route.exact && params.exact)) 
+                &&  (!route.exact || (route.exact && match.exact)) 
                 &&  (!route.parent || !route.parent.firstmatch || !route.parent.matched)
             ){
-                options.onParams(route.params = params.params);
+                options.onMeta(route.meta);
                 route.parent && (route.parent.matched = true);
                 route.show();
             }else{
@@ -70,7 +91,7 @@ export function createRouteObject(options){
             await tick();
           
             if(
-                    params
+                match
                 &&  !route.fallback 
                 &&  (
                         (route.childs.size > 0 && route.activeChilds.size == 0) ||
@@ -93,7 +114,7 @@ export function createRouteObject(options){
     onMount(()=>route.register());
 
     route.un = router.subscribe(r => {
-        route.match(r.path);
+        route.match(r);
     });
     
     return route;
@@ -111,7 +132,7 @@ export function formatPath(path,slash=false){
     return path;
 }
 
-export function getRouteData(pattern,path){
+export function getRouteMatch(pattern,path){
     pattern = formatPath(pattern,true);
     path = formatPath(path,true);
 
@@ -131,7 +152,11 @@ export function getRouteData(pattern,path){
     if(!match) return null;
     keys.forEach((key,i) => params[key] = match[i+1]);
 
-    return {exact,params};
+    return {
+        exact,
+        params,
+        part:match[0].slice(0,-1)
+    }
 }
 
 export function makeRedirectURL(path,parent_pattern,slug){
