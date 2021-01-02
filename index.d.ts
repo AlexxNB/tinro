@@ -43,5 +43,8 @@ export class Route {
       firstmatch?: boolean;
     };
   
-    $$slot_def: { default: {} };
+    $$slot_def: { default: {
+      /** Current params from url */
+      params: Record<string, string>
+    } };
   }
