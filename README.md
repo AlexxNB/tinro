@@ -30,6 +30,7 @@ The tinro is highly declarative, very tiny ([~3,4 Kb (1.3 Kb gzipped)](https://g
     - [pattern](#metapattern)
     - [match](#metamatch)
     - [from](#metafrom)
+    - [query](#metaquery)
     - [params](#metaparams)
     - [breadcrumbs](#metabreadcrumbs)
 * [~~Parameters~~ (Deprecated since 0.5.0)](#parameters)
