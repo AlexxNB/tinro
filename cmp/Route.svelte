@@ -8,7 +8,7 @@
     export let breadcrumb = null;
 
     let showContent = false;
-    let params = {};
+    let params = {}; /* DEPRECATED */
     let meta = {};
 
     createRouteObject({
@@ -21,7 +21,7 @@
         onHide(){showContent=false},
         onMeta(newmeta){
             meta=newmeta;
-            params = meta.params
+            params = meta.params /* DEPRECATED */
         }
     });
 </script>
