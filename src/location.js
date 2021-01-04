@@ -22,8 +22,7 @@ function createLocation(){
         MODE !== MODES.OFF 
         && MODES.run( MODE ,
             _ => window.onpopstate = dispatch,
-            _ => window.hashchange = dispatch,
-            _ => onMemoChange = dispatch
+            _ => window.hashchange = dispatch
         )
         && dispatch()
     }
