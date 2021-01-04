@@ -1,8 +1,35 @@
 import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
-import {getAttr,parseQuery,getRouteMatch} from './lib';
+import {getAttr,getRouteMatch} from './lib';
+import {location} from './location';
+import MODES from './modes';
 
 export const router = routerStore();
+
+function routerStore(){
+
+    const {subscribe} = writable(location.get(), set => {
+        location.start(set);
+        let un = aClickListener(location.go)
+        return ()=>{
+            location.stop();
+            un();
+        }
+    });
+
+    return {
+        subscribe,
+        goto: href => location.go(href),
+        params: getParams, /* DEPRECATED */
+        meta: getMeta,
+        useHashNavigation: s => location.mode(s ? MODES.HASH : MODES.HISTORY), /* DEPRECATED */
+        mode: {
+            hash: ()=>location.mode(MODES.HASH),
+            history: ()=>location.mode(MODES.HISTORY),
+            memory: ()=>location.mode(MODES.MEMORY),
+        }
+    }
+}
 
 export function active(node){
     const href = getAttr(node,'href'),
@@ -13,61 +40,6 @@ export function active(node){
         const match = getRouteMatch(href,r.path); 
         match && (match.exact && exact || !exact) ? node.classList.add(cl) : node.classList.remove(cl);
     })}
-}
-
-function routerStore(){
-    let hsh = window.location.pathname === 'srcdoc';
-
-    const go = (href,set) => {
-        hsh ? window.location.hash=href : history.pushState({}, '', href);
-        set(getLocation(hsh));
-    }
-
-    const {subscribe,set} = writable(getLocation(hsh), _ => {
-        window.hashchange = window.onpopstate = _ => set(getLocation(hsh));
-        const un = aClickListener(href=>go(href,set));
-        return _ => {
-            window.hashchange = window.onpopstate = null;
-            un();
-        }
-    }); 
-
-    return {
-        subscribe,
-        goto: href => go(href,set),
-        params: getParams,
-        meta: getMeta,
-        useHashNavigation: s => set(getLocation(hsh = s===undefined ? true : s))
-    }
-}
-
-let last;
-function getLocation(hsh){
-    return hsh ? getLocationHash() : getLocationHistory()
-}
-
-function getLocationHistory(){
-    const from = last;
-    const url = last = window.location.pathname+window.location.search;
-    return {
-        url,
-        from,
-        path: window.location.pathname,
-        query: parseQuery(window.location.search.slice(1)),
-        hash: window.location.hash.slice(1)
-    }
-}
-
-function getLocationHash(){
-    const from = last;
-    const url = last = String(window.location.hash.slice(1)||'/');
-    const match = url.match(/^([^?#]+)(?:\?([^#]+))?(?:\#(.+))?$/);  
-    return {
-      url,
-      path: match[1] || '',
-      query: parseQuery(match[2] || ''),
-      hash: match[3] || '',
-    };
 }
 
 function aClickListener(go){
@@ -93,6 +65,7 @@ function getMeta(){
     return getContext('tinro').meta;
 }
 
+/* DEPRECATED */
 function getParams(){
     return getContext('tinro').meta.params;
 }

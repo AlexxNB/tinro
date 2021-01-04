@@ -61,6 +61,7 @@
 			<Route path="/test4">
 				<h1>Links test</h1>
 				<p><a href="/test1" id="internalLink">Internal route</a></p>
+				<p><a href="/test3/sub" id="internalSubLink">Internal sub route</a></p>
 				<p><a href="foo" id="internalLinkRelative">Internal relative route</a></p>
 				<p><a href="/abc" id="ignoreLink" tinro-ignore>Internal route ignored</a></p>
 				<p><a href="https://github.com/AlexxNB/tinro" id="externalLink">External route</a></p>
@@ -74,8 +75,9 @@
 				</Route>
 			</Route>
 			<Route path="/test6">
-				<button id="setAPI" on:click={()=>{router.useHashNavigation(false); router.goto('/')}}>API</button>
-				<button id="setHash" on:click={()=>{router.goto('/'); router.useHashNavigation(true)}}>Hash</button>
+				<button id="setHistory" on:click={()=>{router.goto('/'); router.mode.history();router.goto('/')}}>History</button>
+				<button id="setHash" on:click={()=>{router.goto('/'); router.mode.hash();router.goto('/')}}>Hash</button>
+				<button id="setMemory" on:click={()=>{router.goto('/'); router.mode.memory();router.goto('/')}}>Memory</button>
 			</Route>
 			<Route path="/test7/:name" let:params><h1>Hello, {params.name}!</h1></Route>
 			<Route path="/test8/:name"><Child /></Route>

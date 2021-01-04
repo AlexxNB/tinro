@@ -3,13 +3,13 @@
 ![npm](https://img.shields.io/npm/v/tinro?style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AlexxNB/tinro/Publish%20on%20NPM?label=test&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/tinro?label=Bundle%20size&style=flat-square) ![npm](https://img.shields.io/npm/dt/tinro?style=flat-square) 
 
 
-The tinro is highly declarative, very tiny ([~3 Kb (1.8 Kb gzipped)](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
+The tinro is highly declarative, very tiny ([~3,4 Kb (1.3 Kb gzipped)](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
 
 ## Features
 
 * Just one component to declare routes in your app
 * Links are just common native `<a>` elements
-* History API navigation or hash-navigation
+* History API, Hash-based or in-memory navigation
 * Simple nested routes
 * Routes with parameters (`/hello/:name`)
 * Redirects
@@ -331,13 +331,18 @@ See [meta.params](#metaparams) section
 
 ## Navigation method
 
-By default navigation uses `History API` which allows to use cleaner page URLs but needs some setup on the server side. Instead you may force to use `hash` navigation method. No need to change links or paths in your app, everything will still work.
+By default navigation uses `History API` which allows to use clear page URLs but needs some setup on the server side. Instead you may force to use `hash` or `memory` navigation methods. No need to change links or paths in your app, everything will still work.
 
 ```html
 <!-- Root file of yor project, ex. App.svelte -->
 <script>
     import {Route,router} from 'tinro';
-    router.useHashNavigation(); // enable hash navigation method
+
+    router.mode.hash(); // enables hash navigation method
+
+    // - OR -
+
+    router.mode.memory(); // enables in-memory navigation method
 </script>
 
 <!-- Link will point browser on '/#/page/subpage' -->
@@ -346,6 +351,8 @@ By default navigation uses `History API` which allows to use cleaner page URLs b
 <!-- Route shows content when URL is '/#/page/subpage' -->
 <Route path="/page/subpage">Subpage content</Route>
 ```
+
+*Note: default navigation method in non-browser environment or inside iframes is `memory`*
 
 ### Server side setup for History API method
 
@@ -388,9 +395,6 @@ Run it inside any `Route` component to get its  meta data which includes:
 * `breadcrumbs` - all parent routes with `breadcrumb` property will add the object like `{name,path}` in this array
 * `subscribe(func)` -  you can use it to subscribe for meta data changes. The `func` will get updated `meta` object each time, URL changes.
 
-### `router.params()`
-Deprecated. See `router.meta` instead.
-
 ### `router.subscribe(func)`
 The `router` object is valid Svelte's store, so you can subscribe to get the navigation data changing. `func` gets an object with some page data:
 
@@ -409,6 +413,11 @@ Note, you can use the Svelte's autosubscription to retrieve data from the `route
 
 Current page URL is: {$router.path}
 ```
+### `router.mode.[history()|hash()|memory()]`
+Run in the app's root file to set navigation method you need.
+
+### `router.params()`
+Deprecated. See `router.meta` instead.
 
 ## Recipes
 

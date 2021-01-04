@@ -22,17 +22,29 @@ interface TinroRouteMeta {
   subscribe(handler: (meta: TinroRouteMeta) => void)
 }
 
+interface TinroRouterModeSwitcher {
+  /** Set HistoryAPI navigation method */
+  history(): ()=>void
+  /** Set hash navigation method */
+  hash(): ()=>void
+  /** Set memory navigation method */
+  memory(): ()=>void
+}
+
 declare interface TinroRouter {
     /** Point browser to the URL */
     goto(url: string): void
     /** Return current meta for the route */
     meta(): TinroRouteMeta
-    /** DEPRECATED: Return current params from url */
-    params(): Record<string, string>
-    /** Use hash navigation instead history API */
-    useHashNavigation(use?: boolean): void
     /** Get current route object on URL change */
     subscribe(handler: (currentRoute: TinroRoute) => void)
+    /** Switch navigatin method */
+    mode: TinroRouterModeSwitcher
+
+    /** DEPRECATED: Use router.meta().params instead */
+    params(): Record<string, string>
+    /** DEPRECATED: Use router.mode.hash() instead*/
+    useHashNavigation(use?: boolean): void
 }
 
 export const active: any
@@ -72,7 +84,7 @@ export class Route {
     $$slot_def: { default: {
       /** Current meta for the route */
       meta: TinroRouteMeta
-      /** DEPRECATED: Current params from url */
+      /** DEPRECATED: Use meta.params instead */
       params: Record<string, string>
     } };
   }
