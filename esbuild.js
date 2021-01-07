@@ -38,10 +38,6 @@ const pkg = require('./package.json');
             'svelte',
             'svelte/*'
         ],
-        plugins: [sveltePlugin({
-            compileOptions:{
-                format: 'cjs'
-            }
-        })]
+        plugins: [sveltePlugin()]
     });
 })()
