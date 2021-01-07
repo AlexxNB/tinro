@@ -16,7 +16,7 @@ const pkg = require('./package.json');
     });
 
     await esbuild.build({
-        entryPoints: ['src/index.js'],
+        entryPoints: ['cmp/index.js'],
         bundle: true,
         outfile: pkg.module,
         format: 'esm',
@@ -29,7 +29,7 @@ const pkg = require('./package.json');
     });
 
     await esbuild.build({
-        entryPoints: ['src/index.js'],
+        entryPoints: ['cmp/index.js'],
         bundle: true,
         outfile: pkg.main,
         format: 'cjs',
@@ -38,6 +38,10 @@ const pkg = require('./package.json');
             'svelte',
             'svelte/*'
         ],
-        plugins: [sveltePlugin()]
+        plugins: [sveltePlugin({
+            compileOptions:{
+                format: 'cjs'
+            }
+        })]
     });
 })()
