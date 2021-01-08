@@ -10,7 +10,7 @@ function createLocation(){
     let MODE = MODES.getDeafault();
     let listener;
     
-    const reset = _ => window.hashchange = window.onpopstate = memoURL = null;
+    const reset = _ => window.onhashchange = window.onpopstate = memoURL = null;
     const dispatch = _ => listener && listener(getLocation(MODE));
 
     function setMode(newMode){
@@ -22,7 +22,7 @@ function createLocation(){
         MODE !== MODES.OFF 
         && MODES.run( MODE ,
             _ => window.onpopstate = dispatch,
-            _ => window.hashchange = dispatch
+            _ => window.onhashchange = dispatch
         )
         && dispatch()
     }
