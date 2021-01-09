@@ -1,8 +1,8 @@
-interface TinroRoute {
+interface TinroRoute<T extends Record<string, string | string[]> = {}> {
     url: string
     from: string
     path: string
-    query: Record<string, string>
+    query: T
     hash: string
 }
 
