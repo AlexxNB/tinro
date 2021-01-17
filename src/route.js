@@ -18,28 +18,33 @@ export function createRouteObject(options){
     const metaStore = writable({});
 
     const route = {
-        un:null,
+        router:{},
         exact: false,
-        pattern: '',
+        pattern: null,
         meta: {},
         parent,
         fallback: options.fallback,
-        redirect: options.redirect,
-        firstmatch: options.firstmatch,
+        redirect: false,
+        firstmatch: false,
+        breadcrumb: null,
         matched: false,
         childs: new Set(),
         activeChilds: new Set(),
         fallbacks: new Set(),
-        makePattern(path){
-            route.exact = !path.endsWith('/*');
-            route.pattern = formatPath(`${route.parent && route.parent.pattern || ''}${path}`)
+        update(opts){
+            route.exact = !opts.path.endsWith('/*');
+            route.pattern = formatPath(`${route.parent && route.parent.pattern || ''}${opts.path}`)
+            route.redirect = opts.redirect;
+            route.firstmatch = opts.firstmatch;
+            route.breadcrumb = opts.breadcrumb;
+            route.match();
         },
         register: () => {
             if(!route.parent) return;
             route.parent[type].add(route);
             return ()=>{
                 route.parent[type].delete(route);
-                route.un && route.un();
+                route.router.un && route.router.un();
             }
         },
         show: ()=>{
@@ -50,11 +55,14 @@ export function createRouteObject(options){
             options.onHide();
             !route.fallback && route.parent && route.parent.activeChilds.delete(route);
         },
-        match: async ({path,url,from,query})=>{
+        match: async ()=>{
             route.matched = false;
+
+            const {path,url,from,query} = route.router;
             const match = getRouteMatch(route.pattern,path);
 
             if(match && route.redirect && (!route.exact || (route.exact && match.exact))){
+                await tick();
                 return router.goto(makeRedirectURL(path,route.parent.pattern,route.redirect));
             }
 
@@ -69,8 +77,8 @@ export function createRouteObject(options){
                 subscribe: metaStore.subscribe
             }
 
-            options.breadcrumb && route.meta && route.meta.breadcrumbs.push({
-                name: options.breadcrumb,
+            route.breadcrumb && route.meta && route.meta.breadcrumbs.push({
+                name: route.breadcrumb,
                 path: match.part
             });
 
@@ -90,10 +98,10 @@ export function createRouteObject(options){
             }
 
             await tick();
-          
+       
             if(
                 match
-                &&  !route.fallback 
+                &&  !route.fallback
                 &&  (
                         (route.childs.size > 0 && route.activeChilds.size == 0) ||
                         (route.childs.size == 0 && route.fallbacks.size > 0)
@@ -109,13 +117,15 @@ export function createRouteObject(options){
         }
     }
 
-    route.makePattern(options.path);
-
     setContext('tinro',route);
     onMount(()=>route.register());
 
-    route.un = router.subscribe(r => {
-        route.match(r);
+    route.router.un = router.subscribe(r => {
+        route.router.path = r.path;
+        route.router.url = r.url;
+        route.router.query = r.query;
+        route.router.from = r.from;
+        if(route.pattern !== null) route.match();
     });
     
     return route;

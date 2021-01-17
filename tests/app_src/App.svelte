@@ -1,6 +1,8 @@
 <script>
 	import {Route,router,active} from 'tinro';
 	import Child from './Child.svelte';
+
+	let isRedirect = false;
 </script> 
 
 <div class="layout">
@@ -38,6 +40,7 @@
 				<a href="/test13">Parent</a> 
 				<a href="/test13/foo">Child</a> 
 			</li>
+			<li><a href="/test14">Reactive props</a></li>
 		</ul>
 	</div>
 
@@ -105,6 +108,11 @@
 			<Route path="/test13/*" breadcrumb="Parent">
 				<Route path="/" let:meta><h1>{JSON.stringify(meta.breadcrumbs)}</h1></Route>
 				<Route path="/foo" breadcrumb="Child" let:meta><h1>{JSON.stringify(meta.breadcrumbs)}</h1></Route>
+			</Route>
+
+			<Route path="/test14/*">
+				<button id="turnOnRedirect" on:click={()=>isRedirect="/redirect"}>Turn on redirect</button>
+				<Route path="/" redirect={isRedirect}><h1>Not redirected - OK</h1></Route>
 			</Route>
 			
 			<Route fallback><h1>Root fallback</h1></Route>

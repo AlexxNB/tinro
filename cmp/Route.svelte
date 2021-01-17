@@ -11,18 +11,21 @@
     let params = {}; /* DEPRECATED */
     let meta = {};
 
-    createRouteObject({
-        path,
+    const route = createRouteObject({
         fallback,
-        redirect,
-        firstmatch,
-        breadcrumb,
         onShow(){showContent=true},
         onHide(){showContent=false},
         onMeta(newmeta){
             meta=newmeta;
             params = meta.params /* DEPRECATED */
         }
+    });
+
+    $: route.update({
+        path,
+        redirect,
+        firstmatch,
+        breadcrumb,
     });
 </script>
 
