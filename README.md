@@ -3,13 +3,13 @@
 ![npm](https://img.shields.io/npm/v/tinro?style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AlexxNB/tinro/Publish%20on%20NPM?label=test&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/tinro?label=Bundle%20size&style=flat-square) ![npm](https://img.shields.io/npm/dt/tinro?style=flat-square) 
 
 
-The tinro is highly declarative, very tiny ([~3,4 Kb (1.3 Kb gzipped)](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte's](https://svelte.dev) web applications.
+tinro is a highly declarative, very tiny ([~3.4 Kb (1.3 Kb gzipped)](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte](https://svelte.dev) web applications.
 
 ## Features
 
 * Just one component to declare routes in your app
 * Links are just common native `<a>` elements
-* History API, Hash-based or in-memory navigation
+* History API, Hash-based, or in-memory navigation
 * Simple nested routes
 * Routes with parameters (`/hello/:name`)
 * Redirects
@@ -40,12 +40,12 @@ The tinro is highly declarative, very tiny ([~3,4 Kb (1.3 Kb gzipped)](https://g
     - [Lazy loading](#lazy-loading-components)
     - [Transitions](#transitions)
     - [Guarded routes](#guarded-routes)
-    - [Scroll on top](#scroll-on-top)
+    - [Scroll to top](#scroll-to-top)
 
 
 ## Install
 
-Install tinro as dev dependency in the your Svelte project:
+Install tinro as a dev dependency in your Svelte project:
 
 ```shell
 $ npm i -D tinro
@@ -53,7 +53,7 @@ $ npm i -D tinro
 
 ## Getting started
 
-**The tinro is very simple!** It provides just *one component* - `<Route>`. So a common app structure looks like:
+**tinro is very simple!** It provides just *one component* — `<Route>`. A common app structure looks like this:
 
 ```html
 <script>
@@ -67,7 +67,7 @@ $ npm i -D tinro
     <a href="/contacts">Contacts</a>
 </nav>
 
-<Route path="/"><h1>It is main page</h1></Route>
+<Route path="/"><h1>This is the main page</h1></Route>
 <Route path="/portfolio/*">
     <Route path="/">
         <h1>Portfolio introduction</h1>
@@ -89,7 +89,7 @@ There are two types of routes you can declare in the `<Route>` component's `path
 
 ### Exact path
 
-Shows its content only when `path` matches the URL of the page *exactly*. You can't place nested `<Route>` components inside such components.
+Shows its content only when `path` matches the URL of the page *exactly*. You can't place a nested `<Route>` inside these components.
 
 ```html
 <Route path="/">...</Route>
@@ -99,7 +99,7 @@ Shows its content only when `path` matches the URL of the page *exactly*. You ca
 
 ### Non-exact path
 
-The `<Route>` components with a `path` property that ends with `/*` are showing their content when a part of the page's URL matches with path before the `/*`. You are able to place nested `<Routes>` inside components with non-exact path only.
+`<Route>` components with a `path` property that ends with `/*` show their content when a part of the page's URL matches with the path before the `/*`. A nested `<Route>` can be placed inside components with a non-exact path only.
 
 ```html
 <Route path="/books/*">
@@ -109,9 +109,9 @@ The `<Route>` components with a `path` property that ends with `/*` are showing 
 </Route>
 ```
 
-The `path` property of the nested `<Routes>` is relative to its parent. So to see the _Fiction_ category in the above example - you should point your browser on `http://mysite.com/books/fiction`.
+The `path` property of a nested `<Route>` is relative to its parent. To see the _Fiction_ category in the above example, you would point your browser to `http://mysite.com/books/fiction`.
 
-Nested routes inside child components do also work. So we can rewrite the example this way:
+Nested routes also work inside child components. So, we can rewrite the example this way:
 
 ```html
 <!-- Bookslist.svelte-->
@@ -129,7 +129,7 @@ Books list:
 
 ### Show first matched nested route only
 
-Sometimes you need to show only first nested route from all matched with given URL. Use `firstmatch` property on parent `Route`:
+Sometimes, you need to show only the first nested route from all those matched with a given URL. Use the `firstmatch` property on the parent `Route`:
 
 ```html
 <Route path="/user/*" firstmatch>
@@ -145,15 +145,15 @@ Sometimes you need to show only first nested route from all matched with given U
 
 ## Links
 
-There is no special component for links. Just use native `<a>` elements. When the `href` attribute starts with a single `/` sign (like `/mypage` or just `/`), it will be treated as internal link which will be matched with defined routes. Other cases do not affect the links' behavior. 
+There is no special component for links. Just use native `<a>` elements. When the `href` attribute starts with a single `/` (like `/mypage` or just `/`), it will be treated as an internal link which will be matched with defined routes. Other cases do not affect the links' behavior. 
 
-All internal links will be passed into the tinro router, but it is possible to prevent this by adding the `tinro-ignore` or `data-tinro-ignore` attributes:
+All internal links will be passed into the tinro router. However, it is possible to prevent this by adding the `tinro-ignore` or `data-tinro-ignore` attributes:
 
 ```html
 <a href="/api/auth" tinro-ignore>Go to API page</a>
 ```
 
-In case you need to add the `active` class on the links where path is corresponding the current URL, use the `active` action from the `tinro` package:
+If you need to add the `active` class to links where the path corresponds to the current URL, use the `active` action from the `tinro` package:
 
 ```html
 <script>
@@ -179,17 +179,17 @@ In case you need to add the `active` class on the links where path is correspond
 
 ## Redirects
 
-You can redirect the browser on any path using `redirect` property:
+You can redirect the browser to any path by using the `redirect` property:
 
 ```html
 <!-- Exact redirect -->
 <Route path="/noenter" redirect="/newurl"/>
 
-<!-- Non-exact redirect will work for any nested path also -->
+<!-- Non-exact redirect will also work for any nested path -->
 <Route path="/noenter/*" redirect="/newurl"/>
 ```
 
-You can also redirect to a relative path, just write the new url without `/` symbol at start:
+You can also redirect to a relative path — just write the new URL without `/` in front of it:
 
 ```html
 <!-- This will redirect to /subpage/newurl -->
@@ -200,7 +200,7 @@ You can also redirect to a relative path, just write the new url without `/` sym
 
 ## Fallbacks
 
-The routes with the `fallback` property show their content when no matched address was found. Fallbacks may be placed inside a non-exact `<Route>` only. Fallbacks are bubbling, so if there is no fallback on the current level, the router will try to find a fallback on any parent levels. See the example:
+Routes with the `fallback` property show their content when no matched address was found. Fallbacks may be placed inside a non-exact `<Route>` only. Fallbacks bubble, so if there is no fallback on the current level, the router will try to find one on any parent levels. See the example:
 
 ```html
 <Route>  <!-- same as <Route path="/*"> -->
@@ -229,9 +229,7 @@ The routes with the `fallback` property show their content when no matched addre
 
 ## Route meta
 
-There are some useful meta data you can get for each route.
-
-You can get meta from `router` import:
+You can get useful meta data for each route by importing `router` from the `tinro` package.
 
 ```html 
 <script>
@@ -241,11 +239,11 @@ You can get meta from `router` import:
 
 <h1>My URL is {meta.url}!</h1>
 
-<!-- In case you need reactive updates, use it as a store -->
+<!-- If you need reactive updates, use it as a store -->
 <h1>My URL is {$meta.url}!</h1>
 ```
 
-Also you can get meta with `let:meta` directive:
+You can also get meta data with the `let:meta` directive:
 
 ```html 
 <Route path="/hello" let:meta>
@@ -255,38 +253,38 @@ Also you can get meta with `let:meta` directive:
 
 ### `meta.url`
 
-Current browser URL line (includes query). 
+Current browser URL (includes query). 
 
 *Example: `/books/stanislaw_lem/page2?order=descend`*
 
 
 ### `meta.pattern`
 
-The pattern of the route path which may includes parameters placeholders. It is combined from `path` property of all parent routes. 
+The pattern of the route path, including parameter placeholders. It is a combination of the `path` properties of all parent routes. 
 
 *Example: `/books/:author`*
 
 ### `meta.match`
 
-Part of browser URL which is matched with route pattern. 
+Part of the browser URL that is matched with the route pattern. 
 
 *Example: `/books/stanislaw_lem`*
 
 ### `meta.from`
 
-If present, value of browser URL before navigation on current page. Useful to make back button, for example.
+If present, the value of the browser URL before navigation to the current page. Useful to make a back button, for example.
 
 *Example: `/books/stanislaw_lem/page1?order=descend`*
 
 ### `meta.query`
 
-Object of values from browser URL query part (if present)
+Object containing keys/values from the browser URL query string (if present).
 
-*Example: `{order: "descent"}`*
+*Example: `{order: "descend"}`*
 
 ### `meta.params`
 
-If route pattern has parameters, their values will be in `meta.params` object.
+If the route pattern has parameters, their values will be in the `meta.params` object.
 
 ```html
 <!-- Example for URL "/books/stanislaw_lem/solaris"> -->
@@ -306,7 +304,7 @@ If route pattern has parameters, their values will be in `meta.params` object.
 
 ### `meta.breadcrumbs`
 
-All parent routes which have `breadcrumb` property will add breadcrumb in the `meta.breadcrumbs` array. Each breadcrumb is an object with `name` and `path` fields.
+All parent routes that have a `breadcrumb` property will add a breadcrumb to the `meta.breadcrumbs` array. Each breadcrumb is an object with `name` and `path` fields.
 
 
 ```html
@@ -318,7 +316,7 @@ All parent routes which have `breadcrumb` property will add breadcrumb in the `m
         {/each}
         </ul>
 
-        It is my portfolio
+        This is my portfolio
     </Route>
 </Route>
 ```
@@ -326,13 +324,13 @@ All parent routes which have `breadcrumb` property will add breadcrumb in the `m
 
 ## Parameters
 
-> **!** *`route.params` and `let:params` are DEPRECATED since v.0.5.0. Will be deleted in future versions!*
+> **!** *`route.params` and `let:params` are DEPRECATED since v.0.5.0. and will be deleted in future versions!*
 
 See [meta.params](#metaparams) section
 
 ## Navigation method
 
-By default navigation uses `History API` which allows to use clear page URLs but needs some setup on the server side. Instead you may force to use `hash` or `memory` navigation methods. No need to change links or paths in your app, everything will still work.
+By default, navigation uses the `History API` which allows you to have clean page URLs, although it needs some setup on the server side. Instead, you may choose to use `hash` or `memory` navigation methods. There is no need to change links or paths in your app, everything else will still work the same.
 
 ```html
 <!-- Root file of yor project, ex. App.svelte -->
@@ -346,7 +344,7 @@ By default navigation uses `History API` which allows to use clear page URLs but
     router.mode.memory(); // enables in-memory navigation method
 </script>
 
-<!-- Link will point browser on '/#/page/subpage' -->
+<!-- Link will point browser to '/#/page/subpage' -->
 <a href="/page/subpage">Subpage</a>
 
 <!-- Route shows content when URL is '/#/page/subpage' -->
@@ -357,9 +355,9 @@ By default navigation uses `History API` which allows to use clear page URLs but
 
 ### Server side setup for History API method
 
-When you use History API and point the browser to root path `/`(usually same as `/index.html`) all links and Routes will work properly. But when you start your app on any subpage like `/page/subpage` you will see the `404 Not found` error. That is why you need to setup your server to point all requests to `/index.html`.
+When you use the `History API` and point the browser to the root path `/` (usually `/index.html`) all links and Routes will work properly. But when you start your app on any subpage, like `/page/subpage`, you will see the `404 Not found` error. Because of this, you need to setup your server to point all requests to `/index.html`.
 
-If you use [official Svelte template](https://github.com/sveltejs/template) it is easy. Open `package.json` file and find NPM script:
+This is easy if you use the [official Svelte template](https://github.com/sveltejs/template). Just open `package.json` and find this NPM script:
 
 ```json
 "start": "sirv public"
@@ -371,41 +369,41 @@ Replace it with this line:
 "start": "sirv public --single"
 ```
 
-Now start your app by `npm run dev` and open URL like `http://localhost:5000/page/subpage`. You should see the app page, instead of the "Not found" error.
+Now, start your app with `npm run dev` and open a URL like `http://localhost:5000/page/subpage`. You should see the app page, instead of the "Not found" error.
 
-*For other servers you can read the following links: [Nginx](https://www.nginx.com/blog/creating-nginx-rewrite-rules/#Example&nbsp;%E2%80%93-Enabling-Pretty-Permalinks-for-WordPress-Websites),[Apache](https://httpd.apache.org/docs/2.4/rewrite/remapping.html#fallback-Resource), [Caddy](https://caddyserver.com/docs/caddyfile/directives/rewrite#examples)*
+*For other servers you can read the following links: [Nginx](https://www.nginx.com/blog/creating-nginx-rewrite-rules/#Example&nbsp;%E2%80%93-Enabling-Pretty-Permalinks-for-WordPress-Websites), [Apache](https://httpd.apache.org/docs/2.4/rewrite/remapping.html#fallback-Resource), [Caddy](https://caddyserver.com/docs/caddyfile/directives/rewrite#examples)*
 
 
 
 ## API
 
-You can import `router` object from the `tinro` package:
+You can import the `router` object from the `tinro` package:
 
 ### `router.goto(href)`
-Programaticly change the URL of current page.
+Programmatically change the URL of the current page.
 
 ### `router.meta()`
-Run it inside any `Route` component to get its  meta data which includes:
+Run it inside any `Route` component to get its meta data which includes:
 
-* `url` - current browser URL(with query string)
-* `from` - previous URL before navigation on current page, if present
-* `pattern` - route's path pattern combined from all `path` properties of all parent `Route` components.
-* `match` - part of browser URL, which is matched with pattern.
+* `url` - current browser URL (with query string)
+* `from` - previous URL before navigation to current page (if present)
+* `pattern` - route's path pattern, combination of all `path` properties of all parent `Route` components
+* `match` - part of the the browser URL that is matched with pattern
 * `params` - if pattern has placeholders, their values will be in this object
-* `query` - if browser URL has query string, there will be parsed object
-* `breadcrumbs` - all parent routes with `breadcrumb` property will add the object like `{name,path}` in this array
-* `subscribe(func)` -  you can use it to subscribe for meta data changes. The `func` will get updated `meta` object each time, URL changes.
+* `query` - if browser URL has a query string, there will be a parsed object
+* `breadcrumbs` - all parent routes with the `breadcrumb` property will add an object with `{name, path}` to this array
+* `subscribe(func)` -  you can use this to subscribe to meta data changes. `func` will get an updated `meta` object each time the URL changes
 
 ### `router.subscribe(func)`
-The `router` object is valid Svelte's store, so you can subscribe to get the navigation data changing. `func` gets an object with some page data:
+The `router` object is a valid Svelte store, so you can subscribe to get the changing navigation data. `func` gets an object with page data:
 
-* `url` - current browser URL(with query string)
-* `from` - previous URL before navigation on current page, if present
+* `url` - current browser URL (with query string)
+* `from` - previous URL before navigation to current page (if present)
 * `path` - current browser URL
 * `hash` - the hash part of the URL, after `#` sign
 * `query` - object, containing parsed query string
 
-Note, you can use the Svelte's autosubscription to retrieve data from the `router` store:
+Note: you can use Svelte's auto-subscription to retrieve data from the `router` store:
 
 ```html
 <script>
@@ -415,33 +413,33 @@ Note, you can use the Svelte's autosubscription to retrieve data from the `route
 Current page URL is: {$router.path}
 ```
 ### `router.mode.[history()|hash()|memory()]`
-Run in the app's root file to set navigation method you need.
+Run this in the app's root file to set the navigation method you need.
 
 ### `router.params()`
 Deprecated. See `router.meta` instead.
 
 ## Recipes
 
-Tinro is not the most powerful router among all available routers for Svelte applications. We prefer a smaller footprint in your bundles over all possible features out the box. But you can easily code some features yourself using the recipies below:
+tinro is not the most powerful router among all those available for Svelte applications. We prefer a smaller footprint in your bundles over having all possible features out of the box. But you can easily code some features yourself using the recipies below:
 
 ### Lazy loading components
 
-If you want have code-splitting and load components only when page requested, make this little component:
+If you want to have code-splitting and load components only when that page is requested, make this little component:
 
 ```html
 <!-- Lazy.svelte-->
 <script>
-	export let component;
+    export let component;
 </script>
 
 {#await component.then ? component : component()}
-	 Loading component...
+    Loading component...
 {:then Cmp}
    <svelte:component this={Cmp.default} />
 {/await}
 ```
 
-And use it when you need lazy loaded component in your routes:
+And use it when you need a lazy loaded component in your routes:
 
 ```html
 <Route path="/lazypage">
@@ -453,23 +451,23 @@ And use it when you need lazy loaded component in your routes:
 
 ### Transitions
 
-In case of any transiton when path changes, create a component like this:
+If you want a transiton when the path changes, create a component like this:
 
 ```html
 <!-- Transition.svelte -->
 <script>
-	import {router} from 'tinro';
-	import {fade} from 'svelte/transition';
+    import {router} from 'tinro';
+    import {fade} from 'svelte/transition';
 </script>
 
 {#key $router.path}
-<div in:fade="{{ duration: 700}}">
-	<slot></slot>
-</div>
+    <div in:fade="{{ duration: 700}}">
+        <slot></slot>
+    </div>
 {/key}
 ```
 
-Then put your routes inside the *Transition* component:
+Then, put your routes inside the *Transition* component:
 
 ```html
 <Transition> 
@@ -481,23 +479,23 @@ Then put your routes inside the *Transition* component:
 
 ### Guarded routes
 
-You may protect routes from being loaded just using Svelte's logic like `{#if}` statement:
+You can protect routes from being loaded using only Svelte's logic blocks, like the `{#if}` statement:
 
 ```html
 {#if user.authed}
-    <Route path="/profile">This is private page...</Route>
+    <Route path="/profile">This is a private page...</Route>
 {:else}
     <Route path="/profile"><a href="/login">Please sign in first</a></Route>
-    <Route path="/login">This is sign in form...</Route>
+    <Route path="/login">This is the sign in form...</Route>
 {/if}
 ```
 
-Also you can create a special guard component as shown in [this example](https://svelte.dev/repl/5673ff403af14411b0cd1785be3d996f).
+You can also create a special guard component as shown in [this example](https://svelte.dev/repl/5673ff403af14411b0cd1785be3d996f).
 
 
-### Scroll on top
+### Scroll to top
 
-Tinro doesn't control scrolling of your app. Sometimes you need to scroll on top of the page when navigating between pages. Just add the `router` store subscription in your root component(ex. `App.svelte`). Using this way you can run any actions (not only scrolling), every time the `URL` changes.
+tinro doesn't control scrolling in your app, but sometimes you need to scroll to the top of the page after navigation. To do this, just add the `router` store subscription to your root component (ex. `App.svelte`). This way you can run any actions (not just scrolling) every time the `URL` changes.
 
 ```javascript
 import {router} from `tinro`;
