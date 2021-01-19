@@ -42,7 +42,7 @@ export function makeRedirectURL(path,parent_pattern,slug){
     const getParts = url => url.split('/').filter(p=>p!=='');
 
     const pathParts = getParts(path);
-    const patternParts = getParts(parent_pattern);
+    const patternParts = parent_pattern ? getParts(parent_pattern) : [];
 
     return '/'+patternParts.map((_,i)=>pathParts[i]).join('/')+'/'+slug;
 }

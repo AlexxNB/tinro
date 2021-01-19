@@ -63,7 +63,7 @@ export function createRouteObject(options){
 
             if(match && route.redirect && (!route.exact || (route.exact && match.exact))){
                 await tick();
-                return router.goto(makeRedirectURL(path,route.parent.pattern,route.redirect));
+                return router.goto(makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect));
             }
 
             route.meta = match && {
