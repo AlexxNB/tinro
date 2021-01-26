@@ -22,7 +22,7 @@
 			</li>
 			<li><a id="links" href="/test4/">Links</a></li>
 			<li> Fallbacks <br/>
-				<a href="/blah">Root</a> <a href="/test5/blah">Root from sub</a> <a href="/test5/sub/blah">Sub from sub</a>
+				<a href="/blah">Root</a> <a href="/test5/blah">Root from sub</a> <a href="/test5/sub/blah">Sub from sub</a> <a href="/test5/sub2/blah">Redirected</a>
 			</li>
 			<li><a href="/test6">Change navigation type</a></li>
 			<li><a href="/test7/world">Parameters</a></li>
@@ -75,6 +75,9 @@
 			<Route path="/test5/*">
 				<Route path="/sub/*">
 					<Route fallback><h1>Sub fallback</h1></Route>
+				</Route>
+				<Route path="/sub2/*">
+					<Route fallback redirect="/redirect" />
 				</Route>
 			</Route>
 			<Route path="/test6">

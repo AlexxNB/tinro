@@ -61,7 +61,7 @@ export function createRouteObject(options){
             const {path,url,from,query} = route.router;
             const match = getRouteMatch(route.pattern,path);
 
-            if(match && route.redirect && (!route.exact || (route.exact && match.exact))){
+            if(!route.fallback && match && route.redirect && (!route.exact || (route.exact && match.exact))){
                 await tick();
                 return router.goto(makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect));
             }
@@ -112,7 +112,12 @@ export function createRouteObject(options){
                     obj = obj.parent;
                     if(!obj) return;
                 }
-                obj && obj.fallbacks.forEach(fb => fb.show());
+                obj && obj.fallbacks.forEach(fb => {
+                    if(fb.redirect)
+                        router.goto(makeRedirectURL('/',fb.parent && fb.parent.pattern,fb.redirect));
+                    else
+                        fb.show();
+                });
             }
         }
     }
