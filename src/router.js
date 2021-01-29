@@ -45,9 +45,10 @@ export function active(node){
 function aClickListener(go){
     const h = e => {
         const a = e.target.closest('a[href]');
-        const i = a && getAttr(a,'tinro-ignore');
+        const t = a  && getAttr(a,'target');
+        const i = a  && getAttr(a,'tinro-ignore');
 
-        if(!i && a){
+        if(!i && !t && !e.ctrlKey && a){
             const href = a.getAttribute('href').replace(/^\/#/,'');
 
             if(!/^\/\/|^[a-zA-Z]+:/.test(href)) {
