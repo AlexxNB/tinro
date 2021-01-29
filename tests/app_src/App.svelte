@@ -71,6 +71,7 @@
 				<p><a href="/#/test1" id="internalHashLink">With hash</a></p>
 				<p><a href="mailto:foo@domain.tld" id="mailtoLink">Mailto</a></p>
 				<p><a href="/test1" target="_blank">Target blank</a></p>
+				<p><a href="/test1" target="_self">Target self</a></p>
 			</Route>
 			<Route path="/test4/foo"><h1>Relative link - OK</h1></Route>
 			<Route path="/test5/*">
