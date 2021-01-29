@@ -1,6 +1,6 @@
 {
   "name": "tinro",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "tinro is a tiny declarative router for Svelte",
   "main": "dist/tinro.js",
   "module": "dist/tinro.es.js",
