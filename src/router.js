@@ -2,6 +2,7 @@ import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
 import {getAttr,getRouteMatch} from './lib';
 import {location} from './location';
+import {getMeta} from './route';  /* DEPRECATED */
 import MODES from './modes';
 
 export const router = routerStore();
@@ -21,7 +22,7 @@ function routerStore(){
         subscribe,
         goto: href => location.go(href),
         params: getParams, /* DEPRECATED */
-        meta: getMeta,
+        meta: getMeta, /* DEPRECATED */
         useHashNavigation: s => location.mode(s ? MODES.HASH : MODES.HISTORY), /* DEPRECATED */
         mode: {
             hash: ()=>location.mode(MODES.HASH),
@@ -61,10 +62,6 @@ function aClickListener(go){
 
     addEventListener('click', h);
     return () => removeEventListener('click', h);
-}
-
-function getMeta(){
-    return getContext('tinro').meta;
 }
 
 /* DEPRECATED */

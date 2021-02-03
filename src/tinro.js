@@ -1,4 +1,4 @@
 import {router,active} from './router.js';
-import {createRouteObject} from './route.js';
+import {createRouteObject,getMeta as meta} from './route.js';
 
-export {router,active,createRouteObject};
+export {router,active,meta,createRouteObject};

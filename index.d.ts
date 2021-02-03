@@ -34,20 +34,23 @@ interface TinroRouterModeSwitcher {
 declare interface TinroRouter {
     /** Point browser to the URL */
     goto(url: string): void
-    /** Return current meta for the route */
+    /** 
+     * @deprecated Import `meta` from `tinro` package directly
+    */
     meta(): TinroRouteMeta
     /** Get current route object on URL change */
     subscribe(handler: (currentRoute: TinroRoute) => void)
     /** Switch navigatin method */
     mode: TinroRouterModeSwitcher
 
-    /** DEPRECATED: Use router.meta().params instead */
+    /** @deprecated Use meta().params instead */
     params(): Record<string, string>
-    /** DEPRECATED: Use router.mode.hash() instead*/
+    /** @deprecated Use router.mode.hash() instead*/
     useHashNavigation(use?: boolean): void
 }
 
 export const active: any
+export function meta(): TinroRouteMeta
 export const router: TinroRouter
 export class Route {
     $$prop_def: {
@@ -84,7 +87,7 @@ export class Route {
     $$slot_def: { default: {
       /** Current meta for the route */
       meta: TinroRouteMeta
-      /** DEPRECATED: Use meta.params instead */
+      /** @deprecated Use meta.params instead */
       params: Record<string, string>
     } };
   }

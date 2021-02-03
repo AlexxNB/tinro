@@ -229,18 +229,18 @@ Routes with the `fallback` property show their content when no matched address w
 
 ## Route meta
 
-You can get useful meta data for each route by importing `router` from the `tinro` package.
+You can get useful meta data for each route by importing and calling `meta` from the `tinro` package.
 
 ```html 
 <script>
-    import {router} from 'tinro';
-    const meta = router.meta();  
+    import {meta} from 'tinro';
+    const route = meta();  
 </script>
 
-<h1>My URL is {meta.url}!</h1>
+<h1>My URL is {route.url}!</h1>
 
 <!-- If you need reactive updates, use it as a store -->
-<h1>My URL is {$meta.url}!</h1>
+<h1>My URL is {$route.url}!</h1>
 ```
 
 You can also get meta data with the `let:meta` directive:

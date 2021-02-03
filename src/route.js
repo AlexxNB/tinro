@@ -135,3 +135,7 @@ export function createRouteObject(options){
     
     return route;
 }
+
+export function getMeta(){
+    return getContext('tinro').meta;
+}
