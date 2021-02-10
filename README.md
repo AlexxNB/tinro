@@ -138,7 +138,7 @@ Sometimes, you need to show only the first nested route from all those matched w
     <Route path="/add">Add new user</Route> 
 
     <!-- Will be open when URL is /user/alex or /user/bob, but not /user/add -->
-    <Route path="/:username" let:params>Show user {params.username}'s profile</Route> 
+    <Route path="/:username" let:meta>Show user {meta.params.username}'s profile</Route> 
 
 </Route>
 ```
