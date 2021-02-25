@@ -25,6 +25,7 @@ export function createRouteObject(options){
         parent,
         fallback: options.fallback,
         redirect: false,
+        replace: false,
         firstmatch: false,
         breadcrumb: null,
         matched: false,
@@ -35,6 +36,7 @@ export function createRouteObject(options){
             route.exact = !opts.path.endsWith('/*');
             route.pattern = formatPath(`${route.parent && route.parent.pattern || ''}${opts.path}`)
             route.redirect = opts.redirect;
+            route.replace = opts.replace;
             route.firstmatch = opts.firstmatch;
             route.breadcrumb = opts.breadcrumb;
             route.match();
@@ -63,7 +65,12 @@ export function createRouteObject(options){
 
             if(!route.fallback && match && route.redirect && (!route.exact || (route.exact && match.exact))){
                 await tick();
-                return router.goto(makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect));
+                const nextUrl = makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect);
+                if (route.replace) {
+                    return router.replaceWith(nextUrl);
+                } else {
+                    return router.goto(nextUrl);
+                }
             }
 
             route.meta = match && {
@@ -113,10 +120,16 @@ export function createRouteObject(options){
                     if(!obj) return;
                 }
                 obj && obj.fallbacks.forEach(fb => {
-                    if(fb.redirect)
-                        router.goto(makeRedirectURL('/',fb.parent && fb.parent.pattern,fb.redirect));
-                    else
+                    if(fb.redirect) {
+                        const nextUrl = makeRedirectURL('/',fb.parent && fb.parent.pattern,fb.redirect);
+                        if (fb.replace) {
+                            router.replaceWith(nextUrl);
+                        } else {
+                            router.goto(nextUrl);
+                        }
+                    } else {
                         fb.show();
+                    }
                 });
             }
         }
