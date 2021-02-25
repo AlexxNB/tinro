@@ -4,7 +4,6 @@
     export let path = '/*';
     export let fallback = false;
     export let redirect = false;
-    export let replace = false;
     export let firstmatch = false;
     export let breadcrumb = null;
 
@@ -25,7 +24,6 @@
     $: route.update({
         path,
         redirect,
-        replace,
         firstmatch,
         breadcrumb,
     });

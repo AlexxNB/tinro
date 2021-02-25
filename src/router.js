@@ -20,8 +20,7 @@ function routerStore(){
 
     return {
         subscribe,
-        goto: href => location.go(href),
-        replaceWith: href => location.replace(href),
+        goto: (href, replace=false) => replace ? location.replace(href) : location.go(href),
         params: getParams, /* DEPRECATED */
         meta: getMeta, /* DEPRECATED */
         useHashNavigation: s => location.mode(s ? MODES.HASH : MODES.HISTORY), /* DEPRECATED */

@@ -333,7 +333,7 @@ See [meta.params](#metaparams) section
 By default, navigation uses the `History API` which allows you to have clean page URLs, although it needs some setup on the server side. Instead, you may choose to use `hash` or `memory` navigation methods. There is no need to change links or paths in your app, everything else will still work the same.
 
 ```html
-<!-- Root file of yor project, ex. App.svelte -->
+<!-- Root file of your project, ex. App.svelte -->
 <script>
     import {Route,router} from 'tinro';
 

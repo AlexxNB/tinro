@@ -33,9 +33,7 @@ interface TinroRouterModeSwitcher {
 
 declare interface TinroRouter {
     /** Point browser to the URL */
-    goto(url: string): void
-    /** Replace browser state with this URL */
-    replaceWith(url: string): void
+    goto(url: string, replace?: boolean): void
     /** 
      * @deprecated Import `meta` from `tinro` package directly
     */
@@ -72,11 +70,6 @@ export class Route {
        * Redirect route to the specified path
        */
       redirect?: string;
-
-      /**
-       * Redirect route to the specified path, replacing the current browser state
-       */
-      replace?: string;
 
       /**
        * Will be show only first matched with URL nested route
