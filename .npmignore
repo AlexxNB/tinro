@@ -1,4 +1,5 @@
 node_modules
 src
 tests
-rollup.config.js
+esbuild.js
+COMPARE.md
