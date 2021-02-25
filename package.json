@@ -28,15 +28,14 @@
     "url": "https://github.com/AlexxNB/tinro/issues"
   },
   "homepage": "https://github.com/AlexxNB/tinro#readme",
-  "dependencies": {},
   "devDependencies": {
     "@detools/tap-diff": "^0.2.2",
     "derver": "^0.3.0",
-    "esbuild": "^0.8.36",
-    "esbuild-svelte": "^0.4.0",
+    "esbuild": "^0.8.52",
+    "esbuild-svelte": "^0.4.2",
     "port-authority": "^1.1.2",
     "puppeteer": "^3.3.0",
-    "svelte": "^3.32.0",
+    "svelte": "^3.32.3",
     "tape-modern": "^1.1.2"
   }
 }
