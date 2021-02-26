@@ -33,7 +33,7 @@ interface TinroRouterModeSwitcher {
 
 declare interface TinroRouter {
     /** Point browser to the URL */
-    goto(url: string): void
+    goto(url: string, replace?: boolean): void
     /** 
      * @deprecated Import `meta` from `tinro` package directly
     */

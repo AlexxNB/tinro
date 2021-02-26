@@ -34,6 +34,10 @@ function createLocation(){
             setLocation(MODE,href);
             dispatch();
         },
+        replace(href){
+            replaceLocation(MODE,href);
+            dispatch();
+        },
         start(fn){
             listener = fn;
             setMode()
@@ -43,6 +47,14 @@ function createLocation(){
             setMode(MODES.OFF)
         },
     }
+}
+
+function replaceLocation(MODE,href){
+    MODES.run( MODE,
+        _ => history.replaceState({}, '', href),
+        _ => window.location.hash=href,
+        _ => memoURL=href
+    );
 }
 
 function setLocation(MODE,href){

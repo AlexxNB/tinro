@@ -63,7 +63,8 @@ export function createRouteObject(options){
 
             if(!route.fallback && match && route.redirect && (!route.exact || (route.exact && match.exact))){
                 await tick();
-                return router.goto(makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect));
+                const nextUrl = makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect);
+                return router.goto(nextUrl, true);
             }
 
             route.meta = match && {
@@ -113,10 +114,12 @@ export function createRouteObject(options){
                     if(!obj) return;
                 }
                 obj && obj.fallbacks.forEach(fb => {
-                    if(fb.redirect)
-                        router.goto(makeRedirectURL('/',fb.parent && fb.parent.pattern,fb.redirect));
-                    else
+                    if(fb.redirect) {
+                        const nextUrl = makeRedirectURL('/',fb.parent && fb.parent.pattern,fb.redirect);
+                        router.goto(nextUrl, true);
+                    } else {
                         fb.show();
+                    }
                 });
             }
         }
