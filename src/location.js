@@ -30,12 +30,8 @@ function createLocation(){
     return {
         mode: mode => setMode(mode),
         get: _ => getLocation(MODE),
-        go(href){
-            setLocation(MODE,href);
-            dispatch();
-        },
-        replace(href){
-            replaceLocation(MODE,href);
+        go(href,replace){
+            setLocation(MODE,href,replace);
             dispatch();
         },
         start(fn){
@@ -49,18 +45,13 @@ function createLocation(){
     }
 }
 
-function replaceLocation(MODE,href){
-    MODES.run( MODE,
-        _ => history.replaceState({}, '', href),
-        _ => window.location.hash=href,
-        _ => memoURL=href
-    );
-}
+function setLocation(MODE, href, replace){
 
-function setLocation(MODE,href){
+    const setURL = ()=>history[replace ? 'replaceState' : 'pushState']({}, '', MODE==MODES.HASH ? `#${href}` : href)
+
     MODES.run( MODE,
-        _ => history.pushState({}, '', href),
-        _ => window.location.hash=href,
+        _ => setURL(),
+        _ => setURL(),
         _ => memoURL=href
     );
 }
