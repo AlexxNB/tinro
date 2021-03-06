@@ -73,6 +73,18 @@ export function parseQuery(str){
     return Object.entries(o).reduce((r,p)=>(r[p[0]]=p[1].length>1 ? p[1] : p[1][0],r),{});
 }
 
+export function makeQuery(obj){
+    return Object.entries(obj).map(([name,value])=>{
+        if(!value) return null;
+        if(value === true) return name;
+        return `${name}=${Array.isArray(value) ? value.join(',') : value}`;
+    }).filter(e=>e).join('&');
+}
+
+export function prefix(str, prefix){
+    return !str ? '' : prefix+str;
+}
+
 export function err(text){
     throw new Error('[Tinro] '+text);
 }

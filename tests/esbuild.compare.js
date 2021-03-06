@@ -75,15 +75,36 @@ function mockTinroPlugin(){return {
             return { path: CWD + '/cmp/index.js' }
         });
 
-        build.onLoad({ filter: /\/dist\/tinro_lib$/ }, (args) => {
+        build.onResolve({ filter: /\/dist\/tinro_lib$/ }, args => {
+            return { path: 'tinro_lib_mock', namespace: 'mock' }
+        });
+
+        build.onLoad({ filter: /tinro_lib_mock/, namespace: 'mock' }, (args) => {
             return {
                 contents: `
-                    export const router = {subscribe:()=>{},useHashNavigation:()=>{},goto:()=>{}};
+                    export const router = {
+                        subscribe:()=>{},
+                        mode:{
+                            history: ()=>{},
+                            hash: ()=>{},
+                            memory: ()=>{}
+                        },
+                        location:{
+                            hash: {},
+                            query: {}
+                        },
+                        goto:()=>{}
+                    };
 					export const active = ()=>{};
-					export const formatPath = ()=>{};
-					export const getPathData = ()=>{};
-                    export const err = ()=>{};
-                `
+					export const meta = {};
+					export const createRouteObject = () => {};
+                    import {writable} from 'svelte/store';
+                    import {setContext,getContext} from 'svelte';
+                    writable();
+                    setContext();
+                    getContext();
+                `,
+                resolveDir: '.'
             }
         });
         build.onLoad({ filter: /Route\.svelte$/ }, (args) => {

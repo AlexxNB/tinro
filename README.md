@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/tinro?style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AlexxNB/tinro/Publish%20on%20NPM?label=test&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/tinro?label=Bundle%20size&style=flat-square) ![npm](https://img.shields.io/npm/dt/tinro?style=flat-square) 
 
 
-tinro is a highly declarative, tiny ([~3.4 Kb (1.3 Kb gzipped)](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte](https://svelte.dev) web applications.
+tinro is a highly declarative, [tiny](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte](https://svelte.dev) web applications.
 
 ## Features
 
@@ -15,6 +15,7 @@ tinro is a highly declarative, tiny ([~3.4 Kb (1.3 Kb gzipped)](https://github.c
 * Redirects
 * Fallbacks on any nested level
 * Parsing query parameters (`?x=42&hello=world&fruits=apple,banana,orange`)
+* Manage URL's hash and query parts
 * [Svelte's REPL](https://svelte.dev/repl/4bc37ff40ada4111b71fe292a4eb90f6) compatible
 
 ## Documentation
@@ -35,6 +36,7 @@ tinro is a highly declarative, tiny ([~3.4 Kb (1.3 Kb gzipped)](https://github.c
     - [breadcrumbs](#metabreadcrumbs)
 * [~~Parameters~~ (Deprecated since 0.5.0)](#parameters)
 * [Navigation method](#navigation-method)
+* [Manage hash and query](#manage-hash-and-query)
 * [API](#api)
 * [Recipes](#recipes)
     - [Lazy loading](#lazy-loading-components)
@@ -373,7 +375,21 @@ Now, start your app with `npm run dev` and open a URL like `http://localhost:500
 
 *For other servers you can read the following links: [Nginx](https://www.nginx.com/blog/creating-nginx-rewrite-rules/#Example&nbsp;%E2%80%93-Enabling-Pretty-Permalinks-for-WordPress-Websites), [Apache](https://httpd.apache.org/docs/2.4/rewrite/remapping.html#fallback-Resource), [Caddy](https://caddyserver.com/docs/caddyfile/directives/rewrite#examples)*
 
+## Manage hash and query 
 
+You can change URL's parts (such as query and hash) using `router.location` methods:
+
+```javascript
+import {router} from 'tinro';
+
+router.goto('/foo'); //URL: /foo
+router.location.query.set('name','alex'); //URL: /foo?name=alex
+router.location.hash.set('bar'); //URL: /foo?name=alex#bar
+router.location.query.set('page',1); //URL: /foo?name=alex&page=1#bar
+router.location.query.replace({hello: 'world'}); //URL: /foo?hello=world#bar
+router.location.query.clear(); //URL: /foo#bar
+router.location.hash.clear(); //URL: /foo
+```
 
 ## API
 
@@ -382,17 +398,28 @@ You can import the `router` object from the `tinro` package:
 ### `router.goto(href)`
 Programmatically change the URL of the current page.
 
-### `router.meta()`
-Run it inside any `Route` component to get its meta data which includes:
+### `router.mode`
+Methods to change curent router mode:
 
-* `url` - current browser URL (with query string)
-* `from` - previous URL before navigation to current page (if present)
-* `pattern` - route's path pattern, combination of all `path` properties of all parent `Route` components
-* `match` - part of the the browser URL that is matched with pattern
-* `params` - if pattern has placeholders, their values will be in this object
-* `query` - if browser URL has a query string, there will be a parsed object
-* `breadcrumbs` - all parent routes with the `breadcrumb` property will add an object with `{name, path}` to this array
-* `subscribe(func)` -  you can use this to subscribe to meta data changes. `func` will get an updated `meta` object each time the URL changes
+* `history()` - set HistoryAPI navigation method
+* `hash()` - set hash navigation method
+* `memory()` - set memory navigation method
+
+### `router.location.hash`
+Methods, which allows to get or set current value of the URL's hash part:
+
+* `get()` - get current hash value
+* `set(value)` - set new hash value
+* `clear()` - remove hash from the current URL
+
+### `router.location.query`
+Methods, which allows to get or modify current value of the URL's query part:
+
+* `get(name?)` - get current query object, or its property value when `name` specified
+* `set(name,value)` - update or add query property by `name`
+* `delete(name)` - remove property with specified `name` from the query object
+* `replace(object)` - replace current query object with new one
+* `clear()` - remove query from the current URL
 
 ### `router.subscribe(func)`
 The `router` object is a valid Svelte store, so you can subscribe to get the changing navigation data. `func` gets an object with page data:
