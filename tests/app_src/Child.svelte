@@ -12,4 +12,10 @@
 <div id="query">{JSON.stringify($routeData.query)}</div>
 
 <h4>Meta:</h4>
-<div id="query"><pre>{JSON.stringify($routeData,null,'  ')}</pre></div>
+<div id="meta"><pre>{JSON.stringify($routeData,null,'  ')}</pre></div>
+
+
+<button on:click={()=>router.location.query.set('foo','bar')}>Set query</button>
+<button on:click={()=>router.location.hash.set('bar')}>Set hash</button>
+<button on:click={()=>router.location.query.clear()}>Clear query</button>
+<button on:click={()=>router.location.hash.clear()}>Clear hash</button>

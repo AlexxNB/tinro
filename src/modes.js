@@ -11,7 +11,7 @@ function run(mode,fnHistory,fnHash,fnMemory){
             : fnMemory && fnMemory()
 }
 
-function getDeafault(){
+function getDefault(){
     return !window || window.location.pathname === 'srcdoc' ? MEMORY : HISTORY;
 }
 
@@ -21,5 +21,5 @@ export default {
     MEMORY,
     OFF,
     run,
-    getDeafault
+    getDefault
 }

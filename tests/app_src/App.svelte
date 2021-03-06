@@ -26,7 +26,7 @@
 			</li>
 			<li><a href="/test6">Change navigation type</a></li>
 			<li><a href="/test7/world">Parameters</a></li>
-			<li><a href="/test8/world?a=1&name=world&list=1,2,3">Child</a></li>
+			<li><a href="/test8/world?a=1&name=world&list=1,2,3#foo">Child</a></li>
 			<li><a href="/test9">Active action</a></li>
 			<li><a href="/test10">Without trailing slash</a></li>
 			<li> Dynamic route params <br/>

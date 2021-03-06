@@ -28,7 +28,8 @@ function routerStore(){
             hash: ()=>location.mode(MODES.HASH),
             history: ()=>location.mode(MODES.HISTORY),
             memory: ()=>location.mode(MODES.MEMORY),
-        }
+        },
+        location: locationMethods()
     }
 }
 
@@ -67,4 +68,38 @@ function aClickListener(go){
 /* DEPRECATED */
 function getParams(){
     return getContext('tinro').meta.params;
+}
+
+function locationMethods(){
+
+    const getQ = ()=>location.get().query;
+    const setQ = (v)=>location.set({query:v})
+
+    const getH = ()=>location.get().hash;
+    const setH = (v)=>location.set({hash:v})
+
+    return {
+        hash: {
+            get: getH,
+            set: setH,
+            clear: ()=>setH('')
+        },
+        query: {
+            replace: setQ,
+            clear: ()=>setQ(''),
+            get(name){
+                return name ? getQ()[name] : getQ();
+            },
+            set(name,v){
+                let q = getQ();
+                q[name] = v;
+                setQ(q);
+            },
+            delete(name){
+                let q = getQ();
+                q[name] && delete q[name];
+                setQ(q);
+            }
+        }
+    }
 }
