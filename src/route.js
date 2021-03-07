@@ -58,7 +58,7 @@ export function createRouteObject(options){
         match: async ()=>{
             route.matched = false;
 
-            const {path,url,from,query} = route.router;
+            const {path,url,from,query} = route.router.location;
             const match = getRouteMatch(route.pattern,path);
 
             if(!route.fallback && match && route.redirect && (!route.exact || (route.exact && match.exact))){
@@ -129,10 +129,7 @@ export function createRouteObject(options){
     onMount(()=>route.register());
 
     route.router.un = router.subscribe(r => {
-        route.router.path = r.path;
-        route.router.url = r.url;
-        route.router.query = r.query;
-        route.router.from = r.from;
+        route.router.location = r;
         if(route.pattern !== null) route.match();
     });
     

@@ -15,7 +15,7 @@ function createLocation(){
     const reset = _ => window.onhashchange = window.onpopstate = memoURL = null;
     const dispatch = _ => listener && listener(readLocation(MODE));
 
-    function setMode(newMode){
+    const setMode = (newMode)=>{
         newMode && (MODE = newMode);
         reset();
         MODE !== MODES.OFF 
@@ -26,8 +26,15 @@ function createLocation(){
         && dispatch()
     }
 
+    const makeURL = (parts)=>{
+        const loc = Object.assign(readLocation(MODE),parts);
+        return loc.path 
+             + prefix(makeQuery(loc.query),'?') 
+             + prefix(loc.hash,'#')
+    }
+
     return {
-        mode: mode => setMode(mode),
+        mode: setMode,
         get: _ => readLocation(MODE),
         go(href,replace){
             writeLocation(MODE,href,replace);
@@ -42,16 +49,16 @@ function createLocation(){
             setMode(MODES.OFF)
         },
         set(parts){
-            const loc = Object.assign(readLocation(MODE),parts);
-            this.go(loc.path + prefix(makeQuery(loc.query),'?') + prefix(loc.hash,'#'), !parts.path);
-        }
+            this.go(makeURL(parts), !parts.path);
+        },
+        methods(){return locationMethods(this)}
     }
 }
 
 function writeLocation(MODE, href, replace){
-    if(!replace) from=last;
+    !replace && (from=last);
        
-    const setURL = (url) => history[replace ? 'replaceState' : 'pushState']({}, '', url);
+    const setURL = (url) => history[`${replace ? 'replace' : 'push'}State`]({}, '', url);
 
     MODES.run( MODE,
         _ => setURL(href),
@@ -61,10 +68,10 @@ function writeLocation(MODE, href, replace){
 }
 
 function readLocation(MODE){
-    
+    const l = window.location;
     const url = MODES.run( MODE,
-        _ => window.location.pathname+window.location.search+window.location.hash,
-        _ => String(window.location.hash.slice(1)||'/'),
+        _ => l.pathname+l.search+l.hash,
+        _ => String(l.hash.slice(1)||'/'),
         _ => memoURL || '/'
     );
 
@@ -79,4 +86,35 @@ function readLocation(MODE){
         query: parseQuery(match[2] || ''),
         hash: match[3] || '',
     };
+}
+
+function locationMethods(l){
+
+    const getQ = ()=>l.get().query;
+    const setQ = (v)=>l.set({query:v})
+    const updQ = (fn)=>setQ(fn(getQ()));
+
+    const getH = ()=>l.get().hash;
+    const setH = (v)=>l.set({hash:v})
+
+    return {
+        hash: {
+            get: getH,
+            set: setH,
+            clear: ()=>setH('')
+        },
+        query: {
+            replace: setQ,
+            clear: ()=>setQ(''),
+            get(name){
+                return name ? getQ()[name] : getQ();
+            },
+            set(name,v){
+                updQ(q => (q[name]=v,q))
+            },
+            delete(name){
+                updQ(q => ((q[name] && delete q[name]),q));
+            }
+        }
+    }
 }

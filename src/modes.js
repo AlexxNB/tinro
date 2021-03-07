@@ -1,25 +1,16 @@
-let HISTORY = 1;
-let HASH = 2;
-let MEMORY = 3;
-let OFF = 4;
-
-function run(mode,fnHistory,fnHash,fnMemory){
-    return mode === HISTORY 
-        ? fnHistory && fnHistory()
-        : mode === HASH
-            ? fnHash && fnHash()
-            : fnMemory && fnMemory()
-}
-
-function getDefault(){
-    return !window || window.location.pathname === 'srcdoc' ? MEMORY : HISTORY;
-}
-
 export default {
-    HISTORY,
-    HASH,
-    MEMORY,
-    OFF,
-    run,
-    getDefault
+    HISTORY: 1,
+    HASH: 2,
+    MEMORY: 3,
+    OFF: 4,
+    run(mode,fnHistory,fnHash,fnMemory){
+        return mode === this.HISTORY 
+            ? fnHistory && fnHistory()
+            : mode === this.HASH
+                ? fnHash && fnHash()
+                : fnMemory && fnMemory()
+    },
+    getDefault(){
+        return !window || window.location.pathname === 'srcdoc' ? this.MEMORY : this.HISTORY;
+    }
 }

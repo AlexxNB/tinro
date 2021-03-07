@@ -29,7 +29,7 @@ function routerStore(){
             history: ()=>location.mode(MODES.HISTORY),
             memory: ()=>location.mode(MODES.MEMORY),
         },
-        location: locationMethods()
+        location: location.methods()
     }
 }
 
@@ -47,11 +47,11 @@ export function active(node){
 function aClickListener(go){
     const h = e => {
         const a = e.target.closest('a[href]');
-        const t = a  && getAttr(a,'target',false,'_self');
-        const i = a  && getAttr(a,'tinro-ignore');
-        const k = e.ctrlKey || e.metaKey || e.altKey || e.shiftKey;
+        const target = a  && getAttr(a,'target',false,'_self');
+        const ignore = a  && getAttr(a,'tinro-ignore');
+        const key = e.ctrlKey || e.metaKey || e.altKey || e.shiftKey;
 
-        if(t == '_self' && !i && !k && a){
+        if(target == '_self' && !ignore && !key && a){
             const href = a.getAttribute('href').replace(/^\/#/,'');
 
             if(!/^\/\/|^[a-zA-Z]+:/.test(href)) {
@@ -70,36 +70,3 @@ function getParams(){
     return getContext('tinro').meta.params;
 }
 
-function locationMethods(){
-
-    const getQ = ()=>location.get().query;
-    const setQ = (v)=>location.set({query:v})
-
-    const getH = ()=>location.get().hash;
-    const setH = (v)=>location.set({hash:v})
-
-    return {
-        hash: {
-            get: getH,
-            set: setH,
-            clear: ()=>setH('')
-        },
-        query: {
-            replace: setQ,
-            clear: ()=>setQ(''),
-            get(name){
-                return name ? getQ()[name] : getQ();
-            },
-            set(name,v){
-                let q = getQ();
-                q[name] = v;
-                setQ(q);
-            },
-            delete(name){
-                let q = getQ();
-                q[name] && delete q[name];
-                setQ(q);
-            }
-        }
-    }
-}
