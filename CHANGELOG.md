@@ -1,5 +1,11 @@
 # Tinro Changelog
 
+## unreleased
+
+### Documentation
+
+- 📝 Add notice about using meta() inside Route only [`bd2940de`](https://github.com/AlexxNB/tinro/commit/bd2940de42153fa29bd7e712c9ea401e4b007e0e)
+
 ## 0.6.1 - 2021-03-18
 
 ### Documentation
