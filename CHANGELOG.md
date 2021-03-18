@@ -1,6 +1,12 @@
 # Tinro Changelog
 
-## unreleased
+## 0.6.1 - 2021-03-18
+
+### Documentation
+
+- 🚸 Add error message when use meta out of `Route` context. ([#58](https://github.com/AlexxNB/tinro/issues/58)) [`fc5d591b`](https://github.com/AlexxNB/tinro/commit/fc5d591bfa7cc2a2e3426c5c2d148bdc8d839dd6)
+
+    *[#58](https://github.com/AlexxNB/tinro/issues/58)*
 
 ### Other
 
@@ -37,7 +43,8 @@
 - update deps [`6b2ec1a1`](https://github.com/AlexxNB/tinro/commit/6b2ec1a1585e3484ca277e81b7b721684a446587)
 - minor fixes [`36a64cab`](https://github.com/AlexxNB/tinro/commit/36a64cab857a1327008f1e4b3bae6fac0ea557ae)
 - Merge pull request #54 from mateomorris/master ([#54](https://github.com/AlexxNB/tinro/issues/54)) [`2c5b7484`](https://github.com/AlexxNB/tinro/commit/2c5b74840df973e4f1d1071c61ae1ea65d3fa4d3)
-Use 'meta' in example instead of 'params'
+
+    *Use 'meta' in example instead of 'params'*
 - Use 'meta' in example instead of 'params' [`01b840c6`](https://github.com/AlexxNB/tinro/commit/01b840c63d5d7c763804576c72719fe8a3aa022e)
 
 ## 0.5.12 - 2021-02-03
@@ -70,7 +77,8 @@ Use 'meta' in example instead of 'params'
 
 - fix parent in redirects [`cd481dca`](https://github.com/AlexxNB/tinro/commit/cd481dcadbcaaf8652ce99a0eb1163d02002ba22)
 - Merge pull request #48 from kindoflew/edit-readme ([#48](https://github.com/AlexxNB/tinro/issues/48)) [`a9526942`](https://github.com/AlexxNB/tinro/commit/a952694217e06d617a1a441048ff184718b66714)
-edit README and COMPARE
+
+    *edit README and COMPARE*
 - edit README and COMPARE [`3adcf96c`](https://github.com/AlexxNB/tinro/commit/3adcf96c48211438a7095bc163c1cf217f12b29d)
 
 ## 0.5.7 - 2021-01-17
@@ -169,7 +177,8 @@ edit README and COMPARE
 
 - refactoring [`232eefeb`](https://github.com/AlexxNB/tinro/commit/232eefebbb831e0e21fc89ca4983b3daa8729522)
 - Merge pull request #30 from jacobmischka/fix-click-handler ([#30](https://github.com/AlexxNB/tinro/issues/30)) [`6eab81bb`](https://github.com/AlexxNB/tinro/commit/6eab81bb86931b49cff68606f74a6e3a785e47fb)
-Check for anchor before attempting to get href
+
+    *Check for anchor before attempting to get href*
 - Check for anchor before attempting to get href [`073b8089`](https://github.com/AlexxNB/tinro/commit/073b8089714e742d67f7a00f8525c0d6e2c13c54)
 
 ## 0.4.3 - 2020-12-09
@@ -197,7 +206,8 @@ Check for anchor before attempting to get href
 ### Other
 
 - Merge pull request #26 from blissini/master ([#26](https://github.com/AlexxNB/tinro/issues/26)) [`95f4d393`](https://github.com/AlexxNB/tinro/commit/95f4d393efe53313c5bf5540dcc6bd4cb5fcedb8)
-fixed typos in README
+
+    *fixed typos in README*
 
 ## 0.3.6 - 2020-09-30
 
@@ -207,9 +217,11 @@ fixed typos in README
 - update versions [`60cd977a`](https://github.com/AlexxNB/tinro/commit/60cd977ac2cf0711b8d72bd0370523958bf62806)
 - fixed some typos in README [`db37393e`](https://github.com/AlexxNB/tinro/commit/db37393e84110a3edd45bf875088809cb4e128ca)
 - Merge pull request #24 from AlexxNB/dependabot/npm_and_yarn/bl-4.0.3 ([#24](https://github.com/AlexxNB/tinro/issues/24)) [`ff68f135`](https://github.com/AlexxNB/tinro/commit/ff68f1356e23d6433241bbc2b303e2aec1b9c367)
-Bump bl from 4.0.2 to 4.0.3
+
+    *Bump bl from 4.0.2 to 4.0.3*
 - Bump bl from 4.0.2 to 4.0.3 [`1ba11784`](https://github.com/AlexxNB/tinro/commit/1ba11784100227b4575411d59109dfbcf0d48dd6)
-Bumps [bl](https://github.com/rvagg/bl) from 4.0.2 to 4.0.3. - [Release notes](https://github.com/rvagg/bl/releases) - [Commits](https://github.com/rvagg/bl/compare/v4.0.2...v4.0.3)
+
+    *Bumps [bl](https://github.com/rvagg/bl) from 4.0.2 to 4.0.3. - [Release notes](https://github.com/rvagg/bl/releases) - [Commits](https://github.com/rvagg/bl/compare/v4.0.2...v4.0.3)*
 
 ## 0.3.5 - 2020-09-01
 
@@ -241,7 +253,8 @@ Bumps [bl](https://github.com/rvagg/bl) from 4.0.2 to 4.0.3. - [Release notes](h
 ### Other
 
 - Merge pull request #19 from jnordberg/master ([#19](https://github.com/AlexxNB/tinro/issues/19)) [`e8f62c35`](https://github.com/AlexxNB/tinro/commit/e8f62c35e4685f475337f3128ba3986a396afabf)
-Improve TypeScript types
+
+    *Improve TypeScript types*
 - Extension apparently has to be in separate declaration to be picked up [`503a9e3f`](https://github.com/AlexxNB/tinro/commit/503a9e3f3be2a523ba60606a35965ba8e50ab1f8)
 - Fix types [`1d33f7d5`](https://github.com/AlexxNB/tinro/commit/1d33f7d5f75ff60174fe5420faede85528c2c9cb)
 - add types [`f949285b`](https://github.com/AlexxNB/tinro/commit/f949285b0228da221bf3375b04bdcd15d9142c86)
@@ -267,7 +280,8 @@ Improve TypeScript types
 
 - remove browser bundle [`ed0bc4b5`](https://github.com/AlexxNB/tinro/commit/ed0bc4b5fd15456333c29cae0bd0b8a7383bcdc4)
 - Merge pull request #13 from ronthecookie/patch-1 ([#13](https://github.com/AlexxNB/tinro/issues/13)) [`9d07484a`](https://github.com/AlexxNB/tinro/commit/9d07484a3d77b4e666b527a2bb8bfea9d9c8f584)
-Fix typo in README
+
+    *Fix typo in README*
 - Fix typo in README [`f0f6ace9`](https://github.com/AlexxNB/tinro/commit/f0f6ace9ac6c6f395ad85b53a669a79f622535ec)
 
 ## 0.2.8 - 2020-05-14
@@ -301,9 +315,11 @@ Fix typo in README
 - add [#4](https://github.com/AlexxNB/tinro/issues/4) ([#4](https://github.com/AlexxNB/tinro/issues/4)) [`e35eacd1`](https://github.com/AlexxNB/tinro/commit/e35eacd1b942a79dcc15d16fa9720653eddb3f39)
 - More universal Lazy component [`dd4022e7`](https://github.com/AlexxNB/tinro/commit/dd4022e77e71af1a70cf9c696cc11f6a52b98a6a)
 - Merge pull request #6 from frederikhors/patch-2 ([#6](https://github.com/AlexxNB/tinro/issues/6)) [`160beebe`](https://github.com/AlexxNB/tinro/commit/160beebea4f1255a7239976b3ff085cd42f9c606)
-Misprints
+
+    *Misprints*
 - Merge pull request #5 from frederikhors/patch-1 ([#5](https://github.com/AlexxNB/tinro/issues/5)) [`908f82bf`](https://github.com/AlexxNB/tinro/commit/908f82bfe6e09f0bffb846bd71f6cd2285d0068b)
-Misprint
+
+    *Misprint*
 - Misprints [`55f8d8a6`](https://github.com/AlexxNB/tinro/commit/55f8d8a6e2932dc4b5d047edadcccb63cb131798)
 - Misprint [`285792fe`](https://github.com/AlexxNB/tinro/commit/285792fe89cfc8c36a49ff533af9c42637d4a670)
 - minor edits in readme [`9e40c0c8`](https://github.com/AlexxNB/tinro/commit/9e40c0c8729bd98a5092721cac9ec05d7b7b0ac7)
