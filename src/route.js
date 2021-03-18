@@ -1,11 +1,13 @@
-import {getContext,setContext,onMount,tick} from 'svelte';
+import {hasContext,getContext,setContext,onMount,tick} from 'svelte';
 import {writable} from 'svelte/store';
 import {router} from './router';
 import {err,formatPath,getRouteMatch,makeRedirectURL} from './lib';
 
+const CTX = 'tinro';
+
 export function createRouteObject(options){
 
-    const parent = getContext('tinro');
+    const parent = getContext(CTX);
 
     if(parent && (parent.exact || parent.fallback) ) err(
         `${options.fallback ? '<Route fallback>' : `<Route path="${options.path}">`}  can't be inside ${parent.fallback ? 
@@ -125,7 +127,7 @@ export function createRouteObject(options){
         }
     }
 
-    setContext('tinro',route);
+    setContext(CTX,route);
     onMount(()=>route.register());
 
     route.router.un = router.subscribe(r => {
@@ -137,5 +139,7 @@ export function createRouteObject(options){
 }
 
 export function getMeta(){
-    return getContext('tinro').meta;
+    return hasContext(CTX) 
+        ? getContext(CTX).meta 
+        : err('meta() function must be run inside any `<Route>` child component only');
 }
