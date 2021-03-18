@@ -231,7 +231,7 @@ Routes with the `fallback` property show their content when no matched address w
 
 ## Route meta
 
-You can get useful meta data for each route by importing and calling `meta` from the `tinro` package.
+You can get useful meta data for each route by importing and calling `meta` from the `tinro` package. Notice, that `meta()` must be called only inside any `<Route>`'s child component.
 
 ```html 
 <script>
