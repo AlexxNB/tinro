@@ -2,6 +2,10 @@
 
 ## unreleased
 
+### Bug Fixes
+
+- 📝 Add forgeted link in table of content [`680c7c82`](https://github.com/AlexxNB/tinro/commit/680c7c8212f55032e3bea67e5dcb59fb84dd22b3)
+
 ### Documentation
 
 - 📝 Add reciepe about announcer ([#60](https://github.com/AlexxNB/tinro/issues/60)) [`8829e6bc`](https://github.com/AlexxNB/tinro/commit/8829e6bcfc0df33240a0c212ba4b522fa1463d47)
