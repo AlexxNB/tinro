@@ -4,6 +4,9 @@
 
 ### Documentation
 
+- 📝 Add reciepe about announcer ([#60](https://github.com/AlexxNB/tinro/issues/60)) [`8829e6bc`](https://github.com/AlexxNB/tinro/commit/8829e6bcfc0df33240a0c212ba4b522fa1463d47)
+
+    *Thanks to @kindoflew*
 - 📝 Add notice about using meta() inside Route only [`bd2940de`](https://github.com/AlexxNB/tinro/commit/bd2940de42153fa29bd7e712c9ea401e4b007e0e)
 
 ## 0.6.1 - 2021-03-18
