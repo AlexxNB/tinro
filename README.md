@@ -528,3 +528,43 @@ tinro doesn't control scrolling in your app, but sometimes you need to scroll to
 import {router} from `tinro`;
 router.subscribe( _ => window.scrollTo(0, 0));
 ```
+
+### Navigation announcer
+
+The problem of any SPA router is that it does not use default browser navigation when user click the link. This cause accessability issue for people who use screenreaders, because it won't announce that new page was loaded. You can fix this creating `Announce` component:
+
+```html
+<!-- Announcer.svelte-->
+<script>
+  import { router } from 'tinro';
+  $: current = $router.path === '/' ? 'Home' : $router.path.slice(1);
+</script>
+
+<div aria-live="assertive" aria-atomic="true">
+  {#key current}
+    Navigated to {current}
+  {/key}
+</div>
+
+<style>
+  div {
+    position: absolute;
+    left: 0;
+    top: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+    width: 1px;
+    height: 1px;
+  }
+</style>
+```
+
+Then place this component somewhere in your `App.svelte` root file:
+
+```html
+...
+<Announcer />
+...
+```
