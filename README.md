@@ -43,6 +43,7 @@ tinro is a highly declarative, [tiny](https://github.com/AlexxNB/tinro/blob/mast
     - [Transitions](#transitions)
     - [Guarded routes](#guarded-routes)
     - [Scroll to top](#scroll-to-top)
+    - [Navigation Announcer](#navigation-announcer)
 
 
 ## Install
