@@ -8,6 +8,7 @@
 
 ### Documentation
 
+- 📝 Add note for Vite users [`cdadf9f3`](https://github.com/AlexxNB/tinro/commit/cdadf9f3dafa2c274c238b54f1a4fd24a12060e3)
 - 📝 Add reciepe about announcer ([#60](https://github.com/AlexxNB/tinro/issues/60)) [`8829e6bc`](https://github.com/AlexxNB/tinro/commit/8829e6bcfc0df33240a0c212ba4b522fa1463d47)
 
     *Thanks to @kindoflew*
