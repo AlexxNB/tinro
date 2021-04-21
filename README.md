@@ -44,6 +44,7 @@ tinro is a highly declarative, [tiny](https://github.com/AlexxNB/tinro/blob/mast
     - [Guarded routes](#guarded-routes)
     - [Scroll to top](#scroll-to-top)
     - [Navigation Announcer](#navigation-announcer)
+* [Troubleshooting](#troubleshooting)
 
 
 ## Install
@@ -568,4 +569,16 @@ Then place this component somewhere in your `App.svelte` root file:
 ...
 <Announcer />
 ...
+```
+
+## Troubleshooting
+
+If you use Vite to bandle your app(including SvelteKit), you should exclude `tinro` from the `optimizedDeps` in Vite's config:
+
+```javascript
+  ...
+  optimizeDeps: {
+    exclude: ['tinro']
+  },
+  ...
 ```
