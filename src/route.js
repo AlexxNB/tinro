@@ -5,12 +5,10 @@ import {err,formatPath,getRouteMatch,makeRedirectURL} from './lib';
 
 const CTX = 'tinro';
 
-const ROOT = {
-    matched: true,
-    childs: new Set(),
-    activeChilds: new Set(),
-    fallbacks: new Set(),
-}
+const ROOT = createRouteProtoObject({
+    pattern: '',
+    matched: true
+});
 
 export function createRouteObject(options){
 
@@ -23,23 +21,12 @@ export function createRouteObject(options){
     );
 
     const type = options.fallback ? 'fallbacks' : 'childs';
-
+            
     const metaStore = writable({});
 
-    const route = {
-        router:{},
-        exact: false,
-        pattern: null,
-        meta: {},
-        parent,
+    const route = createRouteProtoObject({
         fallback: options.fallback,
-        redirect: false,
-        firstmatch: false,
-        breadcrumb: null,
-        matched: false,
-        childs: new Set(),
-        activeChilds: new Set(),
-        fallbacks: new Set(),
+        parent,
         update(opts){
             route.exact = !opts.path.endsWith('/*');
             route.pattern = formatPath(`${route.parent.pattern || ''}${opts.path}`)
@@ -91,7 +78,7 @@ export function createRouteObject(options){
             });
 
             metaStore.set(route.meta);
-
+           
             if(
                 match
                 &&  !route.fallback  
@@ -104,22 +91,53 @@ export function createRouteObject(options){
             }else{
                 route.hide();
             }
+            
+            if(match) route.showFallbacks();
+        }
+    });
+
+    setContext(CTX,route);
+    onMount(()=>route.register());
+
+    return route;
+}
+
+export function getMeta(){
+    return hasContext(CTX) 
+        ? getContext(CTX).meta 
+        : err('meta() function must be run inside any `<Route>` child component only');
+}
+
+function createRouteProtoObject(options){
+    const proto = {
+        router:{},
+        exact: false,
+        pattern: null,
+        meta: null,
+        parent: null,
+        fallback: false,
+        redirect: false,
+        firstmatch: false,
+        breadcrumb: null,
+        matched: false,
+        childs: new Set(),
+        activeChilds: new Set(),
+        fallbacks: new Set(),
+        async showFallbacks(){
+            if(this.fallback) return;
 
             await tick();
-       
+            
             if(
-                match
-                &&  !route.fallback
-                &&  (
-                        (route.childs.size > 0 && route.activeChilds.size == 0) ||
-                        (route.childs.size == 0 && route.fallbacks.size > 0)
-                    )
+                (this.childs.size > 0 && this.activeChilds.size == 0) ||
+                (this.childs.size == 0 && this.fallbacks.size > 0)
             ){
-                let obj = route;
+                let obj = this;
                 while(obj.fallbacks.size == 0){
                     obj = obj.parent;
                     if(!obj) return;
                 }
+                
                 obj && obj.fallbacks.forEach(fb => {
                     if(fb.redirect) {
                         const nextUrl = makeRedirectURL('/',fb.parent.pattern,fb.redirect);
@@ -129,22 +147,19 @@ export function createRouteObject(options){
                     }
                 });
             }
-        }
+        },
+        start(){
+            if(this.router.un) return;
+            this.router.un = router.subscribe(r => {
+                this.router.location = r;
+                if(this.pattern !== null) this.match();
+            });
+        },
+        match(){this.showFallbacks()}
     }
 
-    setContext(CTX,route);
-    onMount(()=>route.register());
+    Object.assign(proto,options);
+    proto.start();
 
-    route.router.un = router.subscribe(r => {
-        route.router.location = r;
-        if(route.pattern !== null) route.match();
-    });
-    
-    return route;
-}
-
-export function getMeta(){
-    return hasContext(CTX) 
-        ? getContext(CTX).meta 
-        : err('meta() function must be run inside any `<Route>` child component only');
+    return proto;
 }

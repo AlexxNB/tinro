@@ -2,7 +2,7 @@ import {getContext} from 'svelte';
 import {writable} from 'svelte/store';
 import {getAttr,getRouteMatch} from './lib';
 import {location} from './location';
-import {getMeta} from './route';  /* DEPRECATED */
+import {meta} from './tinro';  /* DEPRECATED */
 import MODES from './modes';
 
 export const router = routerStore();
@@ -22,7 +22,7 @@ function routerStore(){
         subscribe,
         goto: location.go,
         params: getParams, /* DEPRECATED */
-        meta: getMeta, /* DEPRECATED */
+        meta: meta, /* DEPRECATED */
         useHashNavigation: s => location.mode(s ? MODES.HASH : MODES.HISTORY), /* DEPRECATED */
         mode: {
             hash: ()=>location.mode(MODES.HASH),

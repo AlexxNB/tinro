@@ -1,4 +1,5 @@
 <script>
+
     import {createRouteObject} from './../dist/tinro_lib';
 
     export let path = '/*';
