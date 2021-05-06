@@ -1,6 +1,6 @@
 # Tinro Changelog
 
-## unreleased
+## 0.6.2 - 2021-05-06
 
 ### Bug Fixes
 
@@ -13,6 +13,11 @@
 
     *Thanks to @kindoflew*
 - 📝 Add notice about using meta() inside Route only [`bd2940de`](https://github.com/AlexxNB/tinro/commit/bd2940de42153fa29bd7e712c9ea401e4b007e0e)
+
+### Other
+
+- update versions [`f8a58a8d`](https://github.com/AlexxNB/tinro/commit/f8a58a8ddeef9b98ac33150bccef8b7cbda3d904)
+- Add test for conditional redirects [`42239e39`](https://github.com/AlexxNB/tinro/commit/42239e391cd6dcf61cbbc447eb81646fda493a31)
 
 ## 0.6.1 - 2021-03-18
 
