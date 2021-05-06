@@ -64,7 +64,6 @@ export function createRouteObject(options){
             const match = getRouteMatch(route.pattern,path);
 
             if(!route.fallback && match && route.redirect && (!route.exact || (route.exact && match.exact))){
-                await tick();
                 const nextUrl = makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect);
                 return router.goto(nextUrl, true);
             }
