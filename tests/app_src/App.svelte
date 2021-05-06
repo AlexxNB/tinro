@@ -49,7 +49,6 @@
 	</div>
 
 	<div class="test">
-		<Route>
 			<Route path="/"><h1>Loaded tests page - OK</h1></Route>
 			<Route path="/redirect1" redirect="/redirect" />
 			<Route path="/redirect2/*" redirect="/redirect" />
@@ -127,7 +126,6 @@
 			</Route>
 			
 			<Route fallback><h1>Root fallback</h1></Route>
-		</Route>
 	</div>
 </div>
 

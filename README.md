@@ -103,7 +103,7 @@ Shows its content only when `path` matches the URL of the page *exactly*. You ca
 
 ### Non-exact path
 
-`<Route>` components with a `path` property that ends with `/*` show their content when a part of the page's URL matches with the path before the `/*`. A nested `<Route>` can be placed inside components with a non-exact path only.
+`<Route>` components with a `path` property that ends with `/*` show their content when a part of the page's URL matches with the path before the `/*`. A nested `<Route>` can be placed inside routes with a non-exact path only.
 
 ```html
 <Route path="/books/*">
@@ -204,7 +204,7 @@ You can also redirect to a relative path — just write the new URL without `/` 
 
 ## Fallbacks
 
-Routes with the `fallback` property show their content when no matched address was found. Fallbacks may be placed inside a non-exact `<Route>` only. Fallbacks bubble, so if there is no fallback on the current level, the router will try to find one on any parent levels. See the example:
+Routes with the `fallback` property show their content when no matched address was found. Fallbacks may be placed inside a non-exact `<Route>` or belong to root routes. Fallbacks bubble, so if there is no fallback on the current level, the router will try to find one on any parent levels. See the example:
 
 ```html
 <Route>  <!-- same as <Route path="/*"> -->

@@ -5,11 +5,18 @@ import {err,formatPath,getRouteMatch,makeRedirectURL} from './lib';
 
 const CTX = 'tinro';
 
+const ROOT = {
+    matched: true,
+    childs: new Set(),
+    activeChilds: new Set(),
+    fallbacks: new Set(),
+}
+
 export function createRouteObject(options){
 
-    const parent = getContext(CTX);
+    const parent = getContext(CTX) || ROOT;
 
-    if(parent && (parent.exact || parent.fallback) ) err(
+    if(parent.exact || parent.fallback)  err(
         `${options.fallback ? '<Route fallback>' : `<Route path="${options.path}">`}  can't be inside ${parent.fallback ? 
             '<Route fallback>' :
             `<Route path="${parent.path || '/'}"> with exact path` }`
@@ -35,14 +42,13 @@ export function createRouteObject(options){
         fallbacks: new Set(),
         update(opts){
             route.exact = !opts.path.endsWith('/*');
-            route.pattern = formatPath(`${route.parent && route.parent.pattern || ''}${opts.path}`)
+            route.pattern = formatPath(`${route.parent.pattern || ''}${opts.path}`)
             route.redirect = opts.redirect;
             route.firstmatch = opts.firstmatch;
             route.breadcrumb = opts.breadcrumb;
             route.match();
         },
         register: () => {
-            if(!route.parent) return;
             route.parent[type].add(route);
             return ()=>{
                 route.parent[type].delete(route);
@@ -51,11 +57,11 @@ export function createRouteObject(options){
         },
         show: ()=>{
             options.onShow();
-            !route.fallback && route.parent && route.parent.activeChilds.add(route);
+            !route.fallback && route.parent.activeChilds.add(route);
         },
         hide: ()=>{
             options.onHide();
-            !route.fallback && route.parent && route.parent.activeChilds.delete(route);
+            !route.fallback && route.parent.activeChilds.delete(route);
         },
         match: async ()=>{
             route.matched = false;
@@ -64,7 +70,7 @@ export function createRouteObject(options){
             const match = getRouteMatch(route.pattern,path);
 
             if(!route.fallback && match && route.redirect && (!route.exact || (route.exact && match.exact))){
-                const nextUrl = makeRedirectURL(path,route.parent && route.parent.pattern,route.redirect);
+                const nextUrl = makeRedirectURL(path,route.parent.pattern,route.redirect);
                 return router.goto(nextUrl, true);
             }
 
@@ -74,7 +80,7 @@ export function createRouteObject(options){
                 query,
                 match: match.part,
                 pattern: route.pattern,
-                breadcrumbs: route.parent && route.parent.meta && route.parent.meta.breadcrumbs.slice() || [],
+                breadcrumbs: route.parent.meta && route.parent.meta.breadcrumbs.slice() || [],
                 params: match.params,
                 subscribe: metaStore.subscribe
             }
@@ -90,10 +96,10 @@ export function createRouteObject(options){
                 match
                 &&  !route.fallback  
                 &&  (!route.exact || (route.exact && match.exact)) 
-                &&  (!route.parent || !route.parent.firstmatch || !route.parent.matched)
+                &&  (!route.parent.firstmatch || !route.parent.matched)
             ){
                 options.onMeta(route.meta);
-                route.parent && (route.parent.matched = true);
+                route.parent.matched = true;
                 route.show();
             }else{
                 route.hide();
@@ -116,7 +122,7 @@ export function createRouteObject(options){
                 }
                 obj && obj.fallbacks.forEach(fb => {
                     if(fb.redirect) {
-                        const nextUrl = makeRedirectURL('/',fb.parent && fb.parent.pattern,fb.redirect);
+                        const nextUrl = makeRedirectURL('/',fb.parent.pattern,fb.redirect);
                         router.goto(nextUrl, true);
                     } else {
                         fb.show();
