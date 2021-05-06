@@ -1,6 +1,8 @@
 <script>
 	import {Route,router,active} from 'tinro';
 	import Child from './Child.svelte';
+	import RedirectSwitch from './RedirectSwitch.svelte';
+	import RedirectByValue from './RedirectByValue.svelte';
 
 	let isRedirect = false;
 </script> 
@@ -15,6 +17,8 @@
 			<li> Redirect relative <br/>
 				<a href="/redirect3">Root</a> <a href="/redirect3/notroot">Not root</a>
 			</li>
+			<li><a href="/redirect4/off">Redirect switch</a></li>
+			<li><a href="/redirect5">Redirect prop set</a></li>
 			<li><a href="/test1">Simple route</a></li>
 			<li><a href="/test2">Exact route</a></li>
 			<li> Non exact route <br/>
@@ -55,6 +59,8 @@
 				<Route path="/notroot" redirect="subpage" />
 				<Route path="/subpage"><h1>Relative redirect test - OK</h1></Route>
 			</Route>
+			<Route path="/redirect4/*"><RedirectSwitch/></Route>
+			<Route path="/redirect5/*"><RedirectByValue/></Route>
 			<Route path="/test1"><h1>Simple route - OK</h1></Route>
 			<Route path="/test2"><h1>Exact route - OK</h1></Route>
 			<Route path="/test3/*">
