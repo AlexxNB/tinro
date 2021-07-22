@@ -1,6 +1,12 @@
-module.exports = async function (test,page) {test('Dev app launch', async t =>{
+module.exports = async function (test,assert) {
 
-    await t.notThrow(async _ => await page.go('/'),'Page opened');
-    t.equal( await page.innerText('h1'),'Loaded tests page - OK','App is loaded');
+    test('Dev app launch', async ctx =>{
+        await ctx.page.go('/');
+        
+        assert.is( 
+            await ctx.page.innerText('h1'),
+            'Loaded tests page - OK',
+        'App is loaded');
+    }
 
-})}
+)}

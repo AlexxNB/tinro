@@ -1,31 +1,54 @@
-module.exports = async function (test,page) {test('Navigation methods', async t =>{
-    // History
-    await page.go('/test6');
+module.exports = async function (test,assert) {
+    test('Navigation methods', async ctx =>{
+        // History
+        await ctx.page.go('/test6');
 
-    await page.click('#setHistory');
-    await page.click('#links');
-    await page.click('#internalSubLink');
+        await ctx.page.click('#setHistory');
+        await ctx.page.click('#links');
+        await ctx.page.click('#internalSubLink');
 
-    t.equal(await page.path(),'/test3/sub','History URL correct');
-    t.equal(await page.innerText('h1'),'Non exact route sub - OK','History route is loaded');
+        assert.is(
+            await ctx.page.path(),
+            '/test3/sub',
+        'History URL correct');
 
-    // Hash
-    await page.go('/test6');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Non exact route sub - OK',
+        'History route is loaded');
 
-    await page.click('#setHash');
-    await page.click('#links');
-    await page.click('#internalSubLink');
+        // Hash
+        await ctx.page.go('/test6');
 
-    t.equal(await page.path(),'/#/test3/sub','Hash URL correct');
-    t.equal(await page.innerText('h1'),'Non exact route sub - OK','Hash route is loaded');
+        await ctx.page.click('#setHash');
+        await ctx.page.click('#links');
+        await ctx.page.click('#internalSubLink');
 
-    // Memory
-    await page.go('/test6');
+        assert.is(
+            await ctx.page.path(),
+            '/#/test3/sub',
+        'Hash URL correct');
 
-    await page.click('#setMemory');
-    await page.click('#links');
-    await page.click('#internalSubLink');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Non exact route sub - OK',
+        'Hash route is loaded');
 
-    t.equal(await page.path(),'/','Memory URL correct');
-    t.equal(await page.innerText('h1'),'Non exact route sub - OK','Memory route is loaded');
-})}
+        // Memory
+        await ctx.page.go('/test6');
+
+        await ctx.page.click('#setMemory');
+        await ctx.page.click('#links');
+        await ctx.page.click('#internalSubLink');
+
+        assert.is(
+            await ctx.page.path(),
+            '/',
+        'Memory URL correct');
+
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Non exact route sub - OK',
+        'Memory route is loaded');
+    }
+)}

@@ -1,14 +1,28 @@
-module.exports = async function (test,page) {test('Fallbacks', async t =>{
+module.exports = async function (test,assert) {
+    test('Fallbacks', async ctx =>{
 
-    await page.go('/blah');
-    t.equal(await page.innerText('h1'),'Root fallback','Root fallback from root');
+        await ctx.page.go('/blah');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Root fallback',
+        'Root fallback from root');
 
-    await page.go('/test5/blah');
-    t.equal(await page.innerText('h1'),'Root fallback','Root fallback from sub');
+        await ctx.page.go('/test5/blah');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Root fallback',
+        'Root fallback from sub');
 
-    await page.go('/test5/sub/blah');
-    t.equal(await page.innerText('h1'),'Sub fallback','Sub fallback from sub');
+        await ctx.page.go('/test5/sub/blah');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Sub fallback',
+        'Sub fallback from sub');
 
-    await page.go('/test5/sub2/blah');
-    t.equal(await page.innerText('h1'),'Redirect test - OK','Fallback with redirect');
-})}
+        await ctx.page.go('/test5/sub2/blah');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Redirect test - OK',
+        'Fallback with redirect');
+    }
+)}

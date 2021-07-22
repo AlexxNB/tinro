@@ -1,5 +1,9 @@
-module.exports = async function (test,page) {test('Directive let:param', async t =>{
-
-    await page.go('/test7/world');
-    t.equal(await page.innerText('h1'),'Hello, world!','Parameter was passed');
-})}
+module.exports = async function (test,assert) {
+    test('Directive let:param', async ctx =>{
+        await ctx.page.go('/test7/world');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Hello, world!',
+        'Parameter was passed');
+    }
+)}

@@ -1,8 +1,16 @@
-module.exports = async function (test,page) {test('Not exact route', async t =>{
+module.exports = async function (test,assert) {
+    test('Not exact route', async ctx =>{
 
-    await page.go('/test3');
-    t.equal(await page.innerText('h1'),'Non exact route root- OK','Not exact route root opens');
+        await ctx.page.go('/test3');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Non exact route root- OK',
+        'Not exact route root opens');
 
-    await page.go('/test3/sub');
-    t.equal(await page.innerText('h1'),'Non exact route sub - OK','Not exact route sub opens');
-})}
+        await ctx.page.go('/test3/sub');
+        assert.is(
+            await ctx.page.innerText('h1'),
+            'Non exact route sub - OK',
+        'Not exact route sub opens');
+    }
+)}
