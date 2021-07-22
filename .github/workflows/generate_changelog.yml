@@ -19,6 +19,7 @@ jobs:
         uses: AlexxNB/chalogen@master
         with:
           title: Tinro Changelog 
+          list: feat,fix,perf,docs,other,chore,refactor,test
           
       - name: Commit Changelog to repository
         uses: stefanzweifel/git-auto-commit-action@v4
