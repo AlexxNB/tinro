@@ -30,12 +30,12 @@
   "homepage": "https://github.com/AlexxNB/tinro#readme",
   "devDependencies": {
     "@detools/tap-diff": "^0.2.2",
-    "derver": "^0.4.15",
-    "esbuild": "^0.9.7",
-    "esbuild-svelte": "^0.4.3",
+    "derver": "^0.4.17",
+    "esbuild": "^0.12.15",
+    "esbuild-svelte": "^0.5.3",
     "port-authority": "^1.1.2",
-    "puppeteer": "^3.3.0",
-    "svelte": "^3.38.2",
+    "puppeteer": "^10.1.0",
+    "svelte": "^3.40.0",
     "tape-modern": "^1.1.2"
   }
 }
