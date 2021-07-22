@@ -1,10 +1,32 @@
 # Tinro Changelog
 
+## unreleased
+
+### Other
+
+- Merge branch 'master' of github.com:AlexxNB/tinro [`23027a38`](https://github.com/AlexxNB/tinro/commit/23027a38c80bf4b10772d4ec1994220212349e55)
+
 ## 0.6.5 - 2021-07-22
+
+### Chores
+
+- ⬆️ Upgrade dependencies [`7329109d`](https://github.com/AlexxNB/tinro/commit/7329109da093994ee35443ed9f12e0df8d2fae15)
+
+### Tests
+
+- ✨ Use uvu for tests running [`94501da0`](https://github.com/AlexxNB/tinro/commit/94501da0310cf3317708e8f540c4ea79d6d2056d)
 
 ## 0.6.4 - 2021-05-06
 
+### Code Refactoring
+
+- 🏗 Create proto object for root and other routes [`8d23cff8`](https://github.com/AlexxNB/tinro/commit/8d23cff860b1a6dee114f713601c156bd9b3e9ea)
+
 ## 0.6.3 - 2021-05-06
+
+### Code Refactoring
+
+- 🏗 Add root component for all Routes, so no more any differences between root and nonrot routes [`b3cdb862`](https://github.com/AlexxNB/tinro/commit/b3cdb862fe4643cfa76f86b73484838a96355f76)
 
 ## 0.6.2 - 2021-05-06
 
@@ -25,6 +47,10 @@
 - update versions [`f8a58a8d`](https://github.com/AlexxNB/tinro/commit/f8a58a8ddeef9b98ac33150bccef8b7cbda3d904)
 - Add test for conditional redirects [`42239e39`](https://github.com/AlexxNB/tinro/commit/42239e391cd6dcf61cbbc447eb81646fda493a31)
 
+### Code Refactoring
+
+- Remove useless(i hope) tick in redirect [`d8e185ee`](https://github.com/AlexxNB/tinro/commit/d8e185eec5a703b368ff46eae676f57bfbd550b0)
+
 ## 0.6.1 - 2021-03-18
 
 ### Documentation
@@ -36,6 +62,10 @@
 ### Other
 
 - refactoring [`d2a818eb`](https://github.com/AlexxNB/tinro/commit/d2a818eb9c02a0598eee0c9e9ab3e260c2892439)
+
+### Chores
+
+- ⬆️ Upgrade [`88a04b26`](https://github.com/AlexxNB/tinro/commit/88a04b268cd19715ec8b257c74e3c3bb0122e2b0)
 
 ## 0.6.0 - 2021-03-06
 
