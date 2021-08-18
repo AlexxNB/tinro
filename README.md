@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/tinro?style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AlexxNB/tinro/Publish%20on%20NPM?label=test&style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/tinro?label=Bundle%20size&style=flat-square) ![npm](https://img.shields.io/npm/dt/tinro?style=flat-square) 
 
 
-tinro is a highly declarative, [tiny](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md)), dependency free router for [Svelte](https://svelte.dev) web applications.
+tinro is a highly declarative, [tiny](https://github.com/AlexxNB/tinro/blob/master/COMPARE.md), dependency free router for [Svelte](https://svelte.dev) web applications.
 
 ## Features
 
