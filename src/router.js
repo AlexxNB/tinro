@@ -34,7 +34,7 @@ function routerStore(){
 }
 
 export function active(node){
-    const href = getAttr(node,'href'),
+    const href = getAttr(node,'href').replace(/^\/#|[?#].*$|\/$/g,''),
           exact = getAttr(node,'exact',true),
           cl = getAttr(node,'active-class',true,'active');
           

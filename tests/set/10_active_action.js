@@ -7,7 +7,11 @@ module.exports = async function (test,assert) {
             'activeExactSub',
             'activeCustomclass',
             'activeWithdata',
-            'activeHash'
+            'activeHash',
+            'activeQuery',
+            'activeFragment',
+            'activeQueryAndFragment',
+            'activeTrailingSlash',
         ];
 
         await ctx.page.go('/test9');
@@ -21,6 +25,10 @@ module.exports = async function (test,assert) {
         assert.ok(set['activeCustomclass'].includes('customactive'), 'Active, custom class');
         assert.ok(set['activeWithdata'].includes('customactive'), 'Active, custom class, with data');
         assert.ok(set['activeHash'].includes('active'), 'Active, hash-link');
+        assert.ok(set['activeQuery'].includes('active'), 'Active', 'With query');
+        assert.ok(set['activeFragment'].includes('active'), 'Active', 'With fragment');
+        assert.ok(set['activeQueryAndFragment'].includes('active'), 'Active', 'With  and fragment');
+        assert.ok(set['activeTrailingSlash'].includes('active'), 'Active', 'With trailing slash');
 
         await ctx.page.go('/test9/sub');
 
@@ -32,6 +40,10 @@ module.exports = async function (test,assert) {
         assert.ok(set['activeCustomclass'].includes('customactive'), 'Active, custom class');
         assert.ok(set['activeWithdata'].length === 0, 'Not active, custom class, with data');
         assert.ok(set['activeHash'].length === 0, 'Not active, hash-link');
+        assert.ok(set['activeQuery'].length === 0, 'Not active, hash-link');
+        assert.ok(set['activeFragment'].length === 0, 'Not active, hash-link');
+        assert.ok(set['activeQueryAndFragment'].length === 0, 'Not active, hash-link');
+        assert.ok(set['activeTrailingSlash'].length === 0, 'Not active, hash-link');
     }
 )}
 

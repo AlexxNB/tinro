@@ -102,6 +102,10 @@
 				<p><a use:active href="/test1" id="activeNoActive">Not active</a></p>
 				<p><a use:active href="/test9" id="activeNotExact">Not exact</a></p>
 				<p><a use:active href="/test9" id="activeExact" exact>Exact</a></p>
+				<p><a use:active href="/test9?foo=bar" id="activeQuery" exact>Exact with query</a></p>
+				<p><a use:active href="/test9#foo" id="activeFragment" exact>Exact with fragment</a></p>
+				<p><a use:active href="/test9?bar=foo#foo" id="activeQueryAndFragment" exact>Exact with fragment and query</a></p>
+				<p><a use:active href="/test9/" id="activeTrailingSlash" exact>Exact with trailing slash</a></p>
 				<p><a use:active href="/test9/sub" id="activeExactSub" exact>Exact sub</a></p>
 				<p><a use:active href="/test9" id="activeCustomclass" active-class="customactive">Not exact, custom class</a></p>
 				<p><a use:active href="/test9" id="activeWithdata" data-exact data-active-class="customactive">exact, custom class, data</a></p>
