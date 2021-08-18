@@ -3,6 +3,7 @@
 	import Child from './Child.svelte';
 	import RedirectSwitch from './RedirectSwitch.svelte';
 	import RedirectByValue from './RedirectByValue.svelte';
+	import RedirectFallback from './RedirectFallback.svelte';
 
 	let isRedirect = false;
 </script> 
@@ -19,6 +20,7 @@
 			</li>
 			<li><a href="/redirect4/off">Redirect switch</a></li>
 			<li><a href="/redirect5">Redirect prop set</a></li>
+			<li><a href="/redirect6">Redirect fallback</a></li>
 			<li><a href="/test1">Simple route</a></li>
 			<li><a href="/test2">Exact route</a></li>
 			<li> Non exact route <br/>
@@ -60,6 +62,7 @@
 			</Route>
 			<Route path="/redirect4/*"><RedirectSwitch/></Route>
 			<Route path="/redirect5/*"><RedirectByValue/></Route>
+			<Route path="/redirect6/*"><RedirectFallback/></Route>
 			<Route path="/test1"><h1>Simple route - OK</h1></Route>
 			<Route path="/test2"><h1>Exact route - OK</h1></Route>
 			<Route path="/test3/*">

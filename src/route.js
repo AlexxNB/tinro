@@ -37,9 +37,11 @@ export function createRouteObject(options){
         },
         register: () => {
             route.parent[type].add(route);
-            return ()=>{
+            return async ()=>{
                 route.parent[type].delete(route);
+                route.parent.activeChilds.delete(route);
                 route.router.un && route.router.un();
+                route.parent.match();
             }
         },
         show: ()=>{
@@ -48,7 +50,7 @@ export function createRouteObject(options){
         },
         hide: ()=>{
             options.onHide();
-            !route.fallback && route.parent.activeChilds.delete(route);
+            route.parent.activeChilds.delete(route);
         },
         match: async ()=>{
             route.matched = false;
@@ -127,7 +129,7 @@ function createRouteProtoObject(options){
             if(this.fallback) return;
 
             await tick();
-            
+  
             if(
                 (this.childs.size > 0 && this.activeChilds.size == 0) ||
                 (this.childs.size == 0 && this.fallbacks.size > 0)

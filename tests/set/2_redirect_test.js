@@ -38,5 +38,16 @@ module.exports = async function (test,assert) {
             await ctx.page.path(),
             '/redirect',
         'Set redirect prop');
+
+        await ctx.page.go('/redirect6');
+        assert.is( 
+            await ctx.page.innerText('h2'),
+            'Login',
+        '1st redirect');
+        await ctx.page.click('#r6Login');
+        assert.is( 
+            await ctx.page.innerText('h2'),
+            '404',
+        '2st redirect');
     }
 )}
