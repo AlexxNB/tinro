@@ -4,6 +4,10 @@
 
 ### Other
 
+- Merge pull request #83 from ItsiAdam/patch-1 ([#83](https://github.com/AlexxNB/tinro/issues/83)) [`d6549b97`](https://github.com/AlexxNB/tinro/commit/d6549b97d01484cfd071c33245b7340a4563c67c)
+
+    *fix typo :-)*
+- fix typo :-) [`03baf93c`](https://github.com/AlexxNB/tinro/commit/03baf93cba1b32e819255ba8a135a50d0f9c4f09)
 - Merge branch 'master' of github.com:AlexxNB/tinro [`23027a38`](https://github.com/AlexxNB/tinro/commit/23027a38c80bf4b10772d4ec1994220212349e55)
 
 ## 0.6.5 - 2021-07-22
