@@ -1,6 +1,15 @@
 # Tinro Changelog
 
-## unreleased
+## 0.6.6 - 2021-08-18
+
+### Bug Fixes
+
+- Links with query or fragments are not have active class [`ddb22286`](https://github.com/AlexxNB/tinro/commit/ddb222868da9a26376319c835763eab2deb6aa45)
+
+    *#85*
+- Unmounted routes not to be deleted from parent's active childs. [`bc0c210c`](https://github.com/AlexxNB/tinro/commit/bc0c210c6a8d0570d0d5e1ad65feba655c4e5d1a)
+
+    *#84*
 
 ### Other
 
