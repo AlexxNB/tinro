@@ -4,6 +4,7 @@
 	import RedirectSwitch from './RedirectSwitch.svelte';
 	import RedirectByValue from './RedirectByValue.svelte';
 	import RedirectFallback from './RedirectFallback.svelte';
+	import Base from './Base.svelte';
 
 	let isRedirect = false;
 </script> 
@@ -47,6 +48,7 @@
 				<a href="/test13/foo">Child</a> 
 			</li>
 			<li><a href="/test14">Reactive props</a></li>
+			<li><a href="/test15">Base changing</a></li>
 		</ul>
 	</div>
 
@@ -131,6 +133,9 @@
 				<button id="turnOnRedirect" on:click={()=>isRedirect="/redirect"}>Turn on redirect</button>
 				<Route path="/" redirect={isRedirect}><h1>Not redirected - OK</h1></Route>
 			</Route>
+
+			
+			<Base/>
 			
 			<Route fallback><h1>Root fallback</h1></Route>
 	</div>

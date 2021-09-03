@@ -29,6 +29,7 @@ function routerStore(){
             history: ()=>location.mode(MODES.HISTORY),
             memory: ()=>location.mode(MODES.MEMORY),
         },
+        base: location.base,
         location: location.methods()
     }
 }

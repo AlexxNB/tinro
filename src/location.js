@@ -1,9 +1,11 @@
 import MODES from './modes';
 import {parseQuery,makeQuery,prefix} from './lib';
+import { get } from 'svelte/store';
 
 let memoURL;
 let from;
 let last;
+let base = '';
 
 export const location = createLocation();
 
@@ -51,7 +53,8 @@ function createLocation(){
         set(parts){
             this.go(makeURL(parts), !parts.path);
         },
-        methods(){return locationMethods(this)}
+        methods(){return locationMethods(this)},
+        base: newbase => base=newbase
     }
 }
 
@@ -61,7 +64,7 @@ function writeLocation(MODE, href, replace){
     const setURL = (url) => history[`${replace ? 'replace' : 'push'}State`]({}, '', url);
 
     MODES.run( MODE,
-        _ => setURL(href),
+        _ => setURL(base+href),
         _ => setURL(`#${href}`),
         _ => memoURL = href
     );
@@ -70,7 +73,7 @@ function writeLocation(MODE, href, replace){
 function readLocation(MODE){
     const l = window.location;
     const url = MODES.run( MODE,
-        _ => l.pathname+l.search+l.hash,
+        _ => (base ? l.pathname.replace(base,'') : l.pathname)+l.search+l.hash,
         _ => String(l.hash.slice(1)||'/'),
         _ => memoURL || '/'
     );

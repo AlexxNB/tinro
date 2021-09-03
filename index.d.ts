@@ -67,6 +67,8 @@ declare interface TinroRouter {
     mode: TinroRouterModeSwitcher
     /** Location object methods */
     location: TinroRouterLocation
+    /** Set base path for URL */
+    base(path: string): void
 
     /** @deprecated Use meta().params instead */
     params(): Record<string, string>

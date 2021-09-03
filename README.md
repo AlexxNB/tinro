@@ -36,6 +36,7 @@ tinro is a highly declarative, [tiny](https://github.com/AlexxNB/tinro/blob/mast
     - [breadcrumbs](#metabreadcrumbs)
 * [~~Parameters~~ (Deprecated since 0.5.0)](#parameters)
 * [Navigation method](#navigation-method)
+* [Base path](#base-path)
 * [Manage hash and query](#manage-hash-and-query)
 * [API](#api)
 * [Recipes](#recipes)
@@ -377,6 +378,27 @@ Now, start your app with `npm run dev` and open a URL like `http://localhost:500
 
 *For other servers you can read the following links: [Nginx](https://www.nginx.com/blog/creating-nginx-rewrite-rules/#Example&nbsp;%E2%80%93-Enabling-Pretty-Permalinks-for-WordPress-Websites), [Apache](https://httpd.apache.org/docs/2.4/rewrite/remapping.html#fallback-Resource), [Caddy](https://caddyserver.com/docs/caddyfile/directives/rewrite#examples)*
 
+## Base path
+
+When you deploy your app in subderictory on the host and use history navigation mode you must use full links and routes for correct navigation. Other way is to set *base path*, and all links and routes will be treated relatively. For example, if you deploy on `https://myserver.com/subdir`, then set *base path* to `/subdir` in root component of your app:
+
+```html
+<script>
+    import {router, Route} from 'tinro';
+    router.base('/subdir');
+</script>
+
+<nav>
+  <a href="/foo">Foo</a>
+  <a href="/bar">Bar</a>
+</nav>
+
+<Route path="/foo">This is Foo</Route>
+<Route path="/bar">This is Bar</Route>
+```
+
+*Notice: Base path must start but not end with `/`*
+
 ## Manage hash and query 
 
 You can change URL's parts (such as query and hash) using `router.location` methods:
@@ -406,6 +428,9 @@ Methods to change curent router mode:
 * `history()` - set HistoryAPI navigation method
 * `hash()` - set hash navigation method
 * `memory()` - set memory navigation method
+
+### `router.base(path)`
+Sets [base path](#base-path) for router
 
 ### `router.location.hash`
 Methods, which allows to get or set current value of the URL's hash part:
