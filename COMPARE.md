@@ -1,6 +1,6 @@
-# How much tinro adds to your bandle?
+# How much tinro adds to your bundle?
 
-Current tinro value is **6.43 Kb** (2.57 Kb gzipped) 
+Current tinro value is **6.43 Kb** (2.57 Kb gzipped).
 
 ## Comparsion
 
