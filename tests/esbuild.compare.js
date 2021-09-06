@@ -142,9 +142,9 @@ function compare(){
     fs.unlinkSync('tests/dist/compare/bundle_no_tinro.tar.gz');
     fs.rmdirSync('tests/dist/compare');
 
-    fs.writeFileSync('COMPARE.md',`# How much tinro adds to your bandle?
+    fs.writeFileSync('COMPARE.md',`# How much tinro adds to your bundle?
 
-Current tinro value is **${tinro_value_kb}** (${tinro_gz_value_kb} gzipped) 
+Current tinro value is **${tinro_value_kb}** (${tinro_gz_value_kb} gzipped).
 
 ## Comparsion
 
