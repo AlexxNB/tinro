@@ -1,5 +1,13 @@
 # Tinro Changelog
 
+## 0.6.7 - 2021-09-03
+
+### Features
+
+- Add method to set base path for router ([#88](https://github.com/AlexxNB/tinro/issues/88)) [`d63dead7`](https://github.com/AlexxNB/tinro/commit/d63dead7be3a3bae181c51bf2e3df6cc0fecdfe9)
+
+    *resolve #88*
+
 ## 0.6.6 - 2021-08-18
 
 ### Bug Fixes
