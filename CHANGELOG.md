@@ -1,5 +1,17 @@
 # Tinro Changelog
 
+## unreleased
+
+### Documentation
+
+- 📝 Fix typo [`65ca1bee`](https://github.com/AlexxNB/tinro/commit/65ca1beeb38c131e83bedeff1869d7a52039ee98)
+
+    *Thx to @sevensidedmarble for its PR*
+
+### Other
+
+- Merge branch 'master' of github.com:AlexxNB/tinro [`35408142`](https://github.com/AlexxNB/tinro/commit/35408142fc0a2f10ae0f1fcd1e1ef8f4e1571963)
+
 ## 0.6.7 - 2021-09-03
 
 ### Features
