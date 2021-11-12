@@ -35,14 +35,28 @@ function routerStore(){
 }
 
 export function active(node){
-    const href = getAttr(node,'href').replace(/^\/#|[?#].*$|\/$/g,''),
-          exact = getAttr(node,'exact',true),
-          cl = getAttr(node,'active-class',true,'active');
-          
-    return {destroy:router.subscribe(r => {
-        const match = getRouteMatch(href,r.path); 
+    let href;
+    let exact;
+    let cl;
+    let current;
+
+    const getAttributes = () => {
+        href = getAttr(node,'href').replace(/^\/#|[?#].*$|\/$/g,''),
+        exact = getAttr(node,'exact',true),
+        cl = getAttr(node,'active-class',true,'active');
+    }
+
+    const matchLink = ()=>{
+        const match = getRouteMatch(href,current); 
         match && (match.exact && exact || !exact) ? node.classList.add(cl) : node.classList.remove(cl);
-    })}
+    }
+
+    getAttributes();
+          
+    return {
+        destroy: router.subscribe(r => {current = r.path; matchLink()}),
+        update: () => { getAttributes(); matchLink()}
+    }
 }
 
 function aClickListener(go){
