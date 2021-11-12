@@ -1,6 +1,12 @@
 # Tinro Changelog
 
-## unreleased
+## 0.6.8 - 2021-11-12
+
+### Features
+
+- Add reactive parameters for active action to update link's state when they change ([#87](https://github.com/AlexxNB/tinro/issues/87)) [`e611ad9f`](https://github.com/AlexxNB/tinro/commit/e611ad9fcc1eb0dbb541340ab3b035a9c623b353)
+
+    *close #87*
 
 ### Documentation
 
