@@ -1,5 +1,17 @@
 # Tinro Changelog
 
+## unreleased
+
+### Other
+
+- Merge branch 'master' of github.com:AlexxNB/tinro [`9f9f2d40`](https://github.com/AlexxNB/tinro/commit/9f9f2d40798e3b2ea213b710b81740119be3fd59)
+
+## 0.6.10 - 2021-12-13
+
+### Bug Fixes
+
+- Fix regexp for internal hashed links [`c72465c6`](https://github.com/AlexxNB/tinro/commit/c72465c6752fca5376f01bcaa26541ce68741459)
+
 ## 0.6.9 - 2021-12-13
 
 ### Bug Fixes
