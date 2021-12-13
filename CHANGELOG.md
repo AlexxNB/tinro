@@ -1,5 +1,17 @@
 # Tinro Changelog
 
+## 0.6.9 - 2021-12-13
+
+### Bug Fixes
+
+- Internal hash-links on page does not work ([#99](https://github.com/AlexxNB/tinro/issues/99)) [`21fb1213`](https://github.com/AlexxNB/tinro/commit/21fb121378f1bbfe1884a3f42db1293acd7f7218)
+
+    *fix #99*
+
+### Chores
+
+- Update deps [`239c5d75`](https://github.com/AlexxNB/tinro/commit/239c5d75a59b9ab7b783097f930636ed675b1103)
+
 ## 0.6.8 - 2021-11-12
 
 ### Features
