@@ -6,8 +6,9 @@ async function setup(context) {
 
     console.log('Launching test server...');
 	if(!(await ports.check(5050))) throw new Error("Port 5050 already in use, can't launch test server.")
-    context.srv = spawn('derver', ['--no-watch','--spa','--port=5050','tests/www'],{
-        detached: false
+    context.srv = spawn('node',['server.js'],{
+        detached: false,
+        cwd: 'tests'
     });
     process.on("exit", () => context.srv.kill());
     await ports.wait(5050);
