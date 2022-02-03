@@ -1,5 +1,17 @@
 # Tinro Changelog
 
+## unreleased
+
+### Other
+
+- Merge branch 'master' of github.com:AlexxNB/tinro [`b02a5bb2`](https://github.com/AlexxNB/tinro/commit/b02a5bb294ced318cf933fabbf4f41107c8ae245)
+
+## 0.6.12 - 2022-02-03
+
+### Chores
+
+- Update dependencies [`ac59b750`](https://github.com/AlexxNB/tinro/commit/ac59b750bd257bf24f6623cd3c6b4dd6577bba5e)
+
 ## 0.6.11 - 2022-02-03
 
 ### Other
