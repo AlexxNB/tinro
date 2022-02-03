@@ -1,10 +1,20 @@
 # Tinro Changelog
 
-## unreleased
+## 0.6.11 - 2022-02-03
 
 ### Other
 
 - Merge branch 'master' of github.com:AlexxNB/tinro [`9f9f2d40`](https://github.com/AlexxNB/tinro/commit/9f9f2d40798e3b2ea213b710b81740119be3fd59)
+
+### Chores
+
+- Fix Breadcrumb type ([#103](https://github.com/AlexxNB/tinro/issues/103)) [`bc63d95d`](https://github.com/AlexxNB/tinro/commit/bc63d95d336cad36515a9f3777ccdeddeb408b6e)
+
+    *close #103*
+
+### Tests
+
+- Changing test environment [`60de58a4`](https://github.com/AlexxNB/tinro/commit/60de58a4ea96f1effa46dd4e4570420b362aeaf1)
 
 ## 0.6.10 - 2021-12-13
 
