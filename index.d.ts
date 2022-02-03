@@ -7,7 +7,7 @@ interface TinroRoute {
 }
 
 interface TinroBreadcrumb {
-  url: string
+  path: string
   name: string
 }
 
