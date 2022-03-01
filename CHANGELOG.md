@@ -4,6 +4,10 @@
 
 ### Other
 
+- Merge pull request #105 from jlecordier/patch-2 ([#105](https://github.com/AlexxNB/tinro/issues/105)) [`096e86f4`](https://github.com/AlexxNB/tinro/commit/096e86f421b93b23de4ad67a44410623ab05caec)
+
+    *fix typos*
+- fix typos [`37f36f58`](https://github.com/AlexxNB/tinro/commit/37f36f58b54111c1a31c7f6f1682a682e858c291)
 - Merge branch 'master' of github.com:AlexxNB/tinro [`b02a5bb2`](https://github.com/AlexxNB/tinro/commit/b02a5bb294ced318cf933fabbf4f41107c8ae245)
 
 ## 0.6.12 - 2022-02-03
