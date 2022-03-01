@@ -380,7 +380,7 @@ Now, start your app with `npm run dev` and open a URL like `http://localhost:500
 
 ## Base path
 
-When you deploy your app in subderictory on the host and use history navigation mode you must use full links and routes for correct navigation. Other way is to set *base path*, and all links and routes will be treated relatively. For example, if you deploy on `https://myserver.com/subdir`, then set *base path* to `/subdir` in root component of your app:
+When you deploy your app in subdirectory on the host and use history navigation mode you must use full links and routes for correct navigation. Other way is to set *base path*, and all links and routes will be treated relatively. For example, if you deploy on `https://myserver.com/subdir`, then set *base path* to `/subdir` in root component of your app:
 
 ```html
 <script>
@@ -515,7 +515,7 @@ If you want a transiton when the path changes, create a component like this:
 </script>
 
 {#key $router.path}
-    <div in:fade="{{ duration: 700}}">
+    <div in:fade="{{ duration: 700 }}">
         <slot></slot>
     </div>
 {/key}
@@ -553,12 +553,12 @@ tinro doesn't control scrolling in your app, but sometimes you need to scroll to
 
 ```javascript
 import {router} from `tinro`;
-router.subscribe( _ => window.scrollTo(0, 0));
+router.subscribe(_ => window.scrollTo(0, 0));
 ```
 
 ### Navigation announcer
 
-The problem of any SPA router is that it does not use default browser navigation when user click the link. This cause accessability issue for people who use screenreaders, because it won't announce that new page was loaded. You can fix this creating `Announce` component:
+The problem of any SPA router is that it does not use default browser navigation when user click the link. This cause accessibility issue for people who use screenreaders, because it won't announce that new page was loaded. You can fix this creating `Announce` component:
 
 ```html
 <!-- Announcer.svelte-->
@@ -598,7 +598,7 @@ Then place this component somewhere in your `App.svelte` root file:
 
 ## Troubleshooting
 
-If you use Vite to bandle your app(including SvelteKit), you should exclude `tinro` from the `optimizedDeps` in Vite's config:
+If you use Vite to bandle your app (including SvelteKit), you should exclude `tinro` from the `optimizedDeps` in Vite's config:
 
 ```javascript
   ...
