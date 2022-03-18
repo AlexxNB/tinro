@@ -4,6 +4,9 @@
 
 ### Other
 
+- Add relative links description ([#29](https://github.com/AlexxNB/tinro/issues/29)) [`1405b09b`](https://github.com/AlexxNB/tinro/commit/1405b09bbcb837e7ccc1d7c604dc98da59a83e8a)
+
+    *fix #29*
 - Merge pull request #105 from jlecordier/patch-2 ([#105](https://github.com/AlexxNB/tinro/issues/105)) [`096e86f4`](https://github.com/AlexxNB/tinro/commit/096e86f421b93b23de4ad67a44410623ab05caec)
 
     *fix typos*
