@@ -150,7 +150,7 @@ Sometimes, you need to show only the first nested route from all those matched w
 
 ## Links
 
-There is no special component for links. Just use native `<a>` elements. When the `href` attribute starts with a single `/` (like `/mypage` or just `/`), it will be treated as an internal link which will be matched with defined routes. Other cases do not affect the links' behavior. 
+There is no special component for links. Just use native `<a>` elements. When the `href` attribute starts with a single `/` (like `/mypage` or just `/`) or is a relative path(like `foo`, `foo/bar`), it will be treated as an internal link which will be matched with defined routes. Other cases do not affect the links' behavior. 
 
 All internal links will be passed into the tinro router. However, it is possible to prevent this by adding the `tinro-ignore` or `data-tinro-ignore` attributes:
 
