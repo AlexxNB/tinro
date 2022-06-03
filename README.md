@@ -423,7 +423,7 @@ You can import the `router` object from the `tinro` package:
 Programmatically change the URL of the current page.
 
 ### `router.mode`
-Methods to change curent router mode:
+Methods to change current router mode:
 
 * `history()` - set HistoryAPI navigation method
 * `hash()` - set hash navigation method
@@ -474,7 +474,7 @@ Deprecated. See `router.meta` instead.
 
 ## Recipes
 
-tinro is not the most powerful router among all those available for Svelte applications. We prefer a smaller footprint in your bundles over having all possible features out of the box. But you can easily code some features yourself using the recipies below:
+tinro is not the most powerful router among all those available for Svelte applications. We prefer a smaller footprint in your bundles over having all possible features out of the box. But you can easily code some features yourself using the recipes below:
 
 ### Lazy loading components
 
@@ -505,7 +505,7 @@ And use it when you need a lazy loaded component in your routes:
 
 ### Transitions
 
-If you want a transiton when the path changes, create a component like this:
+If you want a transition when the path changes, create a component like this:
 
 ```html
 <!-- Transition.svelte -->
@@ -598,7 +598,7 @@ Then place this component somewhere in your `App.svelte` root file:
 
 ## Troubleshooting
 
-If you use Vite to bandle your app (including SvelteKit), you should exclude `tinro` from the `optimizedDeps` in Vite's config:
+If you use Vite to bundle your app (including SvelteKit), you should exclude `tinro` from the `optimizedDeps` in Vite's config:
 
 ```javascript
   ...
