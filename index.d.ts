@@ -1,3 +1,5 @@
+import {SvelteComponentTyped} from "svelte";
+
 interface TinroRoute {
     url: string
     from: string
@@ -78,10 +80,18 @@ declare interface TinroRouter {
     meta(): TinroRouteMeta
 }
 
+interface RouteProps {
+    path?: string;
+    fallback?: boolean;
+    redirect?: string;
+    firstmatch?: boolean;
+    breadcrumb?: string;
+}
+
 export const active: any
 export function meta(): TinroRouteMeta
 export const router: TinroRouter
-export class Route {
+export class Route extends SvelteComponentTyped<RouteProps> {
     $$prop_def: {
       /**
        * Exact o relative path of the route
