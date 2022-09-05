@@ -41,8 +41,10 @@ interface TinroRouterLocationHash {
 }
 
 interface TinroRouterLocationQuery {
-  /** Get the query object or a value from it by property name */ 
-  get(name?:string): Record<string, string>|string
+  /** Get the value by property name */ 
+  get(name:string): string | undefined
+  /** Get the query object */ 
+  get(): Record<string, string>
   /** Update or add a property in the query object */ 
   set(name:string,value:string|number): void
   /** Delete a property from the query object */ 
