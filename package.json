@@ -4,6 +4,12 @@
   "description": "tinro is a tiny declarative router for Svelte",
   "main": "dist/tinro.js",
   "module": "dist/tinro.es.js",
+  "exports": {
+    ".": {
+      "types": "./dist/ts/index.d.ts",
+      "svelte": "./dist/index.js"
+    }
+  },
   "svelte": "cmp/index.js",
   "types": "index.d.ts",
   "scripts": {
